@@ -140,7 +140,7 @@
             (('quote x) sexp)
             ((f . args) `(,(lambda->cps `(lambda () ,sexp)) (lambda (x) x)))
             (_ sexp)))))
-            
+
 ;; Converts a program to "intermediate Scheme" form
 (define (prog->is prog)
   (map
