@@ -26,7 +26,9 @@
    simplify-sexp simplify-body
    rewrite-int-defs rewrite-body-int-defs sep-int-defs
    define? constant? computation? lambda-form?
-   wrap-begin unwrap-begin const->bool def-fun->lambda-form)
+   wrap-begin unwrap-begin const->bool def-fun->lambda-form
+   try-beta try-eta
+   )
                                        
 (define int-def-fun->letrec? (make-parameter #t))
 
@@ -168,7 +170,7 @@
           (_ sexp)))
 
 ;; Destructures actual parameters according to formals.
-;; Returns the bindings a-list or #f for failure.
+;; @return the bindings a-list or #f for failure.
 (define (bind-formals formals vals)
   (define (loop formals vals bnd)
     (cond
@@ -236,34 +238,55 @@
       (let ((res (list-subst body)))
         (values res (reverse! unsubst) unused))))
 
+(define (simplify-body l)
+  (apply append (map (compose unwrap-begin simplify-sexp) l)))
+
 ;; Simplifies applicative forms like ((lambda (x) ...) values ...).
 ;; Assumes that the arguments and the head lambda form are simplified.
-(define (simplify-application formals body vals)
-  (let ((bnd (bind-formals formals vals)))
-    (if bnd
-        (receive (tosubst dontsubst)
-            (partition!
-             (lambda (b)
-               (any (cute <> (cdr b))
-                    (list symbol? number? null? char? boolean?)))
-             bnd)
-          (receive (simplified unsubst unused)
-              (beta-reduce tosubst dontsubst body)
-            (set! unsubst
-                  (append (alist-diff eq? dontsubst unused) unsubst))
-            (wrap-begin
-             `(
-               ,@(map cdr unused)
-               ,@(if (and (null? unsubst)
-                          (wmatch simplified
-                                  ((('define . def) . more) #f) (_ #t)))
-                     simplified
-                     `(((lambda ,(map car unsubst) . ,simplified)
-                        ,@(map cdr unsubst))))))))
-        `((lambda ,formals . ,body) ,@vals))))
+(define (try-beta sexp)
+  (wmatch
+   sexp
+   ((('lambda formals . body) . vals)
+    (let ((bnd (bind-formals formals vals)))
+      (if bnd
+          (receive (tosubst dontsubst)
+              (partition!
+               (lambda (b)
+                 (any (cute <> (cdr b))
+                      (list symbol? number? null? char? boolean?)))
+               bnd)
+            (receive (simplified unsubst unused)
+                (beta-reduce tosubst dontsubst body)
+              (set! unsubst
+                    (append (alist-diff eq? dontsubst unused) unsubst))
+              (wrap-begin
+               `(
+                 ,@(map cdr unused)
+                 ,@(if (and (null? unsubst)
+                            (wmatch simplified
+                                    ((('define . def) . more) #f) (_ #t)))
+                       simplified
+                       `(((lambda ,(map car unsubst) . ,simplified)
+                          ,@(map cdr unsubst))))))))
+          `((lambda ,formals . ,body) ,@vals))))
+   (_ sexp)))
+
+(define (try-eta formals f args)
+  (define body `((,f . ,args)))
+  (if (or (memq f '(lambda quote set! begin))
+          (computation? f))
+      `(lambda ,formals . ,body)
+      (let ((bnd (bind-formals formals args)))
+        (if (and bnd (every (lambda (b)
+                              (eq? (car b) (cdr b))) bnd)
+                 (or (not (lambda-form? f))  ;; abort for broken application
+                     (bind-formals (cadr f) args)))
+            f
+            `(lambda ,formals ,(try-beta `(,f . ,args)))))))
 
 ;; Simplifies an s-expression.
 (define (simplify-sexp sexp)
+  ;; (check-memo sexp simp-memo)
   (cond
    ((atom? sexp) sexp)
    (else
@@ -272,31 +295,28 @@
              (simplify-sexp (def-fun->lambda-form sexp)))
             (('define x val)
              `(define ,x ,(simplify-sexp val)))
-            (('begin sexp) (simplify-sexp sexp))
-            ((('lambda formals . body) . vals)
-             (set! vals (map simplify-sexp vals))
-             (wmatch (simplify-sexp `(lambda ,formals . ,body))
-                     (('lambda formals . body)
-                      (simplify-application formals body vals))
-                     (f `(,f . ,vals))))
-            ;; eta reduction:
-            (('lambda formals (f . args))  ;; ... and formals, args match...
-             (set! f (simplify-sexp f)) (set! args (map simplify-sexp args))
-             (let ((bnd (bind-formals formals args)))
-               (if (and bnd (not (computation? f))
-                        (or (not (lambda-form? f))
-                            (bind-formals (cadr f) args))
-                        (every (lambda (b) (eq? (car b) (cdr b))) bnd))
-                   f `(lambda ,formals ,(simplify-sexp `(,f . ,args))))))
-            (('lambda formals . body)
-             `(lambda ,formals . ,(simplify-body body)))
             (('quote x) sexp)
-            ((f . args) (map simplify-sexp sexp))
+            (('begin sexp) (simplify-sexp sexp))
+            (('set! x val) `(set! ,x ,(simplify-sexp val)))
+            (('lambda formals . body)
+             (wmatch (simplify-body body)
+                     (((f . args)) (try-eta formals f args))
+                     (sbody `(lambda ,formals . ,sbody))))
+            ((f . args)
+             (try-beta (map simplify-sexp sexp)))
             (_ sexp)))))
 
-(define (simplify-body l)
-  (apply append (map (compose unwrap-begin simplify-sexp) l)))
+(def-in-module simp-memo (make-hash-table))
 
+(define (check-memo sexp)
+  (when (and (pair? sexp) (not (eq? (car sexp) 'car))
+             (not (every atom? sexp)))
+    (pretty-print sexp)
+    (if (hash-table-ref/default simp-memo sexp #f)
+        (cout "^^^ Duplicate\n")
+        (hash-table-set! simp-memo sexp #t))
+    (newline)))
+  
 ;; Walks an s-expressions rewriting lambda bodies with rewrite-lambda-int-defs.
 (define (rewrite-int-defs sexp)
   (wmatch sexp
