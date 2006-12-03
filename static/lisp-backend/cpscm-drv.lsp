@@ -24,6 +24,7 @@
  (d eq? eq) (d eqv? eql) (d equal? equalp)
  (d set-car! rplaca) (d set-cdr! rplacd)  ;; TODO: return unspecified
  (d display princ) (d newline terpri) (d write prin1)
+ (d error (lambda (&rest args) (error "Scheme error: ~S" args)))
  )
 
 (defvar cpscm__normal-apply #'apply)
@@ -45,8 +46,8 @@
 (defvar cpscm_20_boolean->combinator
         (let ((combthen (lambda (kk then else) (funcall then kk)))
               (combelse (lambda (kk then else) (funcall else kk))))
-          (lambda (k test)
-            (funcall k (if test combthen combelse)))))
+          (lambda (test)
+            (if test combthen combelse))))
 
 (defstruct trampoline thunk)
 (defmacro cpscm__trampoline (&rest body)
@@ -60,5 +61,5 @@
 
 (defun cpscm__drive (cc excHnd)
   (handler-case
-   (print (cpscm__reduce-trampoline cc))
+   (cpscm__reduce-trampoline cc)
    (condition (e) (funcall excHnd e))))

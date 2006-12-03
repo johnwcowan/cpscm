@@ -16,8 +16,7 @@
 ;; along with cpscm; if not, write to the Free Software
 ;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-(require-library 'cpscm)
-(require-library 'alexpander-cpscm)
+(require-library 'cpscm) (import cpscm)
 
 (define in-prelude? (make-parameter #f))
 (define trampoline? (make-parameter #t))
@@ -89,7 +88,7 @@
           (('lambda args . body) (lambda->lisp args body name))
           (('define (f . args) . body)
            (sexp->lisp `(define ,f (lambda ,args . ,body))))
-          (('define x val) `(defvar ,(symbol->lisp x) ,(sexp->lisp val)))
+          (('define x val) `(defparameter ,(symbol->lisp x) ,(sexp->lisp val)))
           ((f . args) `(funcall ,(sexp->lisp f) ,@(map sexp->lisp args)))
           (_ (atom->lisp sexp))))
 
@@ -100,15 +99,24 @@
       (cut for-each (lambda (x) (display x) (newline) (newline))
            (map (compose sexp->lisp simplify-sexp)
                 (append
-                 (cpscm-defs-cpsed)
-                 (map (compose def->cps simplify-sexp rewrite-int-defs)
+                 (map expand-ifs (cpscm-defs-cpsed))
+                 (map (compose
+                       def->cps simplify-sexp rewrite-int-defs expand-ifs)
                       (expand-program (cpscm-defs)))))))))
 
 (define (prog->lisp prog)
-  (wmatch
-   (sexp->lisp (prog->is prog))
-   (('defvar _ def)
-    `(let ((myprog ,def)
-           (fink (lambda (x) x)))
-       (cpscm__drive (cpscm__trampoline (funcall myprog fink))
-                     (function error))))))
+  (define (do-eval sexp)
+    `(cpscm__drive (cpscm__trampoline ,(sexp->lisp sexp))
+                   (function error)))
+  (define (process-sexp sexp)
+    (wmatch sexp
+            ((or ('define (f . args) . body)
+                 ('define f ('lambda args . body)))
+             (sexp->lisp sexp))
+            (('define x val) `(define ,(symbol->lisp x) ,(do-eval val)))
+            (('quote x) sexp)
+            ((f . args) (do-eval sexp))
+            (_ sexp)))
+  (map process-sexp (prog->is prog)))
+
+(define file->lisp (cut cpscm-compile-file prog->lisp <> <>))

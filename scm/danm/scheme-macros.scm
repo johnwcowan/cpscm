@@ -16,9 +16,7 @@
 ;; along with cpscm; if not, write to the Free Software
 ;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-(require-library 'danm/xmodule)
-
-(xmodule
+(module
   danm/scheme-macros
   (when unless push! inc! dec! macro-identity macro-if macro-list macro-cons macro-append macro-reverse syntax-symbol? values->list destructuring-bind destructuring-bind-lax dbind dbind-lax wmatch def-in-module let1 let*-result begin0 let/collection let/plist let/alist cut+ define/opt let/goto let/cc store/cc! ignore-errors ttrace s+)
   
@@ -184,7 +182,7 @@
 
 ;; Wright match
 (define-syntax wmatch
-  (syntax-rules (quote or)
+  (syntax-rules (quote or and)
     ((_ val c . clauses)
      (let ((v val))
        (wmatch (v (lambda () (error `(wmatch mismatch ,val)))
@@ -200,6 +198,12 @@
     ((_ (val next #f ((or p1 . ps) . body)))
      (let ((next2 (lambda () (wmatch (val next #f ((or . ps) . body))))))
        (wmatch (val next2 #f (p1 . body)))))
+    ;; match AND
+    ((_ (val next #f ((and) . body)))
+     (let () . body))
+    ((_ (val next #f ((and p1 . ps) . body)))
+     (wmatch (val next #f
+                  (p1 (wmatch (val next #f ((and . ps) . body)))))))
     ;; match quoted symbol
     ((_ (val next #f ((quote q) . body)))
      (if (equal? val 'q)

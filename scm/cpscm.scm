@@ -16,11 +16,19 @@
 ;; along with cpscm; if not, write to the Free Software
 ;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-(require-library 'analysis)
+(require-library 'analysis) (import analysis)
+(require-library 'alexpander-cpscm)
 
 (define cpscm-name "cpscm")
 (define (__cpscm name) (s+ cpscm-name "__" name))
 
+(module cpscm
+  (prog->is
+   cpscm-compile-file
+   sexp->cps def->cps lambda->cps
+   cpscm-int-defs cpscm-defs cpscm-defs-cpsed r5rs-bootstrap)
+                  
+   
 (include "r5rs-bootstrap.scm")
 
 (define (cpscm-int-defs)
@@ -86,7 +94,7 @@
 
 ;; Outputs a CPS form based on an ANF list of substitutions
 (define (output-cps k substs)
-  (define non-cps '(set!))
+  (define non-cps `(set! ,boolean->combinator))
   (let loop ((substs substs))
     (if (null? (cdr substs)) `(,k ,(maybe-lambda->cps (caddar substs)))
         (let* ((csubst (car substs)) (result (car csubst))
@@ -97,6 +105,8 @@
           (cond
            ((eq? f 'begin)
             `(,cc ,(last csubst)))
+           ((and (eq? f 'apply) (equal? (last args) '(quote ())))
+            `(,(car args) ,cc ,@(drop-right (cdr args) 1)))
            ((memq f non-cps)
             `(,cc (,f ,@args)))
            (else `(,f ,cc ,@args)))))))
@@ -120,14 +130,33 @@
                ('define f ('lambda args . body)))
            (let ((form `(lambda ,args . ,body)))
              `(define ,f ,(lambda->cps form))))
-          (('define x v)
-           (if (computation? v)
-               (error `(def->cps requires evaluation ,form))
-               form))))
+          (('define x v) `(define ,x ,(sexp->cps v)))))
 
+(define (sexp->cps sexp)
+  (cond
+   ((define? sexp) (def->cps sexp))
+   (else
+    (wmatch sexp
+            (('quote x) sexp)
+            ((f . args) `(,(lambda->cps `(lambda () ,sexp)) (lambda (x) x)))
+            (_ sexp)))))
+            
 ;; Converts a program to "intermediate Scheme" form
 (define (prog->is prog)
-  ((compose simplify-sexp def->cps simplify-sexp)
-   `(define dummy
-      ,(rewrite-lambda-int-defs
-        `(lambda () . ,(expand-program (cons #t prog)))))))
+  (map
+   (compose simplify-sexp sexp->cps simplify-sexp rewrite-int-defs expand-ifs
+            (lambda (sexp)
+              (if (define? sexp)
+                  (cout ";; compiling "
+                        (second (def-fun->lambda-form sexp)) "\n"))
+              sexp))
+   (expand-program prog)))
+
+(define (cpscm-compile-file compiler from to)
+  (call-with-output-file to
+    (lambda (p)
+      (for-each (lambda (sexp) (pretty-print sexp p) (newline p) (newline p))
+                (compiler
+                 (call-with-input-file from port->sexp-list))))))
+
+)

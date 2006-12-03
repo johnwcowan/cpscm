@@ -16,8 +16,18 @@
 ;; along with cpscm; if not, write to the Free Software
 ;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-(require-library 'danm/scheme-util) (ximport danm/scheme-util)
+(require-library 'danm/scheme-util) (import danm/scheme-util)
 
+(module analysis
+  (int-def-fun->letrec?
+   xgensym
+   boolean->combinator if->combinator expand-ifs
+   sexp->anf
+   simplify-sexp simplify-body
+   rewrite-int-defs rewrite-body-int-defs sep-int-defs
+   define? constant? computation? lambda-form?
+   wrap-begin unwrap-begin const->bool def-fun->lambda-form)
+                                       
 (define int-def-fun->letrec? (make-parameter #t))
 
 (define gensym-cnt 0)
@@ -33,12 +43,11 @@
 (define boolean->combinator '| boolean->combinator|)
 
 (define (if->combinator sexp)
-  (define condval (second sexp))
-  (define alts (cddr sexp))
-  `((,boolean->combinator ,condval)
-    (lambda () ,(car alts))
-    (lambda () ,(if (null? (cdr alts)) 'undefined
-                    (second alts)))))
+  (dbind (_ condval . alts) sexp
+         `((,boolean->combinator ,condval)
+           (lambda () ,(car alts))
+           (lambda () ,(if (null? (cdr alts)) 'undefined
+                           (second alts))))))
 
 (define (wrap-begin exprs)
   (set! exprs (apply append (map unwrap-begin exprs)))
@@ -66,7 +75,6 @@
         (let ((head (car t)) (args (cdr t)))
           (cond
            ((memq head pass-thru) t)
-           ((eq? head 'if) (dfs (simplify-sexp (if->combinator t))))
            ((and (pair? head) (not (eq? (car head) 'lambda)))
             (dfs `(apply ,head ,@args '())))
            ((eq? head 'begin)
@@ -84,14 +92,76 @@
   (let ((top (dfs sexp)))
     (cons `(,(xgensym 'top) values ,top) substs)))
 
+(define (const->bool x)
+  (wmatch x
+          (('quote u) (const->bool u))
+          (_ (if x #t #f))))
+
+(define (simplify-ifs sexp)
+  (define (finish sexp)
+    (wmatch sexp
+            (('if test then else)
+             (if (constant? test)
+                 (if (const->bool test) then else)
+                 sexp))))
+  (wmatch sexp
+          (('if test then) (simplify-ifs `(if ,test ,then 'undefined)))
+          (('if (and test ('if . _)) then else)
+           (set! then (simplify-ifs then)) (set! else (simplify-ifs else))
+           (wmatch (simplify-ifs test)
+                   ((and etest ('if test1 . (and m1 (t1 e1))))
+                    (if (every constant? m1)
+                        (wmatch
+                         (map const->bool m1)
+                         ((#t #t) then)
+                         ((#f #f) else)
+                         ((#t #f) `(if ,test1 ,then ,else))
+                         ((#f #t) `(if ,test1 ,else ,then)))
+                        `(if ,etest then else)))
+                   (etest (finish `(if ,etest ,then ,else)))))
+          (('if test . r)
+           (finish `(if ,test ,@(map simplify-ifs r))))
+          (('set! x val) `(set! ,x ,(simplify-ifs val)))
+          (('define . rest)
+           (wmatch (def-fun->lambda-form sexp)
+                   (('define x val) `(define ,x ,(simplify-ifs val)))))
+          (('quote _) sexp)
+          (('lambda formals . body)
+           `(lambda ,formals . ,(map simplify-ifs body)))
+          ((f . args) (map simplify-ifs sexp))
+          (_ sexp)))
+
+(define (expand-ifs sexp)
+  (set! sexp (simplify-ifs sexp))
+  (wmatch sexp
+          (('if . more) (if->combinator `(if . ,(map expand-ifs more))))
+          (('set! x val) `(set! ,x ,(expand-ifs val)))
+          (('define . rest)
+           (wmatch (def-fun->lambda-form sexp)
+                   (('define x val) `(define ,x ,(expand-ifs val)))))
+          (('quote _) sexp)
+          (('lambda formals . body)
+           `(lambda ,formals . ,(map expand-ifs body)))
+          ((f . args) (map expand-ifs sexp))
+          (_ sexp)))
+                
 (define (lambda-form? x)
   (and (pair? x) (eq? (car x) 'lambda)))
 
 ;; Checks whether the argument is a computation.
 ;; Constants plus lambda forms are "values", others are "computations".
 (define (computation? x)
-  (and (pair? x) (not (memq (car x) '(lambda quote)))))
+  (and (pair? x) (not (memq (car x) '(lambda quote define)))))
 
+(define (constant? x)
+  (if (pair? x) (memq (car x) '(lambda quote))
+      (any (cut <> x) (list boolean? number? string? char?))))
+
+(define (define? x)
+  (and (pair? x) (eq? (car x) 'define)))
+
+;; If sexp is in (define (f . args) . body) form, converts it to
+;; (define f (lambda ...)) form.
 (define (def-fun->lambda-form sexp)
   (wmatch sexp
           (('define (f . args) . body) `(define ,f (lambda ,args . ,body)))
@@ -124,14 +194,14 @@
     (append (formal-names formals)
             (map (compose second def-fun->lambda-form) defs))))
 
-;; Substitutes "constants" for some bound variables in a function body.
+;; Partial beta reduction for a function body.
 ;; If any of the bound variables is (set!) inside the body, substitution
 ;; for that variable is aborted.
 ;; Local definitions shadow (and protect) the initial bindings.
 ;; @return three values: resulting body, list of bindings not substituted,
 ;; and list of unused bindings.
-(define (subst-const bnd dontsubst body)
-  (define restart #f)
+(define (beta-reduce bnd dontsubst body)
+  (define restart #f)  ;; will hold restart continuation
   (define masked (make-parameter (shadowed '() body)))
   (define unsubst '()) (define unused dontsubst)
   (define/opt (get-bnd var (ref?))
@@ -166,10 +236,10 @@
       (let ((res (list-subst body)))
         (values res (reverse! unsubst) unused))))
 
+;; Simplifies applicative forms like ((lambda (x) ...) values ...).
+;; Assumes that the arguments and the head lambda form are simplified.
 (define (simplify-application formals body vals)
-  (wmatch (simplify-sexp `(lambda ,formals . ,body))
-          (('lambda f2 . b2) (set! formals f2) (set! body b2)))
-  (let ((bnd (bind-formals formals (simplify-sexp-list vals))))
+  (let ((bnd (bind-formals formals vals)))
     (if bnd
         (receive (tosubst dontsubst)
             (partition!
@@ -178,7 +248,7 @@
                     (list symbol? number? null? char? boolean?)))
              bnd)
           (receive (simplified unsubst unused)
-              (subst-const tosubst dontsubst body)
+              (beta-reduce tosubst dontsubst body)
             (set! unsubst
                   (append (alist-diff eq? dontsubst unused) unsubst))
             (wrap-begin
@@ -204,9 +274,14 @@
              `(define ,x ,(simplify-sexp val)))
             (('begin sexp) (simplify-sexp sexp))
             ((('lambda formals . body) . vals)
-             (simplify-application formals body vals))
+             (set! vals (map simplify-sexp vals))
+             (wmatch (simplify-sexp `(lambda ,formals . ,body))
+                     (('lambda formals . body)
+                      (simplify-application formals body vals))
+                     (f `(,f . ,vals))))
+            ;; eta reduction:
             (('lambda formals (f . args))  ;; ... and formals, args match...
-             (set! f (simplify-sexp f)) (set! args (simplify-sexp-list args))
+             (set! f (simplify-sexp f)) (set! args (map simplify-sexp args))
              (let ((bnd (bind-formals formals args)))
                (if (and bnd (not (computation? f))
                         (or (not (lambda-form? f))
@@ -214,12 +289,12 @@
                         (every (lambda (b) (eq? (car b) (cdr b))) bnd))
                    f `(lambda ,formals ,(simplify-sexp `(,f . ,args))))))
             (('lambda formals . body)
-             `(lambda ,formals . ,(simplify-sexp-list body)))
+             `(lambda ,formals . ,(simplify-body body)))
             (('quote x) sexp)
             ((f . args) (map simplify-sexp sexp))
             (_ sexp)))))
 
-(define (simplify-sexp-list l)
+(define (simplify-body l)
   (apply append (map (compose unwrap-begin simplify-sexp) l)))
 
 ;; Walks an s-expressions rewriting lambda bodies with rewrite-lambda-int-defs.
@@ -295,3 +370,5 @@
   (partition
    (lambda (sexp) (wmatch sexp (('define . def) #t) (_ #f)))
    body))
+
+)

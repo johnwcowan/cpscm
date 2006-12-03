@@ -25,10 +25,10 @@
 (require-extension (srfi 31))  ;; rec
 (require-extension (srfi 39))  ;; parameters
 
-(require-library 'danm/scheme-macros) (ximport danm/scheme-macros)
-(require-library 'danm/combinators) (ximport danm/combinators)
+(require-library 'danm/scheme-macros) (import danm/scheme-macros)
+(require-library 'danm/combinators) (import danm/combinators)
 
-(xmodule
+(module
  danm/scheme-util
  (atom? alist-diff with-input-from-str with-output-to-str port->sexp-list port->string read-list read-list/string cout)
 
