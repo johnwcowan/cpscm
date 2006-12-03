@@ -3,4 +3,4 @@
     ((_ x place) (set! place (cons x place)))))
 (define l '(1 2 3))
 (push! 0 l)
-l
+(display l) (newline)

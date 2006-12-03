@@ -1,4 +1,4 @@
 (define (fact x)
   (if (zero? x) 1
       (* (fact (- x 1)) x)))
-(fact 5)
+(display (fact 5)) (newline)

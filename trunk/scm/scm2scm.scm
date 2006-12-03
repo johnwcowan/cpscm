@@ -16,8 +16,7 @@
 ;; along with cpscm; if not, write to the Free Software
 ;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-(require-library 'cpscm)
-(require-library 'alexpander-cpscm)
+(require-library 'cpscm) (import cpscm)
 
 (define in-prelude? (make-parameter #f))
 (define trampoline? (make-parameter #t))
@@ -96,6 +95,8 @@
       (define (reverse! l) (reverse l))  ;; TODO: optimize
       ))
   (define hof '(member memq memv assoc assq assv map for-each))
+  (define ccfuns
+    '(dynamic-wind call-with-values values call-with-current-continuation))
   (define (hof-def? def)
     (and (pair? (cadr def)) (memq (caadr def) hof)))
   (parameterize
@@ -120,14 +121,14 @@
                   (pretty-print (cpscm__trampoline-text cc)) (newline)
                   (cpscm__reduce-trampoline ((cpscm__trampoline-thunk cc))))
                 cc)))
-        (wrnl `(define (,(symbol->cpscm boolean->combinator) k test)
-                 (k (if test
-                        (lambda (kk then else) (then kk))
-                        (lambda (kk then else) (else kk))))))
+        (wrnl `(define (,(symbol->cpscm boolean->combinator) test)
+                 (if test
+                     (lambda (kk then else) (then kk))
+                     (lambda (kk then else) (else kk)))))
         (wrnl `(define ,(symbol->cpscm '%cpscm:normal-apply) apply))
         (for-each
          (lambda (d)
-           (unless (memq d '(apply dynamic-wind call-with-values values call-with-current-continuation ,@hof))
+           (unless (memq d `(apply ,@ccfuns ,@hof))
              (wrnl `(define ,(symbol->cpscm d)
                       (lambda (k . args) (k (apply ,d args)))))))
          (r5rs-defs))
@@ -135,8 +136,9 @@
          wrnl
          `(,@(map (compose sexp->cpscm simplify-sexp)
                   (append
-                   (cpscm-defs-cpsed)
-                   (map (compose def->cps simplify-sexp rewrite-int-defs)
+                   (map expand-ifs (cpscm-defs-cpsed))
+                   (map (compose
+                         def->cps simplify-sexp rewrite-int-defs expand-ifs)
                         (expand-program
                          (append
                           (cpscm-int-defs) aux-defs
@@ -146,9 +148,17 @@
         ))))
 
 (define (prog->cpscm prog)
-  (wmatch
-   (sexp->cpscm (prog->is prog))
-   (('define _ def)
-    `(let ((myprog ,def)
-           (fink (lambda (x) x)))
-       (cpscm__reduce-trampoline (cpscm__trampoline (myprog fink)))))))
+  (define (do-eval sexp)
+    `(cpscm__reduce-trampoline (cpscm__trampoline ,(sexp->cpscm sexp))))
+  (define (process-sexp sexp)
+    (wmatch sexp
+            ((or ('define (f . args) . body)
+                 ('define f ('lambda args . body)))
+             (sexp->cpscm sexp))
+            (('define x val) `(define ,(symbol->cpscm x) ,(do-eval val)))
+            (('quote x) sexp)
+            ((f . args) (do-eval sexp))
+            (_ sexp)))
+  (map process-sexp (prog->is prog)))
+
+(define file->cpscm (cut cpscm-compile-file prog->cpscm <> <>))

@@ -16,10 +16,9 @@
 ;; along with cpscm; if not, write to the Free Software
 ;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-(require-library 'danm/xmodule)
 (require-extension (srfi 1))
 
-(xmodule
+(module
   danm/combinators (constantly compose project)
 
   (cond-expand (plt (require-extension (srfi 1))) (else))
