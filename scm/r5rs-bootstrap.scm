@@ -16,12 +16,37 @@
 ;; along with cpscm; if not, write to the Free Software
 ;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-(define (r5rs-bootstrap)
+(require-library 'danm/scheme-util) (import danm/scheme-util)
+(require-extension (srfi 42))
+
+(cond-expand
+ (chicken (require 'danm/chicken-srfi-60))
+ (else (require-extension (srfi 60))))
+
+(module r5rs-bootstrap (r5rs-bootstrap-defs)
+
+(define (num->cxr-def i n)
+  (define num
+    (map (cut char=? <> #\1)
+         (string->list (string-pad (number->string i 2) n #\0))))
+  (define (bool->x x) (if x #\d #\a))
+  `(define
+     (,(string->symbol
+        (s+ "c" (list->string (map bool->x num)) "r"))
+      x)
+     ,(fold-right (lambda (e last)
+                    `(,(string->symbol (string #\c (bool->x e) #\r)) ,last))
+           'x num)))
+
+;; Generates definitions for caar, cadr etc.
+(define (cxr-defs max)
+  (append-ec
+   (: n 2 (+ max 1))
+   (map (cut num->cxr-def <> n) (iota (arithmetic-shift 1 n)))))
+  
+(define (r5rs-bootstrap-defs)
   `(
-    (define (caar l) (car (car l)))
-    (define (cadr l) (car (cdr l)))
-    (define (cdar l) (cdr (car l)))
-    (define (cddr l) (cdr (cdr l)))
+    ,@(cxr-defs 4)
     (define (not x) (if x #f #t))
     (define (list . l) l)
     (define (length l)
@@ -105,3 +130,5 @@
     (define (vector . l) (list->vector l))
     (define call/cc call-with-current-continuation)
     ))
+
+)

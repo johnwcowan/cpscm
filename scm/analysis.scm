@@ -16,6 +16,7 @@
 ;; along with cpscm; if not, write to the Free Software
 ;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
+(require-extension (srfi 69))  ;; hash tables
 (require-library 'danm/scheme-util) (import danm/scheme-util)
 
 (module analysis

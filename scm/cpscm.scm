@@ -17,6 +17,7 @@
 ;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 (require-library 'analysis) (import analysis)
+(require-library 'r5rs-bootstrap) (import r5rs-bootstrap)
 (require-library 'alexpander-cpscm)
 
 (define cpscm-name "cpscm")
@@ -26,11 +27,9 @@
   (prog->is
    cpscm-compile-file
    sexp->cps def->cps lambda->cps
-   cpscm-int-defs cpscm-defs cpscm-defs-cpsed r5rs-bootstrap)
+   cpscm-int-defs cpscm-defs cpscm-defs-cpsed)
                   
    
-(include "r5rs-bootstrap.scm")
-
 (define (cpscm-int-defs)
   `(
     (define %cpscm:winders '())
@@ -68,7 +67,7 @@
     (define with/fc with-failure-continuation)
     ))
 (define (cpscm-defs)
-  (append (r5rs-bootstrap) (cpscm-int-defs)))
+  (append (r5rs-bootstrap-defs) (cpscm-int-defs)))
 
 (define (cpscm-defs-cpsed)
   `((define (call-with-current-continuation k f)

@@ -142,7 +142,7 @@
                         (expand-program
                          (append
                           (cpscm-int-defs) aux-defs
-                          (filter hof-def? (r5rs-bootstrap)))))))
+                          (filter hof-def? (r5rs-bootstrap-defs)))))))
            (define cpscmcall/cc cpscmcall-with-current-continuation)
            ))
         ))))
