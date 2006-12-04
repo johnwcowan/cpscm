@@ -1,3 +1,6 @@
+;; A test for SRFI-1 list=.
+;; At some point CPSCM used to hang compiling this file.
+
 (define (list= = . lists)
   (or (null? lists) ; special case
 
