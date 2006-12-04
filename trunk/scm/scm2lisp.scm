@@ -113,7 +113,7 @@
             ((or ('define (f . args) . body)
                  ('define f ('lambda args . body)))
              (sexp->lisp sexp))
-            (('define x val) `(define ,(symbol->lisp x) ,(do-eval val)))
+            (('define x val) `(defparameter ,(symbol->lisp x) ,(do-eval val)))
             (('quote x) sexp)
             ((f . args) (do-eval sexp))
             (_ sexp)))
