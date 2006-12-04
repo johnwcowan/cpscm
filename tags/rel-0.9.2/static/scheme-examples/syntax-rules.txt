@@ -1,0 +1,6 @@
+(define-syntax push!
+  (syntax-rules ()
+    ((_ x place) (set! place (cons x place)))))
+(define l '(1 2 3))
+(push! 0 l)
+(display l) (newline)
