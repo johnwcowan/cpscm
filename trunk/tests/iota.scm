@@ -1,3 +1,6 @@
+;; A test for SRFI-1 iota.
+;; At some point CPSCM used to take forever compiling this file.
+
 (define-syntax receive
   (syntax-rules ()
     ((receive formals expression body ...)
