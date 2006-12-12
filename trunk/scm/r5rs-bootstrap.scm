@@ -59,6 +59,12 @@
           (if (pair? l)
               (list? (cdr l))
               #f)))
+    (define (list-tail x k)
+      (if (zero? k)
+          x
+          (list-tail (cdr x) (- k 1))))
+    (define (list-ref list k) (car (list-tail x k)))
+      
     (define (reverse l)
       (define (loop l res)
         (if (null? l) res
@@ -128,6 +134,23 @@
       (set! v (make-vector n))
       (loop 0 l))
     (define (vector . l) (list->vector l))
+    (define (vector-fill! v x)
+      (define n (vector-length v))
+      (let loop ((i 0))
+        (if (= i n) #t
+            (begin
+              (vector-set! v i x)
+              (loop (+ i 1))))))
+
+    (define (string . l) (list->string l))
+    (define (string-fill! v x)
+      (define n (string-length v))
+      (let loop ((i 0))
+        (if (= i n) #t
+            (begin
+              (string-set! v i x)
+              (loop (+ i 1))))))
+    
     (define call/cc call-with-current-continuation)
     ))
 

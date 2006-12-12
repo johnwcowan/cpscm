@@ -149,7 +149,9 @@
 
 (define (prog->cpscm prog)
   (define (do-eval sexp)
-    `(cpscm__reduce-trampoline (cpscm__trampoline ,(sexp->cpscm sexp))))
+    (if (atom? sexp) sexp
+        `(cpscm__reduce-trampoline
+          (cpscm__trampoline ,(sexp->cpscm sexp)))))
   (define (process-sexp sexp)
     (wmatch sexp
             ((or ('define (f . args) . body)
