@@ -18,8 +18,11 @@
 
 (require-library 'cpscm) (import cpscm)
 
-(define in-prelude? (make-parameter #f))
-(define trampoline? (make-parameter #t))
+(module scm2lisp (symbol->lisp
+                  create-lisp-prelude prog->lisp file->lisp trampoline?)
+  
+(def-in-module in-prelude? (make-parameter #f))
+(def-in-module trampoline? (make-parameter #t))
 
 (define (symbol->lisp x)
   ;; Replaces some characters with string escapes
@@ -106,8 +109,10 @@
 
 (define (prog->lisp prog)
   (define (do-eval sexp)
-    `(cpscm__drive (cpscm__trampoline ,(sexp->lisp sexp))
-                   (function error)))
+    (if (atom? sexp) sexp
+        `(cpscm__drive
+          (cpscm__trampoline ,(sexp->lisp sexp))
+          (function error))))
   (define (process-sexp sexp)
     (wmatch sexp
             ((or ('define (f . args) . body)
@@ -119,4 +124,6 @@
             (_ sexp)))
   (map process-sexp (prog->is prog)))
 
-(define file->lisp (cut cpscm-compile-file prog->lisp <> <>))
+(def-in-module file->lisp (cut cpscm-compile-file prog->lisp <> <>))
+
+)
