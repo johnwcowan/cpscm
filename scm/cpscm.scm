@@ -65,6 +65,18 @@
              (lambda () (current-error-handler hnd cc) (thunk))
              (lambda () (current-error-handler oldhnd))))))
     (define with/fc with-failure-continuation)
+    (define (,make-promise proc)
+      (let ((result-ready? #f)
+            (result #f))
+        (lambda ()
+          (if result-ready?
+              result
+              (let ((x (proc)))
+                (if result-ready?
+                    result
+                    (begin (set! result-ready? #t)
+                           (set! result x)
+                           result)))))))
     ))
 (define (cpscm-defs)
   (append (r5rs-bootstrap-defs) (cpscm-int-defs)))
@@ -143,7 +155,7 @@
 ;; Converts a program to "intermediate Scheme" form
 (define (prog->is prog)
   (map
-   (compose simplify-sexp sexp->cps simplify-sexp rewrite-int-defs expand-ifs
+   (compose simplify-sexp sexp->cps simplify-sexp rewrite-int-defs expand-extra
             (lambda (sexp)
               (if (define? sexp)
                   (cout ";; compiling "

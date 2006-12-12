@@ -102,9 +102,9 @@
       (cut for-each (lambda (x) (display x) (newline) (newline))
            (map (compose sexp->lisp simplify-sexp)
                 (append
-                 (map expand-ifs (cpscm-defs-cpsed))
+                 (map expand-extra (cpscm-defs-cpsed))
                  (map (compose
-                       def->cps simplify-sexp rewrite-int-defs expand-ifs)
+                       def->cps simplify-sexp rewrite-int-defs expand-extra)
                       (expand-program (cpscm-defs)))))))))
 
 (define (prog->lisp prog)

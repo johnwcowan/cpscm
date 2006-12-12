@@ -22,7 +22,8 @@
 (module analysis
   (int-def-fun->letrec?
    xgensym
-   boolean->combinator if->combinator expand-ifs
+   boolean->combinator cpscm-delay make-promise
+   if->combinator expand-extra
    sexp->anf
    simplify-sexp simplify-body
    rewrite-int-defs rewrite-body-int-defs sep-int-defs
@@ -44,6 +45,8 @@
 ;; in the host system as well, so it's hard to mangle them.
 ;; Using the space prefix to minimize conflicts is evil (but works).
 (define boolean->combinator '| boolean->combinator|)
+(define cpscm-delay '| delay|)
+(define make-promise '| make-promise|)
 
 (define (if->combinator sexp)
   (dbind (_ condval . alts) sexp
@@ -100,6 +103,8 @@
           (('quote u) (const->bool u))
           (_ (if x #t #f))))
 
+;; Simplifies (if) expressions.
+;; Non-functional forms still allowed at this stage: if, delay.
 (define (simplify-ifs sexp)
   (define (finish sexp)
     (wmatch sexp
@@ -134,18 +139,20 @@
           ((f . args) (map simplify-ifs sexp))
           (_ sexp)))
 
-(define (expand-ifs sexp)
-  (set! sexp (simplify-ifs sexp))
-  (wmatch sexp
-          (('if . more) (if->combinator `(if . ,(map expand-ifs more))))
-          (('set! x val) `(set! ,x ,(expand-ifs val)))
+;; Expands some macros left by alexpander: if, delay
+(define (expand-extra sexp)
+  (wmatch (simplify-ifs sexp)
+          (('if . more) (if->combinator `(if . ,(map expand-extra more))))
+          (('delay . body)
+           `(,cpscm-delay (,make-promise (lambda () . ,body))))
+          (('set! x val) `(set! ,x ,(expand-extra val)))
           (('define . rest)
            (wmatch (def-fun->lambda-form sexp)
-                   (('define x val) `(define ,x ,(expand-ifs val)))))
+                   (('define x val) `(define ,x ,(expand-extra val)))))
           (('quote _) sexp)
           (('lambda formals . body)
-           `(lambda ,formals . ,(map expand-ifs body)))
-          ((f . args) (map expand-ifs sexp))
+           `(lambda ,formals . ,(map expand-extra body)))
+          ((f . args) (map expand-extra sexp))
           (_ sexp)))
                 
 (define (lambda-form? x)

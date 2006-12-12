@@ -49,7 +49,16 @@
           (lambda (test)
             (if test combthen combelse))))
 
+(defstruct cpscm__delay thunk)
+(defvar cpscm_20_delay
+  (lambda (k thunk) (funcall k (make-cpscm__delay :thunk thunk))))
+(defvar cpscmpromise?
+  (lambda (k p) (funcall k (cpscm__delay-p? p))))
+(defvar cpscmforce
+  (lambda (k p) (funcall (cpscm__delay-thunk p) k)))
+
 (defstruct trampoline thunk)
+
 (defmacro cpscm__trampoline (&rest body)
   `(make-trampoline :thunk (lambda () . ,body)))
 
