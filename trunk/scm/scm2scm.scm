@@ -99,36 +99,48 @@
     '(dynamic-wind call-with-values values call-with-current-continuation))
   (define (hof-def? def)
     (and (pair? (cadr def)) (memq (caadr def) hof)))
+  (define native-defs-1
+    `(         
+      (define-record-type :cpscm__trampoline
+        (cpscm__trampoline-create thunk) cpscm__trampoline?
+        (text cpscm__trampoline-text cpscm__trampoline-set-text!)
+        (thunk cpscm__trampoline-thunk))
+      (define-record-type :cpscm__delay
+        (cpscm__delay-create thunk) cpscm__delay?
+        (thunk cpscm__delay-thunk))
+      (define-syntax cpscm__trampoline
+        (syntax-rules ()
+          ((_ . rest) (let ((tr (cpscm__trampoline-create
+                                 (lambda () . rest))))
+                        (cpscm__trampoline-set-text! tr 'rest)
+                        tr))))
+      (define (cpscm__reduce-trampoline cc)
+        (if (cpscm__trampoline? cc)
+            (begin
+              (display "Executing: ")
+              (pretty-print (cpscm__trampoline-text cc)) (newline)
+              (cpscm__reduce-trampoline ((cpscm__trampoline-thunk cc))))
+            cc))
+      (define (,(symbol->cpscm boolean->combinator) test)
+        (if test
+            (lambda (kk then else) (then kk))
+            (lambda (kk then else) (else kk))))
+      (define (,(symbol->cpscm cpscm-delay) k thunk)
+        (k (cpscm__delay-create thunk)))
+      (define (,(symbol->cpscm 'promise?) k x)
+        (k (cpscm__delay? x)))
+      (define (,(symbol->cpscm 'force) k p)
+        ((cpscm__delay-thunk p) k))
+      (define ,(symbol->cpscm '%cpscm:normal-apply) apply)
+      ))
   (parameterize
       ((in-prelude? #t))
     (with-output-to-file "cpscm-drv.scm"
       (lambda ()
-        (wrnl '(define-record-type :cpscm__trampoline
-                 (cpscm__trampoline-create thunk) cpscm__trampoline?
-                 (text cpscm__trampoline-text cpscm__trampoline-set-text!)
-                 (thunk cpscm__trampoline-thunk)))
-        (wrnl '(define-syntax cpscm__trampoline
-                 (syntax-rules ()
-                   ((_ . rest) (let ((tr (cpscm__trampoline-create
-                                          (lambda () . rest))))
-                                 (cpscm__trampoline-set-text! tr 'rest)
-                                 tr)))))
-        (wrnl
-         '(define (cpscm__reduce-trampoline cc)
-            (if (cpscm__trampoline? cc)
-                (begin
-                  (display "Executing: ")
-                  (pretty-print (cpscm__trampoline-text cc)) (newline)
-                  (cpscm__reduce-trampoline ((cpscm__trampoline-thunk cc))))
-                cc)))
-        (wrnl `(define (,(symbol->cpscm boolean->combinator) test)
-                 (if test
-                     (lambda (kk then else) (then kk))
-                     (lambda (kk then else) (else kk)))))
-        (wrnl `(define ,(symbol->cpscm '%cpscm:normal-apply) apply))
+        (for-each wrnl native-defs-1)
         (for-each
          (lambda (d)
-           (unless (memq d `(apply ,@ccfuns ,@hof))
+           (unless (memq d `(apply ,@ccfuns ,@hof force promise?))
              (wrnl `(define ,(symbol->cpscm d)
                       (lambda (k . args) (k (apply ,d args)))))))
          (r5rs-defs))
@@ -136,31 +148,33 @@
          wrnl
          `(,@(map (compose sexp->cpscm simplify-sexp)
                   (append
-                   (map expand-ifs (cpscm-defs-cpsed))
+                   (map expand-extra (cpscm-defs-cpsed))
                    (map (compose
-                         def->cps simplify-sexp rewrite-int-defs expand-ifs)
+                         def->cps simplify-sexp rewrite-int-defs expand-extra)
                         (expand-program
                          (append
                           (cpscm-int-defs) aux-defs
                           (filter hof-def? (r5rs-bootstrap-defs)))))))
-           (define cpscmcall/cc cpscmcall-with-current-continuation)
+           (define ,(symbol->cpscm 'call/cc)
+             ,(symbol->cpscm 'call-with-current-continuation))
            ))
         ))))
 
-(define (prog->cpscm prog)
+(define (is-sexp->cpscm sexp)
   (define (do-eval sexp)
     (if (atom? sexp) sexp
         `(cpscm__reduce-trampoline
           (cpscm__trampoline ,(sexp->cpscm sexp)))))
-  (define (process-sexp sexp)
-    (wmatch sexp
-            ((or ('define (f . args) . body)
-                 ('define f ('lambda args . body)))
-             (sexp->cpscm sexp))
-            (('define x val) `(define ,(symbol->cpscm x) ,(do-eval val)))
-            (('quote x) sexp)
-            ((f . args) (do-eval sexp))
-            (_ sexp)))
-  (map process-sexp (prog->is prog)))
+  (wmatch sexp
+          ((or ('define (f . args) . body)
+               ('define f ('lambda args . body)))
+           (sexp->cpscm sexp))
+          (('define x val) `(define ,(symbol->cpscm x) ,(do-eval val)))
+          (('quote x) sexp)
+          ((f . args) (do-eval sexp))
+          (_ sexp)))
+
+(define (prog->cpscm prog)
+  (map is-sexp->cpscm (prog->is prog)))
 
 (define file->cpscm (cut cpscm-compile-file prog->cpscm <> <>))
