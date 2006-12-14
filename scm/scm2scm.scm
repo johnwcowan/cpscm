@@ -114,13 +114,6 @@
                                  (lambda () . rest))))
                         (cpscm__trampoline-set-text! tr 'rest)
                         tr))))
-      (define (cpscm__reduce-trampoline cc)
-        (if (cpscm__trampoline? cc)
-            (begin
-              (display "Executing: ")
-              (pretty-print (cpscm__trampoline-text cc)) (newline)
-              (cpscm__reduce-trampoline ((cpscm__trampoline-thunk cc))))
-            cc))
       (define (,(symbol->cpscm boolean->combinator) test)
         (if test
             (lambda (kk then else) (then kk))
@@ -162,7 +155,7 @@
 
 (define (is-sexp->cpscm sexp)
   (define (do-eval sexp)
-    (if (atom? sexp) sexp
+    (if (not (computation? sexp)) sexp
         `(cpscm__reduce-trampoline
           (cpscm__trampoline ,(sexp->cpscm sexp)))))
   (wmatch sexp
@@ -170,6 +163,7 @@
                ('define f ('lambda args . body)))
            (sexp->cpscm sexp))
           (('define x val) `(define ,(symbol->cpscm x) ,(do-eval val)))
+          (('set! x val) `(set! ,(symbol->cpscm x) ,(do-eval val)))
           (('quote x) sexp)
           ((f . args) (do-eval sexp))
           (_ sexp)))

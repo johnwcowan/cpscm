@@ -23,7 +23,7 @@
   (int-def-fun->letrec?
    xgensym
    boolean->combinator cpscm-delay make-promise
-   if->combinator expand-extra
+   if->combinator expand-extra simplify-ifs
    sexp->anf
    simplify-sexp simplify-body
    rewrite-int-defs rewrite-body-int-defs sep-int-defs
@@ -125,7 +125,7 @@
                          ((#f #f) else)
                          ((#t #f) `(if ,test1 ,then ,else))
                          ((#f #t) `(if ,test1 ,else ,then)))
-                        `(if ,etest then else)))
+                        `(if ,etest ,then ,else)))
                    (etest (finish `(if ,etest ,then ,else)))))
           (('if test . r)
            (finish `(if ,test ,@(map simplify-ifs r))))
@@ -141,7 +141,8 @@
 
 ;; Expands some macros left by alexpander: if, delay
 (define (expand-extra sexp)
-  (wmatch (simplify-ifs sexp)
+  (set! sexp (simplify-ifs sexp))
+  (wmatch sexp
           (('if . more) (if->combinator `(if . ,(map expand-extra more))))
           (('delay . body)
            `(,cpscm-delay (,make-promise (lambda () . ,body))))
@@ -280,10 +281,10 @@
    (_ sexp)))
 
 (define (try-eta formals f args)
-  (define body `((,f . ,args)))
   (if (or (memq f '(lambda quote set! begin))
+          (symbol? f)  ;; eta disabled until dataflow analysis implemented
           (computation? f))
-      `(lambda ,formals . ,body)
+      `(lambda ,formals (,f . ,args))
       (let ((bnd (bind-formals formals args)))
         (if (and bnd (every (lambda (b)
                               (eq? (car b) (cdr b))) bnd)
