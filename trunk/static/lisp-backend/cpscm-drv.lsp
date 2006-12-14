@@ -9,7 +9,9 @@
  (d null? null) (d pair? consp)
  (d symbol? symbolp) (d vector? vectorp) (d character? characterp)
  (d number? numberp) (d integer? integerp) (d rational? rationalp)
+ (d char? characterp)
  (d even? evenp) (d odd? oddp) (d zero? zerop)
+ (d positive? (lambda (x) (> x 0))) (d negative? (lambda (x) (< x 0)))
  (d char<? char<) (d char>? char>) (d char<=? char<=) (d char>=? char>=)
  (d char-ci<? char-lessp) (d char-ci>? char-greaterp)
  (d char-ci<=? char-not-greaterp) (d char-ci>=? char-not-lessp)
@@ -17,6 +19,8 @@
  (d char->integer char-int)
  (d symbol->string string) (d string->symbol intern)
  (d string-append (lambda (args) (apply #'concatenate 'string args)))
+ (d number->string
+    (lambda (n &optional (r 10)) (format nil (format nil "~aR" r) n)))
  (d vector-length (lambda (v) (car (array-dimensions v))))
  (d vector-ref aref)
  (d make-vector (lambda (n &optional x) (make-array n :initial-element x)))
@@ -24,7 +28,6 @@
  (d eq? eq) (d eqv? eql) (d equal? equalp)
  (d set-car! rplaca) (d set-cdr! rplacd)  ;; TODO: return unspecified
  (d display princ) (d newline terpri) (d write prin1)
- (d error (lambda (&rest args) (error "Scheme error: ~S" args)))
  )
 
 (defvar cpscm__normal-apply #'apply)
@@ -59,16 +62,17 @@
 
 (defstruct trampoline thunk)
 
-(defmacro cpscm__trampoline (&rest body)
-  `(make-trampoline :thunk (lambda () . ,body)))
+(defun cpscm__trampoline (thunk)
+  (make-trampoline :thunk thunk))
 
-(defun cpscm__reduce-trampoline (cc)
-  (loop while (trampoline-p cc) do 
-        ;; (print `(Executing ,cc))
-        (setq cc (funcall (trampoline-thunk cc))))
-  cc)
+(defparameter cpscm__reduce-trampoline
+  (lambda (cc)
+    (loop while (trampoline-p cc) do 
+          ; (print `(Executing ,cc))
+          (setq cc (funcall (trampoline-thunk cc))))
+    cc))
 
 (defun cpscm__drive (cc excHnd)
   (handler-case
-   (cpscm__reduce-trampoline cc)
+   (funcall cpscm__reduce-trampoline cc)
    (condition (e) (funcall excHnd e))))

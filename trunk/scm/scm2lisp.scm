@@ -18,7 +18,7 @@
 
 (require-library 'cpscm) (import cpscm)
 
-(module scm2lisp (symbol->lisp
+(module scm2lisp (symbol->lisp sexp->lisp
                   create-lisp-prelude prog->lisp file->lisp trampoline?)
   
 (def-in-module in-prelude? (make-parameter #f))
@@ -73,56 +73,64 @@
         (else `(quote ,x))))
 
 (define (lambda->lisp args body name)
-  (let ((sexp (car (rewrite-body-int-defs body))))
-    (define ret
-      (let ((lexp (sexp->lisp sexp)))
-        (if (trampoline?) `(cpscm__trampoline ,lexp) lexp)))
+  (let ((nbody (map sexp->lisp (rewrite-body-int-defs body))))
     `(lambda ,(scm-formals->lisp args)
-       ,ret)))
-    
+       ,@(if (and (trampoline?)
+                  (or (not (null? (cdr nbody))) (computation? (car nbody))))
+             `((cpscm__trampoline (lambda () . ,nbody)))
+             nbody))))
+
+(define (declare-global sym val)
+  (set! sym (symbol->lisp sym))
+  `(locally (declare (special ,sym)) (setq ,sym ,val)))
+
 (define/opt (sexp->lisp sexp (name))
-  (wmatch sexp
-          (('quote x) (quoted->lisp x))
-          (('begin . prog)
-           `(progn ,@(map (compose (cut list 'cpscm__reduce-trampoline <>)
-                                   sexp->lisp)
-                          prog)))
-          (('set! x val) `(setq ,(symbol->lisp x) ,(sexp->lisp val)))
-          (('lambda args . body) (lambda->lisp args body name))
-          (('define (f . args) . body)
-           (sexp->lisp `(define ,f (lambda ,args . ,body))))
-          (('define x val) `(defparameter ,(symbol->lisp x) ,(sexp->lisp val)))
-          ((f . args) `(funcall ,(sexp->lisp f) ,@(map sexp->lisp args)))
-          (_ (atom->lisp sexp))))
+  (wmatch
+   sexp
+   (('quote x) (quoted->lisp x))
+   (('begin . prog)
+    `(progn
+      ,@(map (compose (cut list 'funcall 'cpscm__reduce-trampoline <>)
+                      sexp->lisp)
+         prog)))
+   (('set! x val) `(setq ,(symbol->lisp x) ,(sexp->lisp val)))
+   (('lambda args . body) (lambda->lisp args body name))
+   (('define (f . args) . body)
+    (sexp->lisp `(define ,f (lambda ,args . ,body))))
+   (('define x val) (declare-global x (sexp->lisp val)))
+   ((f . args) `(funcall ,(sexp->lisp f) ,@(map sexp->lisp args)))
+   (_ (atom->lisp sexp))))
 
 (define (create-lisp-prelude)
   (parameterize
       ((in-prelude? #t))
-    (with-output-to-file "prelude.lsp"
-      (cut for-each (lambda (x) (display x) (newline) (newline))
-           (map (compose sexp->lisp simplify-sexp)
-                (append
-                 (map expand-extra (cpscm-defs-cpsed))
-                 (map (compose
-                       def->cps simplify-sexp rewrite-int-defs expand-extra)
-                      (expand-program (cpscm-defs)))))))))
+    (call-with-output-file "prelude.lsp"
+      (lambda (p)
+        (for-each
+         (lambda (x) (pretty-print x p) (newline p) (newline p))
+         (append
+          (map (compose is-sexp->lisp simplify-sexp expand-extra)
+               (cpscm-defs-cpsed))
+          (prog->lisp (cpscm-defs))))))))
+
+(define (is-sexp->lisp sexp)
+  (define (do-eval sexp)
+    (if (not (computation? sexp)) (sexp->lisp sexp)
+        `(cpscm__drive
+          (cpscm__trampoline (lambda () ,(sexp->lisp sexp)))
+          (function error))))
+  (wmatch sexp
+          ((or ('define (f . args) . body)
+               ('define f ('lambda args . body)))
+           (sexp->lisp sexp))
+          (('define x val) (declare-global x (do-eval val)))
+          (('set! x val) `(setq ,(symbol->lisp x) ,(do-eval val)))
+          (('quote x) sexp)
+          ((f . args) (do-eval sexp))
+          (_ sexp)))
 
 (define (prog->lisp prog)
-  (define (do-eval sexp)
-    (if (atom? sexp) sexp
-        `(cpscm__drive
-          (cpscm__trampoline ,(sexp->lisp sexp))
-          (function error))))
-  (define (process-sexp sexp)
-    (wmatch sexp
-            ((or ('define (f . args) . body)
-                 ('define f ('lambda args . body)))
-             (sexp->lisp sexp))
-            (('define x val) `(defparameter ,(symbol->lisp x) ,(do-eval val)))
-            (('quote x) sexp)
-            ((f . args) (do-eval sexp))
-            (_ sexp)))
-  (map process-sexp (prog->is prog)))
+  (map is-sexp->lisp (prog->is prog)))
 
 (def-in-module file->lisp (cut cpscm-compile-file prog->lisp <> <>))
 

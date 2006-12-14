@@ -32,6 +32,23 @@
    
 (define (cpscm-int-defs)
   `(
+    (define (,make-promise proc)
+      (let ((result-ready? #f) (result #f))
+        (lambda ()
+          (if result-ready? result
+              (let ((x (proc)))
+                (if result-ready? result
+                    (begin (set! result-ready? #t)
+                           (set! result x)
+                           result)))))))
+    (define %cpscm:vals-marker (list 'values))
+    (define (%cpscm:pack-vals things)
+      (if (or (null? things) (not (null? (cdr things))))
+          `(,%cpscm:vals-marker . ,things)
+          (car things)))
+    (define (%cpscm:unpack-vals vals)
+      (if (and (pair? vals) (eq? (car vals) %cpscm:vals-marker))
+          (cdr vals) (list vals)))
     (define %cpscm:winders '())
     (define (%cpscm:switch-winders ccwinders)
       ;; @param a reversed list of winders to be popped
@@ -57,26 +74,30 @@
       (after)
       result)
     (define (with-failure-continuation hnd thunk)
-      (define oldhnd #f)
-      (call/cc
-       (lambda (cc)
-         (dynamic-wind
-             (lambda () (set! oldhnd (current-error-handler)))
-             (lambda () (current-error-handler hnd cc) (thunk))
-             (lambda () (current-error-handler oldhnd))))))
+      (define old-hnd (current-error-handler))
+      (define (new-hnd e ek) (current-error-handler old-hnd) (hnd e ek))
+      (current-error-handler new-hnd)
+      (thunk))
     (define with/fc with-failure-continuation)
-    (define (,make-promise proc)
-      (let ((result-ready? #f)
-            (result #f))
-        (lambda ()
-          (if result-ready?
-              result
-              (let ((x (proc)))
-                (if result-ready?
-                    result
-                    (begin (set! result-ready? #t)
-                           (set! result x)
-                           result)))))))
+    (define (%cpscm:default-err-hnd e ek)
+      (display "Error: ") (display e) (newline))
+    (define %cpscm:err-hnd %cpscm:default-err-hnd)
+    (define (current-error-handler . hnd)
+      (if (null? hnd) %cpscm:err-hnd
+            (set! %cpscm:err-hnd (car hnd))))
+    (define %cpscm:debug-trampolines? #f)
+    (define %cpscm:err-cont #f)
+    (call-with-current-continuation
+     (lambda (exit)
+       (call-with-values
+           (lambda ()
+             (call-with-current-continuation
+              (lambda (cc) (set! %cpscm:err-cont cc) (exit #t))))
+         (lambda (e ek) ((current-error-handler) e ek)))))
+    (define (error e)
+      (call-with-current-continuation
+       (lambda (ek)
+         (%cpscm:err-cont e ek))))
     ))
 (define (cpscm-defs)
   (append (r5rs-bootstrap-defs) (cpscm-int-defs)))
@@ -86,13 +107,15 @@
       (define ccwinders %cpscm:winders)
       (f k (lambda (_ . xs)
             (%cpscm:switch-winders
-             (lambda (_) (%cpscm:normal-apply k xs)) ;;  (lambda (_) (k x))
+             (lambda (_) (%cpscm:pack-vals k xs))
              ccwinders))))
     (define (apply k f . args)
       (%cpscm:normal-apply %cpscm:normal-apply f k args))
     (define (call-with-values k producer consummer)
-      (producer (lambda vals (apply k consummer vals))))
-    (define (values k . things) (%cpscm:normal-apply k things))
+      (producer
+       (lambda (vals)
+         (%cpscm:unpack-vals (lambda (vs) (apply k consummer vs)) vals))))
+    (define (values k . things) (k (%cpscm:pack-vals things)))
     ))
 
 ;; Converts a function body to CPS.
