@@ -1,6 +1,6 @@
 ;; Copyright (C) 2006 Dan Muresan
 ;;
-;; This file is part of cpscm.
+;; This file is part of cpscm (http://www.omnigia.com/scheme/cpscm/home).
 ;;
 ;; cpscm is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,7 +19,8 @@
 (require-library 'cpscm) (import cpscm)
 
 (module scm2lisp (symbol->lisp sexp->lisp
-                  create-lisp-prelude prog->lisp file->lisp trampoline?)
+                  create-lisp-prelude scm2lisp:compile
+                  trampoline?)
   
 (def-in-module in-prelude? (make-parameter #f))
 (def-in-module trampoline? (make-parameter #t))
@@ -74,31 +75,40 @@
 
 (define (lambda->lisp args body name)
   (let ((nbody (map sexp->lisp (rewrite-body-int-defs body))))
+    ;; support for multi-sexp body broken for now
+    (or (null? (cdr nbody)) (error 'lambda->lisp))
     `(lambda ,(scm-formals->lisp args)
-       ,@(if (and (trampoline?)
-                  (or (not (null? (cdr nbody))) (computation? (car nbody))))
+       ,@(if (and (trampoline?) (needs-trampoline? (car nbody)))
              `((cpscm__trampoline (lambda () . ,nbody)))
              nbody))))
 
 (define (declare-global sym val)
-  (set! sym (symbol->lisp sym))
-  `(locally (declare (special ,sym)) (setq ,sym ,val)))
+  `(cpscm__global ,(symbol->lisp sym) ,val))
 
-(define/opt (sexp->lisp sexp (name))
+(define (top-sexp->lisp sexp)
+  (sexp->lisp sexp #f #t))
+
+(define/opt (sexp->lisp sexp (name top?))
+  (define (do-eval sexp)
+    ((if (computation? sexp) drive values)
+     (sexp->lisp sexp)))
+  (define (drive lexp)
+    (if top? `(cpscm__drive ,lexp (function error)) lexp))
+  (define (do-red sexp)
+    ((if (needs-trampoline? sexp)
+         (cut list 'funcall 'cpscm__reduce-trampoline <>) values)
+     (sexp->lisp sexp)))
   (wmatch
    sexp
    (('quote x) (quoted->lisp x))
-   (('begin . prog)
-    `(progn
-      ,@(map (compose (cut list 'funcall 'cpscm__reduce-trampoline <>)
-                      sexp->lisp)
-         prog)))
-   (('set! x val) `(setq ,(symbol->lisp x) ,(sexp->lisp val)))
+   (('begin . prog) (drive `(progn . ,(map do-red prog))))
+   (('set! x val) `(setq ,(symbol->lisp x) ,(do-eval val)))
    (('lambda args . body) (lambda->lisp args body name))
    (('define (f . args) . body)
     (sexp->lisp `(define ,f (lambda ,args . ,body))))
-   (('define x val) (declare-global x (sexp->lisp val)))
-   ((f . args) `(funcall ,(sexp->lisp f) ,@(map sexp->lisp args)))
+   (('define x val) (declare-global x (do-eval val)))
+   ((f . args)
+    (drive `(funcall ,(sexp->lisp f) ,@(map sexp->lisp args))))
    (_ (atom->lisp sexp))))
 
 (define (create-lisp-prelude)
@@ -109,29 +119,14 @@
         (for-each
          (lambda (x) (pretty-print x p) (newline p) (newline p))
          (append
-          (map (compose is-sexp->lisp simplify-sexp expand-extra)
+          (map (compose top-sexp->lisp simplify-sexp expand-extra)
                (cpscm-defs-cpsed))
           (prog->lisp (cpscm-defs))))))))
 
-(define (is-sexp->lisp sexp)
-  (define (do-eval sexp)
-    (if (not (computation? sexp)) (sexp->lisp sexp)
-        `(cpscm__drive
-          (cpscm__trampoline (lambda () ,(sexp->lisp sexp)))
-          (function error))))
-  (wmatch sexp
-          ((or ('define (f . args) . body)
-               ('define f ('lambda args . body)))
-           (sexp->lisp sexp))
-          (('define x val) (declare-global x (do-eval val)))
-          (('set! x val) `(setq ,(symbol->lisp x) ,(do-eval val)))
-          (('quote x) sexp)
-          ((f . args) (do-eval sexp))
-          (_ sexp)))
-
 (define (prog->lisp prog)
-  (map is-sexp->lisp (prog->is prog)))
+  (map top-sexp->lisp (prog->is prog)))
 
-(def-in-module file->lisp (cut cpscm-compile-file prog->lisp <> <>))
+(def-in-module scm2lisp:compile
+  (cpscm-compiler prog->lisp pretty-print))
 
 )

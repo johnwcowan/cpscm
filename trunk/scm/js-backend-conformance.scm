@@ -22,25 +22,35 @@
 ;; clisp -i cpscm-drv.lsp -i prelude.lsp -i conformance-test.lsp
 
 (require-library 'conformance) (import conformance)
-(require-library 'scm2lisp) (import scm2lisp)
+(require-library 'scm2js) (import scm2js)
 
-(module lisp-backend-conformance (create-lisp-conformance-tester)
+(module js-backend-conformance (create-js-conformance-tester)
   (define (wrout l) (for-each write l))
   
-  (define (create-lisp-conformance-tester)
-    (with-output-to-file "conformance-test.lsp"
+  (define (create-js-conformance-tester)
+    (with-output-to-file "conformance-test.js"
       (lambda ()
-        (wrout
-         `(
-           (with-open-file
-            (out "lisp-undef-procs.txt"
-                 :direction :output :if-exists :supersede)
-            (flet ((do-test (scm-name lisp-name)
-                    (if (not (boundp lisp-name))
-                        (progn (princ scm-name out) (terpri out)))))
-            ,@(map (lambda (p) `(do-test ',(symbol->string p)
-                                         ',(symbol->lisp p)))
-                   native-procs)))
-           )))))
+        (define (sym-pair p)
+          (s+ "{ scm: '" (symbol->string p) "', js: '" (symbol->js p) "' }"))
+        (cout
+         "load ('cpscm-drv.js'); load ('prelude.js');\n"
+         "var funs = ["
+         (string-join (map sym-pair native-procs) ", ")
+         " ]"
+         "
+function chk (name) {
+  try {
+    return eval (name);
+  } catch (e) { return false; }
+}
+
+var wr = new java.io.PrintWriter (
+  new java.io.BufferedWriter (new java.io.FileWriter ('js-undef-procs.txt')));
+for (i = 0; i < funs.length; i++) {
+  if (! chk (funs [i].js)) wr.println (funs [i].scm);
+}
+wr.close ();
+"
+         ))))
+
   )
-    

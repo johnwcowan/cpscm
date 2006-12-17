@@ -1,6 +1,6 @@
 ;; Copyright (C) 2006 Dan Muresan
 ;;
-;; This file is part of cpscm.
+;; This file is part of cpscm (http://www.omnigia.com/scheme/cpscm/home).
 ;;
 ;; cpscm is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
    sexp->anf
    simplify-sexp simplify-body
    rewrite-int-defs rewrite-body-int-defs sep-int-defs
-   define? constant? computation? lambda-form?
+   define? constant? computation? lambda-form? needs-trampoline?
    wrap-begin unwrap-begin const->bool def-fun->lambda-form
    try-beta try-eta
    )
@@ -170,6 +170,9 @@
 
 (define (define? x)
   (and (pair? x) (eq? (car x) 'define)))
+
+(define (needs-trampoline? form)
+  (and (computation? form) (not (memq (car form) '(set!)))))
 
 ;; If sexp is in (define (f . args) . body) form, converts it to
 ;; (define f (lambda ...)) form.

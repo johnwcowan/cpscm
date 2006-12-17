@@ -1,9 +1,29 @@
+(defmacro cpscm__global (var val &optional (doc nil docp))     
+  (let ((backing-var 
+         (intern (concatenate
+                  'string  (symbol-name '#:*deflex-var-) 
+                  (symbol-name var) (symbol-name '#:*))
+                 (symbol-package var))))
+    `(progn 
+       (defparameter ,backing-var ,val ,doc) 
+       ,@(when docp `((setf (documentation ',var 'variable) ,doc))) 
+       (define-symbol-macro ,var ,backing-var))))
+
+(defmacro cpscm__declare-globals (&rest vars)
+  `(progn ,@(mapcar (lambda (v) `(cpscm__global ,v nil)) vars)))
+
+;; Probably broken in theory. In practice, works in CLISP, GCL, and
+;; (albeit with warnings) SBCL. (defvar) creates symbols as pervasively
+;; global, so it's broken.
+;(defmacro cpscm__global (x val)
+;  `(locally (declare (special ,x)) (setq ,x ,val)))
+
 (defun cpscm__cpswrap (f)
   (lambda (k &rest args)
     (funcall k (apply f args))))
 
 (macrolet
- ((d (name f) `(defvar ,(read-from-string
+ ((d (name f) `(cpscm__global ,(read-from-string
                          (concatenate 'string "cpscm" (string name)))
                        (cpscm__cpswrap #',f))))
  (d null? null) (d pair? consp)
@@ -30,10 +50,10 @@
  (d display princ) (d newline terpri) (d write prin1)
  )
 
-(defvar cpscm__normal-apply #'apply)
+(cpscm__global cpscm__normal-apply #'apply)
 
 (macrolet
- ((d (name) `(defvar ,(read-from-string
+ ((d (name) `(cpscm__global ,(read-from-string
                        (concatenate 'string "cpscm" (string name)))
                      (cpscm__cpswrap #',name))))
  (d car) (d cdr) (d cons)
@@ -46,18 +66,18 @@
  (d char-downcase) (d char-upcase)
  )
 
-(defvar cpscm_20_boolean->combinator
+(cpscm__global cpscm_20_boolean->combinator
         (let ((combthen (lambda (kk then else) (funcall then kk)))
               (combelse (lambda (kk then else) (funcall else kk))))
           (lambda (test)
             (if test combthen combelse))))
 
 (defstruct cpscm__delay thunk)
-(defvar cpscm_20_delay
+(cpscm__global cpscm_20_delay
   (lambda (k thunk) (funcall k (make-cpscm__delay :thunk thunk))))
-(defvar cpscmpromise?
-  (lambda (k p) (funcall k (cpscm__delay-p? p))))
-(defvar cpscmforce
+(cpscm__global cpscmpromise?
+  (lambda (k p) (funcall k (cpscm__delay-p p))))
+(cpscm__global cpscmforce
   (lambda (k p) (funcall (cpscm__delay-thunk p) k)))
 
 (defstruct trampoline thunk)
@@ -68,7 +88,7 @@
 (defparameter cpscm__reduce-trampoline
   (lambda (cc)
     (loop while (trampoline-p cc) do 
-          ; (print `(Executing ,cc))
+          ;; (print `(Executing ,cc))
           (setq cc (funcall (trampoline-thunk cc))))
     cc))
 
@@ -76,3 +96,6 @@
   (handler-case
    (funcall cpscm__reduce-trampoline cc)
    (condition (e) (funcall excHnd e))))
+
+;; placeholders to quench warnings
+(cpscm__declare-globals current-output-port cpscmmap cpscmfor-each cpscmreverse cpscmreverse! cpscmappend cpscmappend! cpscm__pack-vals)

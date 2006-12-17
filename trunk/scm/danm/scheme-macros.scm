@@ -1,6 +1,6 @@
 ;; Copyright (C) 2006 Dan Muresan
 ;;
-;; This file is part of cpscm.
+;; This file is part of cpscm (http://www.omnigia.com/scheme/cpscm/home).
 ;;
 ;; cpscm is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 (module
   danm/scheme-macros
   (when unless push! inc! dec! macro-identity macro-if macro-list macro-cons macro-append macro-reverse syntax-symbol? values->list destructuring-bind destructuring-bind-lax dbind dbind-lax wmatch def-in-module let1 let*-result begin0 let/collection let/plist let/alist cut+ define/opt let/goto let/cc store/cc! ignore-errors ttrace s+)
-  
+
 (cond-expand (plt) (else
 (define-syntax when
   (syntax-rules ()

@@ -1,6 +1,6 @@
 ;; Copyright (C) 2006 Dan Muresan
 ;;
-;; This file is part of cpscm.
+;; This file is part of cpscm (http://www.omnigia.com/scheme/cpscm/home).
 ;;
 ;; cpscm is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -79,6 +79,7 @@
             (loop (cdr ls) (spill (car ls) res))))
       (loop ls '()))
 
+    ;; SRFI-1 stuff used in bootstrap
     (define append! append)  ;; TODO: optimize
     (define (append-reverse rev-head tail)  ;; TODO: optimize
       (append (reverse rev-head) tail))
@@ -120,9 +121,9 @@
     (define (vector->list v)
       (define n (vector-length v))
       (define (loop i res)
-        (if (= i n) res
-            (loop (+ i 1) (cons (vector-ref v i) res))))
-      (loop 0 '()))
+        (if (< i 0) res
+            (loop (- i 1) (cons (vector-ref v i) res))))
+      (loop (- n 1) '()))
     (define (list->vector l)
       (define n (length l))
       (define v #f)
@@ -152,6 +153,14 @@
               (loop (+ i 1))))))
     
     (define call/cc call-with-current-continuation)
+
+    (define (with-output-to-port p thunk)
+      (let ((oldp (current-output-port)))
+        (current-output-port p)
+        (let ((res (thunk)))
+          (current-output-port oldp)
+          res)))
+    
     ))
 
 )
