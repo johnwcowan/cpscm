@@ -1,6 +1,6 @@
 ;; Copyright (C) 2006 Dan Muresan
 ;;
-;; This file is part of cpscm.
+;; This file is part of cpscm (http://www.omnigia.com/scheme/cpscm/home).
 ;;
 ;; cpscm is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -25,11 +25,20 @@
 
 (module cpscm
   (prog->is
-   cpscm-compile-file
+   cpscm-compiler
    sexp->cps def->cps lambda->cps
    cpscm-int-defs cpscm-defs cpscm-defs-cpsed)
                   
-   
+
+(define (cpscm-int-vars)
+  `(
+    (define %cpscm:vals-marker #f)
+    (define %cpscm:winders '())
+    (define %cpscm:err-hnd #f)
+    (define %cpscm:debug-trampolines? #f)
+    (define %cpscm:err-cont #f)
+    ))
+
 (define (cpscm-int-defs)
   `(
     (define (,make-promise proc)
@@ -41,7 +50,7 @@
                     (begin (set! result-ready? #t)
                            (set! result x)
                            result)))))))
-    (define %cpscm:vals-marker (list 'values))
+    (set! %cpscm:vals-marker (list 'values))
     (define (%cpscm:pack-vals things)
       (if (or (null? things) (not (null? (cdr things))))
           `(,%cpscm:vals-marker . ,things)
@@ -49,7 +58,6 @@
     (define (%cpscm:unpack-vals vals)
       (if (and (pair? vals) (eq? (car vals) %cpscm:vals-marker))
           (cdr vals) (list vals)))
-    (define %cpscm:winders '())
     (define (%cpscm:switch-winders ccwinders)
       ;; @param a reversed list of winders to be popped
       ;; @param b reversed list of winders to be pushed
@@ -81,12 +89,10 @@
     (define with/fc with-failure-continuation)
     (define (%cpscm:default-err-hnd e ek)
       (display "Error: ") (display e) (newline))
-    (define %cpscm:err-hnd %cpscm:default-err-hnd)
+    (set! %cpscm:err-hnd %cpscm:default-err-hnd)
     (define (current-error-handler . hnd)
       (if (null? hnd) %cpscm:err-hnd
             (set! %cpscm:err-hnd (car hnd))))
-    (define %cpscm:debug-trampolines? #f)
-    (define %cpscm:err-cont #f)
     (call-with-current-continuation
      (lambda (exit)
        (call-with-values
@@ -103,7 +109,8 @@
   (append (r5rs-bootstrap-defs) (cpscm-int-defs)))
 
 (define (cpscm-defs-cpsed)
-  `((define (call-with-current-continuation k f)
+  `(,@(cpscm-int-vars)
+    (define (call-with-current-continuation k f)
       (define ccwinders %cpscm:winders)
       (f k (lambda (_ . xs)
             (%cpscm:switch-winders
@@ -115,7 +122,7 @@
       (producer
        (lambda (vals)
          (%cpscm:unpack-vals (lambda (vs) (apply k consummer vs)) vals))))
-    (define (values k . things) (k (%cpscm:pack-vals things)))
+    (define (values k . things) (%cpscm:pack-vals k things))
     ))
 
 ;; Converts a function body to CPS.
@@ -129,6 +136,10 @@
 ;; Outputs a CPS form based on an ANF list of substitutions
 (define (output-cps k substs)
   (define non-cps `(set! ,boolean->combinator))
+  ;; CPS-transforms lambda forms, leaves other forms alone
+  (define (maybe-lambda->cps x)
+    (if (lambda-form? x)
+        (lambda->cps x) x))
   (let loop ((substs substs))
     (if (null? (cdr substs)) `(,k ,(maybe-lambda->cps (caddar substs)))
         (let* ((csubst (car substs)) (result (car csubst))
@@ -150,11 +161,6 @@
   (define args (second form))
   (define k (xgensym ":k"))
   `(lambda (,k . ,args) ,@(body->cps k (cddr form))))
-
-;; CPS-transforms lambda forms, leaves other forms alone
-(define (maybe-lambda->cps x)
-  (if (lambda-form? x)
-      (lambda->cps x) x))
 
 ;; CPS-transforms definitions
 ;; Only handles right-hand-sides that are values.
@@ -186,11 +192,19 @@
               sexp))
    (expand-program prog)))
 
-(define (cpscm-compile-file compiler from to)
-  (call-with-output-file to
-    (lambda (p)
-      (for-each (lambda (sexp) (pretty-print sexp p) (newline p) (newline p))
-                (compiler
-                 (call-with-input-file from port->sexp-list))))))
-
+(define/opt (cpscm-compiler compiler ((print pretty-print)))
+  (lambda (from . to)
+    (define compiled
+      (compiler
+       (if (string? from) (call-with-input-file from port->sexp-list)
+           from)))
+    (define (print-compiled p)
+      (for-each (lambda (sexp) (print sexp p) (newline p) (newline p))
+                compiled))
+    (or (null? to) (set! to (car to)))
+    (cond
+     ((null? to) compiled)
+     ((string? to) (call-with-output-file to print-compiled))
+     ((port? to) (print-compiled to))
+     (else (error 'cpscm-compiler)))))
 )

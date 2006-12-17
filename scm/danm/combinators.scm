@@ -1,6 +1,6 @@
 ;; Copyright (C) 2006 Dan Muresan
 ;;
-;; This file is part of cpscm.
+;; This file is part of cpscm (http://www.omnigia.com/scheme/cpscm/home).
 ;;
 ;; cpscm is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
