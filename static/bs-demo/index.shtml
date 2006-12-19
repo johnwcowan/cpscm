@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <title>Bubble sort</title>
+    <link href="/default.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../js/prototype.js"></script>
+    <script type="text/javascript" src="../js-backend/cpscm-drv.js"></script>
+    <script type="text/javascript" src="../js-backend/prelude.js"></script>
+    <script type="text/javascript" src="scm-bs.js"></script>
+    <script type="text/javascript" src="bs-demo.js"></script>
+    <style type="text/css">
+    table.vec { border-collapse: collapse; }
+    table.vec tr td { border: solid 1px black; padding: 0.5em; }
+    form { padding-top: 2em; }
+    input.submit { font-family: sans-serif; font-size: 110%; padding: .2em; }
+    </style>
+  </head>
+
+<body onload="initialize()">
+<!--#include virtual="/navbar.htmli" -->
+
+<h1>CPSCM</h1>
+
+<h2>Bubble sort</h2>
+
+<p>This example demonstrates how to interface Scheme with Javascript. DHTML effects are implemented in "native" Javascript, while the bubblesort algorithm is implemented in Scheme (and compiled to Javascript).</p>
+
+<table summary="Numbers" class="vec"><tbody><tr id="vec">
+<td>5</td><td>3</td><td>10</td><td>7</td>
+</tr></tbody></table>
+
+<form action="#">
+<input id="sort" class="submit" type="submit" value="Sort">
+&nbsp;
+<input id="asc" name="order" type="radio" checked="checked"> Ascending
+<input id="desc" name="order" type="radio"> Descending
+<br>
+<input id="change_nums" type="submit" class="submit" value="Change numbers">
+&nbsp;<input id="new_numbers" type="text" value="5,3,10,7">
+</form>
+
+<h2>How this works</h2>
+
+<p>The bubblesort algorithm is implemented in bs.scm (which compiles to <kbd><a href="scm-bs.js">scm-bs.js</a></kbd>). The native DHTML code is in <kbd><a href="bs-demo.js">bs-demo.js</a></kbd>. This web page references in its &lt;head&gt; section both the native and the compiled Scheme code, as well as <kbd><a href="../js-backend/cpscm-drv.js">cpscm-drv.js</a></kbd> and <kbd><a href="../js-backend/prelude.js">prelude.js</a></kbd>.</p>
+
+<p>To call a Scheme function from Javascript, find the mangled name (by calling <code>(symbol-&gt;js 'fun)</code> from the Scheme compiler, where <code>fun</code> is your Scheme function). Then (assuming the mangled name is <code>cpscmfun</code>) insert something like the following template in Javascript:</p>
+<pre><code>var result = cpscm__drive (cpscm__call_scm (cpscmfun (cpscm__id, arg1, arg2 /* ... */));</code></pre>
+
+<p>To create a Javascript function callable from Scheme, again find out the mangled name (say <code>cpscmjsfun</code>), and define it as in:</p>
+<pre><code>var cpscmjsfun = cpscm__cpswrap (function jsfun (x, y) { return x + y; });</code></pre>
+
+<p>You may also want to override the default error handler, as in <kbd>bs-demo.js</kbd>.</p>
+
+</body>
+</html>

@@ -22,6 +22,8 @@ function cpscm__copy_obj (src, dst) {
   for (x in src) dst [x] = src [x];
 }
 
+function cpscm__id (x) { return x; }
+
 function cpscm__args2vector (a) {
   var args, i;
   for (i = 0, args = []; i < a.length; i++)
@@ -220,7 +222,7 @@ function cpscm__list2vec (l) {
 }
 
 function cpscm__vec2list (vec) {
-  var vec2 = vec.cpscm__vec_map (function (x) { return x });  // clone
+  var vec2 = vec.cpscm__vec_map (cpscm__id);  // clone
   vec2.push (cpscm__nil);
   return cpscm__list.apply (this, vec2);
 }
@@ -236,16 +238,16 @@ function cpscm__call_scm (f) {
 
 function cpscm__cpswrap (f, var_arity) {
   var wf = function wrapped (largs) {
-    var pargs = cpscm__largs2args (largs, f, var_arity ? -1 : undefined);
-    var result;
     try {
-      result = f.apply (this, pargs.args);
+      var pargs = cpscm__largs2args (largs, f, var_arity ? -1 : undefined);
+      var result = f.apply (this, pargs.args);
       if (result === undefined)
         throw (f.name + " returned undefined");
+      return pargs.k (cpscm__singleton (result));
     } catch (err) {
-      return cpscmerror (cpscm__list (pargs.k, err, cpscm__nil));
+      return cpscmerror (
+        cpscm__list (pargs.k, "cpswrap " + f.name + ": " + err, cpscm__nil));
     }
-    return pargs.k (cpscm__singleton (result));
   };
 
   return wf;
@@ -266,10 +268,10 @@ function cpscm__largs2args (largs, f, arity) {
     throw ("Arity error for " + name + ", expected " + arity + ", got " + args.length);
   if (! (k instanceof Function)) {
     cpscm__call_scm (
-      cpscm__default_err_hnd, 
-      function () { throw ("Execution aborted"); },
+      cpscm__err_2d_hnd,
+      function () { throw ("Execution aborted -- shouldn't get here"); },
       "Bad continuation for " + name + ": " + cpscm__str (k),
-      function (){});
+      cpscm__id);
   }
   var i;
   for (i = 0; i < args.length; i++)
@@ -290,13 +292,14 @@ function cpscm__reduce_2d_trampoline (cc) {
 }
 
 function cpscm__drive (cc, excHnd) {
+  if (excHnd === undefined)
+    excHnd = function js_exc_hnd (e) { throw ("cpscm__drive error: " + e); }
   try {
     return cpscm__reduce_2d_trampoline (cc);
   } catch (e) {
-    cc = excHnd (e);
+    return excHnd (e);
   }
 }
-
 
 // Procedures called from Scheme
 
