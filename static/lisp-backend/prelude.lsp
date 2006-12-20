@@ -1699,7 +1699,7 @@
 
 (cpscm__global
   cpscmfor-each
-  (lambda (g_3a_k356 cpscm_5f_k_5f_41 cpscm_5f_f_5f_42 cpscm_5f_l_5f_43)
+  (lambda (g_3a_k356 cpscm_5f_f_5f_42 cpscm_5f_l_5f_43)
     (cpscm__trampoline
       (lambda ()
         (funcall

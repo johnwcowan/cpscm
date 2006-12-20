@@ -1533,7 +1533,6 @@ return (cpscm_20__25_gs_3a__3a_k331) (cpscm__list (cpscm_20__25_gs_3a_332, cpscm
 ;
 var cpscmfor_2d_each = function (__args) {
 var cpscm_20__25_gs_3a__3a_k356=__args.car; __args=__args.cdr;
-var cpscm_5f_k_5f_41=__args.car; __args=__args.cdr;
 var cpscm_5f_f_5f_42=__args.car; __args=__args.cdr;
 var cpscm_5f_l_5f_43=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
@@ -2279,6 +2278,7 @@ return (cpscm_20__25_gs_3a__3a_k517) (cpscm__list (cpscm_20__25_gs_3a_518, cpscm
 }
 ;
 var cpscmcall_2f_cc = cpscmcall_2d_with_2d_current_2d_continuation;
+var cpscmwrite_2d_char = cpscmdisplay;
 var cpscmwith_2d_output_2d_to_2d_port = function (__args) {
 var cpscm_20__25_gs_3a__3a_k547=__args.car; __args=__args.cdr;
 var cpscm_5f_p_5f_41=__args.car; __args=__args.cdr;

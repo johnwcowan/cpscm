@@ -345,7 +345,7 @@
        (lambda (g3) (cpscm__trampoline (g:k2 g3)))
        'undefined))))
 (define cpscmfor-each
-  (lambda (g:k27 cpscm_k_41 cpscm_f_42 cpscm_l_43)
+  (lambda (g:k27 cpscm_f_42 cpscm_l_43)
     (cpscm__trampoline
       ((lambda (g:k30 cpscm_loop_44)
          (cpscm__trampoline

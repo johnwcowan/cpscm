@@ -85,6 +85,7 @@ function cpscm__simException () {
 cpscm__nil = {};
 cpscm__unspec = {};
 cpscm__syms = {};
+cpscm__special_chars = [];
 
 function cpscm__Pair (car, cdr) {
   this.car = car;
@@ -123,6 +124,17 @@ cpscm__Symbol.prototype.cpscm__str_method =
   function () { return this.s; };
 cpscm__nil.cpscm__str_method = function () { return "()"; };
 cpscm__unspec.cpscm__str_method = function () { return "#<unspecified>"; }
+cpscm__Char.prototype.cpscm__str_method = function (write_p) {
+  var c = String.fromCharCode (this.code);
+  if (write_p) {
+    var spec = cpscm__special_chars [this.code];
+    if (spec) return "#\\" + spec;
+    else if (code > 126) return "#\\0" + code.toString (8);
+    else if (code < 0) throw ("invalid char code " + code);
+    else return "#\\" + c;
+  }
+  else return c;
+}
 // TODO: cpscm__Char.prototype.cpscm__str_method
 Function.prototype.cpscm__str_method = function () { 
   var name = this.name;
@@ -245,8 +257,11 @@ function cpscm__cpswrap (f, var_arity) {
         throw (f.name + " returned undefined");
       return pargs.k (cpscm__singleton (result));
     } catch (err) {
+      var k = cpscm__id;
+      if ((pargs !== undefined) && (pargs.k instanceof Function))
+        k = pargs.k;
       return cpscmerror (
-        cpscm__list (pargs.k, "cpswrap " + f.name + ": " + err, cpscm__nil));
+        cpscm__list (k, "cpswrap " + f.name + ": " + err, cpscm__nil));
     }
   };
 
@@ -428,6 +443,9 @@ var cpscminput_2d_port_3f_ = cpscm__cpswrap (
 var cpscmoutput_2d_port_3f_ = cpscm__cpswrap (
   function output_port_p (p) { return ! p.isInput; }
 );
+var cpscmchar_3f_ = cpscm__cpswrap (
+  function number_p (c) { return c instanceof cpscm__Char; }
+);
 var cpscmnumber_3f_ = cpscm__cpswrap (
   function number_p (n) { return (typeof n) === "number"; }
 );
@@ -502,6 +520,10 @@ var cpscmnot = cpscm__cpswrap (
   function not (x) { return x === false; }
 );
 
+var cpscmstring_3d__3f_ = cpscm__cpswrap (
+  function string_eq(s1, s2) { return s1 == s2; }
+);
+
 function cpscmstring_2d_append (args) {
   var s = "";
   for (var p = args.cdr; p != cpscm__nil; p = p.cdr)
@@ -511,6 +533,93 @@ function cpscmstring_2d_append (args) {
 
 var cpscmsymbol_2d__3e_string = cpscm__cpswrap (
   function symbol2string (sym) { return sym.s; }
+);
+var cpscmstring_2d__3e_symbol = cpscm__cpswrap (cpscm__sym);
+
+var cpscmnumber_2d__3e_string = cpscm__cpswrap (
+  function number2string (x, r) {
+    if (r === undefined) r = 10;
+    return x.toString (r);
+  }, true);
+var cpscmstring_2d__3e_number = cpscm__cpswrap (
+  function string2number (s, r) {
+    if (r === undefined) r = 10;
+    if (r != 10 && s.match (/[^0-9]/)) return false;
+    return parseInt (s, r);
+  }, true);
+
+var cpscmabs = cpscm__cpswrap (
+  function abs (x) { return Math.abs (x); }
+);
+var cpscmfloor = cpscm__cpswrap (
+  function floor (x) { return Math.floor (x); }
+);
+var cpscmceiling = cpscm__cpswrap (
+  function ceiling (x) { return 1 + Math.floor (x); }
+);
+var cpscmtruncate = cpscm__cpswrap (
+  function truncate (x) { return Math.floor (x) + ((x < 0) ? 1 : 0); }
+);
+var cpscmround = cpscm__cpswrap (
+  function round (x) { return Math.round (x); }
+);
+var cpscmsqrt = cpscm__cpswrap (
+  function sqrt (x) { return Math.sqrt (x); }
+);
+var cpscmlog = cpscm__cpswrap (
+  function log (x) { return Math.log (x); }
+);
+var cpscmexp = cpscm__cpswrap (
+  function exp (x) { return Math.exp (x); }
+);
+var cpscmsin = cpscm__cpswrap (
+  function sin (x) { return Math.sin (x); }
+);
+var cpscmcos = cpscm__cpswrap (
+  function cos (x) { return Math.cos (x); }
+);
+var cpscmtan = cpscm__cpswrap (
+  function tan (x) { return Math.tan (x); }
+);
+var cpscmasin = cpscm__cpswrap (
+  function asin (x) { return Math.asin (x); }
+);
+var cpscmacos = cpscm__cpswrap (
+  function acos (x) { return Math.acos (x); }
+);
+var cpscmatan = cpscm__cpswrap (
+  function atan (x) { return Math.atan (x); }
+);
+
+var cpscmchar_2d__3e_integer = cpscm__cpswrap (
+  function char2integer (c) { return c.code; }
+);
+var cpscminteger_2d__3e_char = cpscm__cpswrap (
+  function char2integer (c) { return new cpscm__Char (c); }
+);
+
+var cpscmchar_3c__3f_ = cpscm__cpswrap (
+  function char_lt (c1, c2) { return c1.code = c2.code; }
+);
+var cpscmchar_3c__3d__3f_ = cpscm__cpswrap (
+  function char_leq (c1, c2) { return c1.code <= c2.code; }
+);
+var cpscmchar_3d__3f_ = cpscm__cpswrap (
+  function char_eq (c1, c2) { return c1.code == c2.code; }
+);
+var cpscmchar_3e__3d__3f_ = cpscm__cpswrap (
+  function char_geq (c1, c2) { return c1.code >= c2.code; }
+);
+var cpscmchar_3e__3f_ = cpscm__cpswrap (
+  function char_gt (c1, c2) { return c1.code > c2.code; }
+);
+
+var cpscmstring_2d_ref = cpscm__cpswrap (
+  function string_ref (s, i) { return new cpscm__Char (s.charCodeAt (i)); }
+);
+
+var cpscmstring_2d_length = cpscm__cpswrap (
+  function string_length (s) { return s.length; }
 );
 
 function cpscm__init_eq () {
@@ -594,7 +703,16 @@ cpscm__StrOutPort.prototype.write = function (x) {
 
 var cpscm__output_port;
 
+function cpscm__init_chars () {
+  var i;
+  for (i = 0; i < 32; i++) cpscm__special_chars [i] = "0" + i.toString (8);
+  [ [ 10, "newline" ], [ 32, "space" ] ].cpscm__vec_for_each (
+    function (p) { cpscm__special_chars [p [0]] = p [1]; }
+  );
+}
+
 function cpscm__init () {
+  cpscm__init_chars ();
   cpscm__init_eq ();
   cpscm__output_port = cpscm__rhino_output;
 }
