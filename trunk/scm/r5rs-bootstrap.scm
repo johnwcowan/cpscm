@@ -100,7 +100,7 @@
         (if (null? l) (reverse! res)
             (loop (cdr l) (cons (f (car l)) res))))
       (loop l '()))
-    (define (for-each k f l)
+    (define (for-each f l)
       (define (loop l)
         (if (null? l) #t
             (begin (f (car l)) (loop (cdr l)))))
@@ -154,6 +154,8 @@
     
     (define call/cc call-with-current-continuation)
 
+    (define write-char display)
+    
     (define (with-output-to-port p thunk)
       (let ((oldp (current-output-port)))
         (current-output-port p)
