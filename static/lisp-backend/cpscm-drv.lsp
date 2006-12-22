@@ -16,6 +16,9 @@
   `(locally (declare (special ,x)) (setq ,x ,val) 
             (setf (get ',x 'cpscm__fname) ',x)))
 
+;(cpscm__global cpscm__false (gensym))  ;; TODO: change all "pred?" defs
+(cpscm__global cpscm__false nil)
+
 (defmacro cpscm__declare-globals (&rest vars)
   `(progn ,@(mapcar (lambda (v) `(cpscm__global ,v nil)) vars)))
 
@@ -97,7 +100,7 @@
        (combelse (lambda (kk then else)
                    (cpscm__trampoline (lambda () (funcall else kk))))))
    (lambda (test)
-     (if test combthen combelse))))
+     (if (eq test cpscm__false) combelse combthen))))
 
 (defun cpscm__reduce-trampoline (cc)
     (loop for i from 1 while (trampoline-p cc) do 

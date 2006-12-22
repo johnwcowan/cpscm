@@ -1,16 +1,16 @@
-(cpscm__global cpscm__vals-marker nil)
+(cpscm__global cpscm__vals-marker cpscm__false)
 
 
 (cpscm__global cpscm__winders nil)
 
 
-(cpscm__global cpscm__err-hnd nil)
+(cpscm__global cpscm__err-hnd cpscm__false)
 
 
-(cpscm__global cpscm__debug-trampolines? nil)
+(cpscm__global cpscm__debug-trampolines? cpscm__false)
 
 
-(cpscm__global cpscm__err-cont nil)
+(cpscm__global cpscm__err-cont cpscm__false)
 
 
 (cpscm__global
@@ -866,7 +866,8 @@
                     (cpscm__trampoline
                       (lambda () (funcall gk154 gretapply__155))))
                   (lambda (gk158)
-                    (cpscm__trampoline (lambda () (funcall gk158 nil))))
+                    (cpscm__trampoline
+                      (lambda () (funcall gk158 cpscm__false))))
                   (lambda (gk160)
                     (cpscm__trampoline (lambda () (funcall gk160 t))))))))
           (funcall cpscm_x_boolean->combinator cpscm__x__41))))))
@@ -1012,7 +1013,7 @@
                                                           cpscm__l__41))))
                                                   (lambda (gk202)
                                                     (cpscm__trampoline
-                                                      (lambda () (funcall gk202 nil))))))))
+                                                      (lambda () (funcall gk202 cpscm__false))))))))
                                           (funcall
                                             cpscm_x_boolean->combinator
                                             gretpair?__196)))))
@@ -1455,7 +1456,7 @@
                                                           cpscm__l__44))))
                                                   (lambda (gk316)
                                                     (cpscm__trampoline
-                                                      (lambda () (funcall gk316 nil))))))))
+                                                      (lambda () (funcall gk316 cpscm__false))))))))
                                           (funcall
                                             cpscm_x_boolean->combinator
                                             gretnot__301)))))
@@ -1499,7 +1500,7 @@
                                           cpscm__tmp__43))))
                                   (lambda (gk329)
                                     (cpscm__trampoline
-                                      (lambda () (funcall gk329 nil))))))))
+                                      (lambda () (funcall gk329 cpscm__false))))))))
                           (funcall
                             cpscm_x_boolean->combinator
                             cpscm__tmp__43)))))
@@ -1989,7 +1990,7 @@
                             (cpscm__trampoline
                               (lambda ()
                                 (progn (setq cpscm__n__42 cpscm__n__42__tmp)
-                                       (setq cpscm__v__43 nil)
+                                       (setq cpscm__v__43 cpscm__false)
                                        (funcall
                                          (lambda (gretset!__465)
                                            (cpscm__trampoline
@@ -2431,8 +2432,8 @@
                             cpscm_x_boolean->combinator
                             cpscm__result-ready?__42)))))))))
           (lambda (g560) (cpscm__trampoline (lambda () (funcall gk559 g560))))
-          nil
-          nil)))))
+          cpscm__false
+          cpscm__false)))))
 
 
 (cpscm__drive
@@ -2608,7 +2609,7 @@
                                   cpscm__vals__41))))
                           (lambda (gk628)
                             (cpscm__trampoline
-                              (lambda () (funcall gk628 nil))))))))
+                              (lambda () (funcall gk628 cpscm__false))))))))
                   (funcall cpscm_x_boolean->combinator gretpair?__616)))))
           cpscm__vals__41)))))
 
@@ -2907,7 +2908,7 @@
           (lambda (gk709 cpscm__result__44)
             (cpscm__trampoline
               (lambda ()
-                (progn (setq cpscm__result__44 nil)
+                (progn (setq cpscm__result__44 cpscm__false)
                        (funcall
                          cpscm__before__41
                          (lambda (gret__before__41__711)
