@@ -63,7 +63,7 @@
 (define (atom->lisp x)
   (cond
    ((string? x) x)
-   ((boolean? x) (if x 't 'nil))
+   ((boolean? x) (if x 't 'cpscm__false))
    ((symbol? x) (symbol->lisp x))
    ((number? x) x)
    ((char? x) x)
