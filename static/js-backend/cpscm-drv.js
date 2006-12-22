@@ -24,6 +24,8 @@ function cpscm__copy_obj (src, dst) {
 
 function cpscm__id (x) { return x; }
 
+function cpscm__2bool (x) { return x || false; }
+
 function cpscm__args2vector (a) {
   var args, i;
   for (i = 0, args = []; i < a.length; i++)
@@ -86,6 +88,7 @@ cpscm__nil = {};
 cpscm__unspec = {};
 cpscm__syms = {};
 cpscm__special_chars = [];
+cpscm__chars = [];
 
 function cpscm__Pair (car, cdr) {
   this.car = car;
@@ -96,7 +99,7 @@ function cpscm__Symbol (s) {
   this.s = s;
 }
 
-function cpscm__Char (code) {
+function cpscm__Character (code) {
   this.code = code;
 }
 
@@ -124,18 +127,17 @@ cpscm__Symbol.prototype.cpscm__str_method =
   function () { return this.s; };
 cpscm__nil.cpscm__str_method = function () { return "()"; };
 cpscm__unspec.cpscm__str_method = function () { return "#<unspecified>"; }
-cpscm__Char.prototype.cpscm__str_method = function (write_p) {
+cpscm__Character.prototype.cpscm__str_method = function (write_p) {
   var c = String.fromCharCode (this.code);
   if (write_p) {
     var spec = cpscm__special_chars [this.code];
     if (spec) return "#\\" + spec;
-    else if (code > 126) return "#\\0" + code.toString (8);
-    else if (code < 0) throw ("invalid char code " + code);
+    else if (this.code > 126) return "#\\0" + this.code.toString (8);
+    else if (this.code < 0) throw ("invalid char code " + this.code);
     else return "#\\" + c;
   }
   else return c;
 }
-// TODO: cpscm__Char.prototype.cpscm__str_method
 Function.prototype.cpscm__str_method = function () { 
   var name = this.name;
   if (! name || name === "")
@@ -187,8 +189,13 @@ function cpscm__str (x, write_p) {
 function cpscm__sym (s) {
   var ss = cpscm__syms [s];
   if (ss) return ss;
-  else
-    return cpscm__syms [s] = new cpscm__Symbol (s);
+  return cpscm__syms [s] = new cpscm__Symbol (s);
+}
+
+function cpscm__char (c) {
+  var c = cpscm__chars [c];
+  if (c) return c;
+  return new cpscm__Character (c);
 }
 
 function cpscm__js_obj2str (o) {
@@ -254,7 +261,7 @@ function cpscm__cpswrap (f, var_arity) {
       var pargs = cpscm__largs2args (largs, f, var_arity ? -1 : undefined);
       var result = f.apply (this, pargs.args);
       if (result === undefined)
-        throw (f.name + " returned undefined");
+        throw (" returned undefined on " + cpscm__str (pargs.args));
       return pargs.k (cpscm__singleton (result));
     } catch (err) {
       var k = cpscm__id;
@@ -283,7 +290,7 @@ function cpscm__largs2args (largs, f, arity) {
     throw ("Arity error for " + name + ", expected " + arity + ", got " + args.length);
   if (! (k instanceof Function)) {
     cpscm__call_scm (
-      cpscm__err_2d_hnd,
+      cpscm__err_d_hnd,
       function () { throw ("Execution aborted -- shouldn't get here"); },
       "Bad continuation for " + name + ": " + cpscm__str (k),
       cpscm__id);
@@ -298,7 +305,7 @@ function cpscm__largs2args (largs, f, arity) {
 
 // Main trampoline loop
 
-function cpscm__reduce_2d_trampoline (cc) {
+function cpscm__reduce_d_trampoline (cc) {
   while (cc instanceof cpscm__Trampoline) {
     // print ("Executing " + cc.thunk);
     cc = (cc.thunk) ();
@@ -310,7 +317,7 @@ function cpscm__drive (cc, excHnd) {
   if (excHnd === undefined)
     excHnd = function js_exc_hnd (e) { throw ("cpscm__drive error: " + e); }
   try {
-    return cpscm__reduce_2d_trampoline (cc);
+    return cpscm__reduce_d_trampoline (cc);
   } catch (e) {
     return excHnd (e);
   }
@@ -322,19 +329,19 @@ var cpscm__combthen = function (args)
 { return args.cdr.car (cpscm__singleton (args.car)); };
 var cpscm__combelse = function (args)
 { return args.cdr.cdr.car (cpscm__singleton (args.car)); };
-function cpscm_20_boolean_2d__3e_combinator (args) {
+function cpscm_x_boolean_d__r_combinator (args) {
   return args.car ? cpscm__combthen : cpscm__combelse;
 }
 
-function cpscm__normal_2d_apply (args) {
+function cpscm__normal_d_apply (args) {
   var vargs2 = cpscm__list2vec (args.cdr);
   return args.car (cpscm__list.apply (cpscm__list, vargs2));
 }
 
-var cpscm_20_delay = cpscm__cpswrap (
+var cpscm_x_delay = cpscm__cpswrap (
   function (thunk) { return new cpscm__Delay (thunk); }
 );
-var cpscmpromise_3f_ = cpscm__cpswrap (
+var cpscmpromise_p_ = cpscm__cpswrap (
   function (p) { return p instanceof cpscm__Delay; }
 );
 function cpscmforce (args) {
@@ -345,19 +352,19 @@ function cpscmforce (args) {
 
 // Operators
 
-var cpscm_3e_ = cpscm__cpswrap (
+var cpscm_r_ = cpscm__cpswrap (
   function greater_than (x, y) { return x > y; }
 );
-var cpscm_3c_ = cpscm__cpswrap (
+var cpscm_l_ = cpscm__cpswrap (
   function less_than (x, y) { return x < y; }
 );
-var cpscm_3c__3d_ = cpscm__cpswrap (
+var cpscm_l__e_ = cpscm__cpswrap (
   function leq (x, y) { return x <= y; }
 );
-var cpscm_3e__3d_ = cpscm__cpswrap (
+var cpscm_r__e_ = cpscm__cpswrap (
   function geq (x, y) { return x >= y; }
 );
-var cpscm_3d_ = cpscm__cpswrap (
+var cpscm_e_ = cpscm__cpswrap (
   function eq_p (x, y) { return x === y; }
 );
 
@@ -370,11 +377,12 @@ function cpscm_2b_ (args) {  // +
   return k (cpscm__singleton (s));
 }
 
-function cpscm_2d_ (args) {  // -
+function cpscm_d_ (args) {  // -
   var s, k;
-  for (s = args.cdr.car, k = args.car, args = args.cdr.cdr;
-       args != cpscm__nil;
-       args = args.cdr)
+  k = args.car, args = args.cdr;
+  if (args === cpscm__nil) return 0;
+  if (args.cdr === cpscm__nil) return (- args.car);
+  for (s = args.car, args = args.cdr; args != cpscm__nil; args = args.cdr)
     s -= args.car;
   return k (cpscm__singleton (s));
 }
@@ -388,7 +396,7 @@ function cpscm_2a_ (args) {  // *
   return k (cpscm__singleton (s));
 }
 
-function cpscm_2f_ (args) {  // /
+function cpscm_w_ (args) {  // /
   var s, k;
   for (s = args.cdr.car, k = args.car, args = args.cdr.cdr;
        args != cpscm__nil;
@@ -399,87 +407,87 @@ function cpscm_2f_ (args) {  // /
 
 // Type predicates
 
-var cpscmeq_3f_ = cpscm__cpswrap (
+var cpscmeq_p_ = cpscm__cpswrap (
   function eq_p (x, y)
-  { return (x === y) || (x.cpscm__eq && x.cpscm__eq (y)); }
+  { return cpscm__2bool ((x === y) || (x.cpscm__eq && x.cpscm__eq (y))); }
 );
-var cpscmeqv_3f_ = cpscm__cpswrap (
+var cpscmeqv_p_ = cpscm__cpswrap (
   function eqv_p (x, y)
-  { return (x === y) || (x.cpscm__eqv && x.cpscm__eqv (y)); }
+  { return cpscm__2bool ((x === y) || (x.cpscm__eqv && x.cpscm__eqv (y))); }
 );
-var cpscmequal_3f_ = cpscm__cpswrap (cpscm__equal);
+var cpscmequal_p_ = cpscm__cpswrap (cpscm__equal);
 
-var cpscmpair_3f_ = cpscm__cpswrap (
+var cpscmpair_p_ = cpscm__cpswrap (
   function pair_p (p) { return p instanceof cpscm__Pair; }
 );
-var cpscmprocedure_3f_ = cpscm__cpswrap (
+var cpscmprocedure_p_ = cpscm__cpswrap (
   function procedure_p (p) { return p instanceof Function; }
 );
-var cpscmsymbol_3f_ = cpscm__cpswrap (
+var cpscmsymbol_p_ = cpscm__cpswrap (
   function symbol_p (x) { return x instanceof cpscm__Symbol; }
 );
-var cpscmnull_3f_ = cpscm__cpswrap (
+var cpscmnull_p_ = cpscm__cpswrap (
   function null_p (l) { return l == cpscm__nil; }
 );
-var cpscmstring_3f_ = cpscm__cpswrap (
+var cpscmstring_p_ = cpscm__cpswrap (
   function string_p (x) { return (typeof x) === "string"; }
 );
-var cpscmboolean_3f_ = cpscm__cpswrap (
+var cpscmboolean_p_ = cpscm__cpswrap (
   function boolean_p (x) { return (typeof x) === "boolean"; }
 );
-var cpscmvector_3f_ = cpscm__cpswrap (
+var cpscmvector_p_ = cpscm__cpswrap (
   function vector_p (x) { return x instanceof Array; }
 );
-var cpscmport_3f_ = cpscm__cpswrap (
+var cpscmport_p_ = cpscm__cpswrap (
   function port_p (p) { return p instanceof cpscm__Port; }
 );
-var cpscmclose_2d_input_2d_port = cpscm__cpswrap (
+var cpscmclose_d_input_d_port = cpscm__cpswrap (
   function close_port (p) { return p.close (); }
 );
-var cpscmclose_2d_output_2d_port = cpscmclose_2d_input_2d_port;
-var cpscminput_2d_port_3f_ = cpscm__cpswrap (
+var cpscmclose_d_output_d_port = cpscmclose_d_input_d_port;
+var cpscminput_d_port_p_ = cpscm__cpswrap (
   function input_port_p (p) { return p.isInput; }
 );
-var cpscmoutput_2d_port_3f_ = cpscm__cpswrap (
+var cpscmoutput_d_port_p_ = cpscm__cpswrap (
   function output_port_p (p) { return ! p.isInput; }
 );
-var cpscmchar_3f_ = cpscm__cpswrap (
-  function number_p (c) { return c instanceof cpscm__Char; }
+var cpscmchar_p_ = cpscm__cpswrap (
+  function number_p (c) { return c instanceof cpscm__Character; }
 );
-var cpscmnumber_3f_ = cpscm__cpswrap (
+var cpscmnumber_p_ = cpscm__cpswrap (
   function number_p (n) { return (typeof n) === "number"; }
 );
-var cpscmexact_3f_ = cpscm__cpswrap (
+var cpscmexact_p_ = cpscm__cpswrap (
   function exact_p (n) { return false; }
 );
-var cpscminexact_3f_ = cpscm__cpswrap (
+var cpscminexact_p_ = cpscm__cpswrap (
   function inexact_p (n) { return true; }
 );
-var cpscminteger_3f_ = cpscm__cpswrap (
+var cpscminteger_p_ = cpscm__cpswrap (
   function integer_p (n) { return false; }
 );
-var cpscmeven_3f_ = cpscm__cpswrap (
+var cpscmeven_p_ = cpscm__cpswrap (
   function even_p (n) { return false; }
 );
-var cpscmodd_3f_ = cpscm__cpswrap (
+var cpscmodd_p_ = cpscm__cpswrap (
   function odd_p (n) { return false; }
 );
-var cpscmcomplex_3f_ = cpscm__cpswrap (
+var cpscmcomplex_p_ = cpscm__cpswrap (
   function complex_p (n) { return false; }
 );
-var cpscmrational_3f_ = cpscm__cpswrap (
+var cpscmrational_p_ = cpscm__cpswrap (
   function rational_p (n) { return false; }
 );
-var cpscmreal_3f_ = cpscm__cpswrap (
+var cpscmreal_p_ = cpscm__cpswrap (
   function real_p (n) { return true; }
 );
-var cpscmnegative_3f_ = cpscm__cpswrap (
+var cpscmnegative_p_ = cpscm__cpswrap (
   function negative_p (n) { return n < 0; }
 );
-var cpscmpositive_3f_ = cpscm__cpswrap (
+var cpscmpositive_p_ = cpscm__cpswrap (
   function positive_p (n) { return n > 0; }
 );
-var cpscmzero_3f_ = cpscm__cpswrap (
+var cpscmzero_p_ = cpscm__cpswrap (
   function zero_p (n) { return n === 0; }
 );
 // list? defined in Scheme
@@ -491,23 +499,23 @@ var cpscmcdr = cpscm__cpswrap (function cdr (l) { return l.cdr; });
 var cpscmcons = cpscm__cpswrap (
   function cons (x, y) { return new cpscm__Pair (x, y); }
 );
-var cpscmset_2d_car_21_ = cpscm__cpswrap (
+var cpscmset_d_car_b_ = cpscm__cpswrap (
   function set_car (p, x) { p.car = x; return cpscm__unspec; }
 );
-var cpscmset_2d_cdr_21_ = cpscm__cpswrap (
+var cpscmset_d_cdr_b_ = cpscm__cpswrap (
   function set_cdr (p, x) { p.cdr = x; return cpscm__unspec; }
 );
 
-var cpscmvector_2d_length = cpscm__cpswrap (
+var cpscmvector_d_length = cpscm__cpswrap (
   function vector_length (v) { return v.length; }
 );
-var cpscmvector_2d_ref = cpscm__cpswrap (
+var cpscmvector_d_ref = cpscm__cpswrap (
   function vector_ref (v, i) { return v [i]; }
 );
-var cpscmvector_2d_set_21_ = cpscm__cpswrap (
+var cpscmvector_d_set_b_ = cpscm__cpswrap (
   function vector_set (v, i, x) { v [i] = x; return cpscm__unspec; }
 );
-var cpscmmake_2d_vector = cpscm__cpswrap (
+var cpscmmake_d_vector = cpscm__cpswrap (
   function make_vector (n, x) {
     if (x === undefined) x = cpscm__unspec;
     var v = new Array (n), i;
@@ -520,28 +528,28 @@ var cpscmnot = cpscm__cpswrap (
   function not (x) { return x === false; }
 );
 
-var cpscmstring_3d__3f_ = cpscm__cpswrap (
+var cpscmstring_e__p_ = cpscm__cpswrap (
   function string_eq(s1, s2) { return s1 == s2; }
 );
 
-function cpscmstring_2d_append (args) {
+function cpscmstring_d_append (args) {
   var s = "";
   for (var p = args.cdr; p != cpscm__nil; p = p.cdr)
     s += p.car;
   return args.car (cpscm__singleton (s));
 }
 
-var cpscmsymbol_2d__3e_string = cpscm__cpswrap (
+var cpscmsymbol_d__r_string = cpscm__cpswrap (
   function symbol2string (sym) { return sym.s; }
 );
-var cpscmstring_2d__3e_symbol = cpscm__cpswrap (cpscm__sym);
+var cpscmstring_d__r_symbol = cpscm__cpswrap (cpscm__sym);
 
-var cpscmnumber_2d__3e_string = cpscm__cpswrap (
+var cpscmnumber_d__r_string = cpscm__cpswrap (
   function number2string (x, r) {
     if (r === undefined) r = 10;
     return x.toString (r);
   }, true);
-var cpscmstring_2d__3e_number = cpscm__cpswrap (
+var cpscmstring_d__r_number = cpscm__cpswrap (
   function string2number (s, r) {
     if (r === undefined) r = 10;
     if (r != 10 && s.match (/[^0-9]/)) return false;
@@ -591,34 +599,34 @@ var cpscmatan = cpscm__cpswrap (
   function atan (x) { return Math.atan (x); }
 );
 
-var cpscmchar_2d__3e_integer = cpscm__cpswrap (
+var cpscmchar_d__r_integer = cpscm__cpswrap (
   function char2integer (c) { return c.code; }
 );
-var cpscminteger_2d__3e_char = cpscm__cpswrap (
-  function char2integer (c) { return new cpscm__Char (c); }
+var cpscminteger_d__r_char = cpscm__cpswrap (
+  function integer2char (c) { return cpscm__char (c); }
 );
 
-var cpscmchar_3c__3f_ = cpscm__cpswrap (
+var cpscmchar_l__p_ = cpscm__cpswrap (
   function char_lt (c1, c2) { return c1.code = c2.code; }
 );
-var cpscmchar_3c__3d__3f_ = cpscm__cpswrap (
+var cpscmchar_l__e__p_ = cpscm__cpswrap (
   function char_leq (c1, c2) { return c1.code <= c2.code; }
 );
-var cpscmchar_3d__3f_ = cpscm__cpswrap (
+var cpscmchar_e__p_ = cpscm__cpswrap (
   function char_eq (c1, c2) { return c1.code == c2.code; }
 );
-var cpscmchar_3e__3d__3f_ = cpscm__cpswrap (
+var cpscmchar_r__e__p_ = cpscm__cpswrap (
   function char_geq (c1, c2) { return c1.code >= c2.code; }
 );
-var cpscmchar_3e__3f_ = cpscm__cpswrap (
+var cpscmchar_r__p_ = cpscm__cpswrap (
   function char_gt (c1, c2) { return c1.code > c2.code; }
 );
 
-var cpscmstring_2d_ref = cpscm__cpswrap (
-  function string_ref (s, i) { return new cpscm__Char (s.charCodeAt (i)); }
+var cpscmstring_d_ref = cpscm__cpswrap (
+  function string_ref (s, i) { return cpscm__char (s.charCodeAt (i)); }
 );
 
-var cpscmstring_2d_length = cpscm__cpswrap (
+var cpscmstring_d_length = cpscm__cpswrap (
   function string_length (s) { return s.length; }
 );
 
@@ -628,8 +636,8 @@ function cpscm__init_eq () {
 
   upd (cpscm__Symbol);
   p.cpscm__eqv = p.cpscm__equal = function eqv_p (other) { return (other instanceof cpscm__Symbol) && other.s === this.s; };
-  upd (cpscm__Char);
-  p.cpscm__eq = p.cpscm__eqv = p.cpscm__equal = function eqv_p (other) { return (other instanceof cpscm__Char) && other.code === this.code; };
+  upd (cpscm__Character);
+  p.cpscm__eq = p.cpscm__eqv = p.cpscm__equal = function eqv_p (other) { return (other instanceof cpscm__Character) && other.code === this.code; };
   upd (cpscm__Pair);
   p.cpscm__equal = function equal_p (p2) { 
     var p1 = this; 
@@ -666,11 +674,11 @@ function cpscmnewline (args) {
   return cpscmdisplay (cpscm__list (args.car, "\n", args.cdr));
 }
 
-var cpscmget_2d_output_2d_string = cpscm__cpswrap (
+var cpscmget_d_output_d_string = cpscm__cpswrap (
   function get_output_string (p) { return p.str; }
 );
 
-var cpscmcurrent_2d_output_2d_port = cpscm__cpswrap (
+var cpscmcurrent_d_output_d_port = cpscm__cpswrap (
   function current_output_port (newp) { 
     var oldp = cpscm__output_port;
     if (newp)
@@ -679,7 +687,7 @@ var cpscmcurrent_2d_output_2d_port = cpscm__cpswrap (
   },
   true);
 
-var cpscmopen_2d_output_2d_string = cpscm__cpswrap (
+var cpscmopen_d_output_d_string = cpscm__cpswrap (
   function get_output_string () { return new cpscm__StrOutPort (""); }
 );
 
@@ -709,6 +717,7 @@ function cpscm__init_chars () {
   [ [ 10, "newline" ], [ 32, "space" ] ].cpscm__vec_for_each (
     function (p) { cpscm__special_chars [p [0]] = p [1]; }
   );
+  for (i = 0; i < 256; i++) cpscm__chars.push (new cpscm__Character (i));
 }
 
 function cpscm__init () {
