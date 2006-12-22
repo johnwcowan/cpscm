@@ -84,7 +84,9 @@
    sexp
    (('cpscm__trampoline . rest) (error '(sexp->cpscm invoked twice)))
    (('quote x) sexp)
-   (('begin . more) (drive `(begin . ,(map do-red more))))
+   (('begin . prog)
+    (receive (some last) (split-at-right prog 1)
+      (drive `(begin ,@(map do-red some) ,(sexp->cpscm (car last))))))
    (('set! var val)
     `(set! ,(symbol->cpscm var) ,(do-eval val)))
    (('define (f . args) . body)

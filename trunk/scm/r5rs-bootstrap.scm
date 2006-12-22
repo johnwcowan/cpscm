@@ -104,7 +104,7 @@
       (define (loop l)
         (if (null? l) #t
             (begin (f (car l)) (loop (cdr l)))))
-      (loop l '()))
+      (loop l))
     
     (define (assoc x lis . maybe-=)
       (let ((e (if (null? maybe-=) equal? (car maybe-=))))

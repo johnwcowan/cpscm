@@ -30,7 +30,7 @@
 
 (module
  danm/scheme-util
- (atom? improper-map alist-diff with-input-from-str with-output-to-str port->sexp-list port->string read-list read-list/string cout)
+ (atom? improper-map split-at-right alist-diff with-input-from-str with-output-to-str port->sexp-list port->string read-list read-list/string cout)
 
  (cond-expand
   (sisc (import string-io))
@@ -45,7 +45,11 @@
    (cond ((null? l) '())
          ((not (pair? l)) (f l))
          (else (cons (f (car l)) (improper-map f (cdr l))))))
- 
+
+ (define (split-at-right l n)
+   (receive (l1 l2) (split-at (reverse l) n)
+     (values (reverse! l2) (reverse! l1))))
+   
  (define (alist-diff eq?-pred from . what)
    (define removed (map car (apply append what)))
    (remove (lambda (b) (member (car b) removed eq?-pred)) from))

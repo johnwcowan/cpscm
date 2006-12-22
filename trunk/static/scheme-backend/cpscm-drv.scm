@@ -254,17 +254,16 @@
          (cpscm__trampoline
            (begin
              (cpscm__reduce-trampoline
-               ((lambda (g:ccwinders:1) (set! cpscmccwinders g:ccwinders:1))
+               ((lambda (g_ccwinders1) (set! cpscmccwinders g_ccwinders1))
                 cpscm__winders))
-             (cpscm__reduce-trampoline
-               (cpscmf
-                 cpscmk
-                 (lambda (cpscm_ . cpscmxs)
-                   (cpscm__trampoline
-                     (cpscm__switch-winders
-                       (lambda (cpscm_)
-                         (cpscm__trampoline (cpscm__pack-vals cpscmk cpscmxs)))
-                       cpscmccwinders))))))))
+             (cpscmf
+               cpscmk
+               (lambda (cpscm_ . cpscmxs)
+                 (cpscm__trampoline
+                   (cpscm__switch-winders
+                     (lambda (cpscm_)
+                       (cpscm__trampoline (cpscm__pack-vals cpscmk cpscmxs)))
+                     cpscmccwinders)))))))
        'undefined))))
 (define cpscmapply
   (lambda (cpscmk cpscmf . cpscmargs)
@@ -284,745 +283,733 @@
   (lambda (cpscmk . cpscmthings)
     (cpscm__trampoline (cpscm__pack-vals cpscmk cpscmthings))))
 (define cpscmmap
-  (lambda (g:k2 cpscm_f_41 cpscm_l_42)
+  (lambda (gk2 cpscm_f_41 cpscm_l_42)
     (cpscm__trampoline
-      ((lambda (g:k5 cpscm_loop_43)
+      ((lambda (gk5 cpscm_loop_43)
          (cpscm__trampoline
-           ((lambda (g:k9 cpscm_loop_43_tmp)
+           ((lambda (gk9 cpscm_loop_43_tmp)
               (cpscm__trampoline
-                ((lambda (g:ret-set!:10)
-                   (cpscm__trampoline (g:k9 g:ret-set!:10)))
+                ((lambda (gretset!_10) (cpscm__trampoline (gk9 gretset!_10)))
                  (set! cpscm_loop_43 cpscm_loop_43_tmp))))
             (lambda (g6)
               (cpscm__trampoline
                 (cpscm_loop_43
-                  (lambda (g:ret-_loop_43:7)
-                    (cpscm__trampoline (g:k5 g:ret-_loop_43:7)))
+                  (lambda (gret_loop_43_7)
+                    (cpscm__trampoline (gk5 gret_loop_43_7)))
                   cpscm_l_42
                   '())))
-            (lambda (g:k12 cpscm_l_44 cpscm_res_45)
+            (lambda (gk12 cpscm_l_44 cpscm_res_45)
               (cpscm__trampoline
                 (cpscmnull?
-                  (lambda (g:ret-null?:15)
+                  (lambda (gretnull?_15)
                     (cpscm__trampoline
-                      ((lambda (g:ret-_20_boolean->combinator:14)
+                      ((lambda (gret_20_boolean->combinator_14)
                          (cpscm__trampoline
-                           (g:ret-_20_boolean->combinator:14
-                             (lambda (g:ret-apply:13)
-                               (cpscm__trampoline (g:k12 g:ret-apply:13)))
-                             (lambda (g:k17)
+                           (gret_20_boolean->combinator_14
+                             (lambda (gretapply_13)
+                               (cpscm__trampoline (gk12 gretapply_13)))
+                             (lambda (gk17)
                                (cpscm__trampoline
                                  (cpscmreverse!
-                                   (lambda (g:ret-reverse!:18)
-                                     (cpscm__trampoline (g:k17 g:ret-reverse!:18)))
+                                   (lambda (gretreverse!_18)
+                                     (cpscm__trampoline (gk17 gretreverse!_18)))
                                    cpscm_res_45)))
-                             (lambda (g:k20)
+                             (lambda (gk20)
                                (cpscm__trampoline
                                  (cpscmcdr
-                                   (lambda (g:ret-cdr:22)
+                                   (lambda (gretcdr_22)
                                      (cpscm__trampoline
                                        (cpscmcar
-                                         (lambda (g:ret-car:25)
+                                         (lambda (gretcar_25)
                                            (cpscm__trampoline
                                              (cpscm_f_41
-                                               (lambda (g:ret-_f_41:24)
+                                               (lambda (gret_f_41_24)
                                                  (cpscm__trampoline
                                                    (cpscmcons
-                                                     (lambda (g:ret-cons:23)
+                                                     (lambda (gretcons_23)
                                                        (cpscm__trampoline
                                                          (cpscm_loop_43
-                                                           (lambda (g:ret-_loop_43:21)
-                                                             (cpscm__trampoline (g:k20 g:ret-_loop_43:21)))
-                                                           g:ret-cdr:22
-                                                           g:ret-cons:23)))
-                                                     g:ret-_f_41:24
+                                                           (lambda (gret_loop_43_21)
+                                                             (cpscm__trampoline (gk20 gret_loop_43_21)))
+                                                           gretcdr_22
+                                                           gretcons_23)))
+                                                     gret_f_41_24
                                                      cpscm_res_45)))
-                                               g:ret-car:25)))
+                                               gretcar_25)))
                                          cpscm_l_44)))
                                    cpscm_l_44))))))
-                       (cpscm_20_boolean->combinator g:ret-null?:15))))
+                       (cpscm_20_boolean->combinator gretnull?_15))))
                   cpscm_l_44))))))
-       (lambda (g3) (cpscm__trampoline (g:k2 g3)))
+       (lambda (g3) (cpscm__trampoline (gk2 g3)))
        'undefined))))
 (define cpscmfor-each
-  (lambda (g:k27 cpscm_f_42 cpscm_l_43)
+  (lambda (gk27 cpscm_f_41 cpscm_l_42)
     (cpscm__trampoline
-      ((lambda (g:k30 cpscm_loop_44)
+      ((lambda (gk30 cpscm_loop_43)
          (cpscm__trampoline
-           ((lambda (g:k34 cpscm_loop_44_tmp)
+           ((lambda (gk34 cpscm_loop_43_tmp)
               (cpscm__trampoline
-                ((lambda (g:ret-set!:35)
-                   (cpscm__trampoline (g:k34 g:ret-set!:35)))
-                 (set! cpscm_loop_44 cpscm_loop_44_tmp))))
+                ((lambda (gretset!_35) (cpscm__trampoline (gk34 gretset!_35)))
+                 (set! cpscm_loop_43 cpscm_loop_43_tmp))))
             (lambda (g31)
               (cpscm__trampoline
-                (cpscm_loop_44
-                  (lambda (g:ret-_loop_44:32)
-                    (cpscm__trampoline (g:k30 g:ret-_loop_44:32)))
-                  cpscm_l_43
-                  '())))
-            (lambda (g:k37 cpscm_l_45)
+                (cpscm_loop_43
+                  (lambda (gret_loop_43_32)
+                    (cpscm__trampoline (gk30 gret_loop_43_32)))
+                  cpscm_l_42)))
+            (lambda (gk37 cpscm_l_44)
               (cpscm__trampoline
                 (cpscmnull?
-                  (lambda (g:ret-null?:40)
+                  (lambda (gretnull?_40)
                     (cpscm__trampoline
-                      ((lambda (g:ret-_20_boolean->combinator:39)
+                      ((lambda (gret_20_boolean->combinator_39)
                          (cpscm__trampoline
-                           (g:ret-_20_boolean->combinator:39
-                             (lambda (g:ret-apply:38)
-                               (cpscm__trampoline (g:k37 g:ret-apply:38)))
-                             (lambda (g:k42) (cpscm__trampoline (g:k42 #t)))
-                             (lambda (g:k44)
+                           (gret_20_boolean->combinator_39
+                             (lambda (gretapply_38)
+                               (cpscm__trampoline (gk37 gretapply_38)))
+                             (lambda (gk42) (cpscm__trampoline (gk42 #t)))
+                             (lambda (gk44)
                                (cpscm__trampoline
                                  (cpscmcar
-                                   (lambda (g:ret-car:46)
+                                   (lambda (gretcar_46)
                                      (cpscm__trampoline
-                                       (cpscm_f_42
-                                         (lambda (g:ret-_f_42:45)
+                                       (cpscm_f_41
+                                         (lambda (gret_f_41_45)
                                            (cpscm__trampoline
                                              (cpscmcdr
-                                               (lambda (g:ret-cdr:48)
+                                               (lambda (gretcdr_48)
                                                  (cpscm__trampoline
-                                                   (cpscm_loop_44
-                                                     (lambda (g:ret-_loop_44:47)
-                                                       (cpscm__trampoline (g:k44 g:ret-_loop_44:47)))
-                                                     g:ret-cdr:48)))
-                                               cpscm_l_45)))
-                                         g:ret-car:46)))
-                                   cpscm_l_45))))))
-                       (cpscm_20_boolean->combinator g:ret-null?:40))))
-                  cpscm_l_45))))))
-       (lambda (g28) (cpscm__trampoline (g:k27 g28)))
+                                                   (cpscm_loop_43
+                                                     (lambda (gret_loop_43_47)
+                                                       (cpscm__trampoline (gk44 gret_loop_43_47)))
+                                                     gretcdr_48)))
+                                               cpscm_l_44)))
+                                         gretcar_46)))
+                                   cpscm_l_44))))))
+                       (cpscm_20_boolean->combinator gretnull?_40))))
+                  cpscm_l_44))))))
+       (lambda (g28) (cpscm__trampoline (gk27 g28)))
        'undefined))))
 (define cpscmassoc
-  (lambda (g:k50 cpscm_x_41 cpscm_lis_42 . cpscm_maybe-=_43)
+  (lambda (gk50 cpscm_x_41 cpscm_lis_42 . cpscm_maybe-=_43)
     (cpscm__trampoline
       (cpscmnull?
-        (lambda (g:ret-null?:54)
+        (lambda (gretnull?_54)
           (cpscm__trampoline
-            ((lambda (g:ret-_20_boolean->combinator:53)
+            ((lambda (gret_20_boolean->combinator_53)
                (cpscm__trampoline
-                 (g:ret-_20_boolean->combinator:53
-                   (lambda (g:ret-apply:52)
+                 (gret_20_boolean->combinator_53
+                   (lambda (gretapply_52)
                      (cpscm__trampoline
-                       ((lambda (g:k56)
+                       ((lambda (gk56 cpscm_e_44)
                           (cpscm__trampoline
                             (cpscmfind
-                              (lambda (g:ret-find:57)
-                                (cpscm__trampoline (g:k56 g:ret-find:57)))
-                              (lambda (g:k59 cpscm_entry_45)
+                              (lambda (gretfind_57)
+                                (cpscm__trampoline (gk56 gretfind_57)))
+                              (lambda (gk59 cpscm_entry_45)
                                 (cpscm__trampoline
                                   (cpscmcar
-                                    (lambda (g:ret-car:61)
+                                    (lambda (gretcar_61)
                                       (cpscm__trampoline
-                                        (g:ret-apply:52
-                                          (lambda (g:ret-_e_44:60)
-                                            (cpscm__trampoline (g:k59 g:ret-_e_44:60)))
+                                        (cpscm_e_44
+                                          (lambda (gret_e_44_60)
+                                            (cpscm__trampoline (gk59 gret_e_44_60)))
                                           cpscm_x_41
-                                          g:ret-car:61)))
+                                          gretcar_61)))
                                     cpscm_entry_45)))
                               cpscm_lis_42)))
-                        (lambda (g51) (cpscm__trampoline (g:k50 g51))))))
-                   (lambda (g:k63) (cpscm__trampoline (g:k63 cpscmequal?)))
-                   (lambda (g:k65)
+                        (lambda (g51) (cpscm__trampoline (gk50 g51)))
+                        gretapply_52)))
+                   (lambda (gk63) (cpscm__trampoline (gk63 cpscmequal?)))
+                   (lambda (gk65)
                      (cpscm__trampoline
                        (cpscmcar
-                         (lambda (g:ret-car:66)
-                           (cpscm__trampoline (g:k65 g:ret-car:66)))
+                         (lambda (gretcar_66)
+                           (cpscm__trampoline (gk65 gretcar_66)))
                          cpscm_maybe-=_43))))))
-             (cpscm_20_boolean->combinator g:ret-null?:54))))
+             (cpscm_20_boolean->combinator gretnull?_54))))
         cpscm_maybe-=_43))))
 (define cpscmassq
-  (lambda (g:k68 cpscm_x_41 cpscm_l_42)
+  (lambda (gk68 cpscm_x_41 cpscm_l_42)
     (cpscm__trampoline
       (cpscmassoc
-        (lambda (g:ret-assoc:69) (cpscm__trampoline (g:k68 g:ret-assoc:69)))
+        (lambda (gretassoc_69) (cpscm__trampoline (gk68 gretassoc_69)))
         cpscm_x_41
         cpscm_l_42
         cpscmeq?))))
 (define cpscmassv
-  (lambda (g:k71 cpscm_x_41 cpscm_l_42)
+  (lambda (gk71 cpscm_x_41 cpscm_l_42)
     (cpscm__trampoline
       (cpscmassoc
-        (lambda (g:ret-assoc:72) (cpscm__trampoline (g:k71 g:ret-assoc:72)))
+        (lambda (gretassoc_72) (cpscm__trampoline (gk71 gretassoc_72)))
         cpscm_x_41
         cpscm_l_42
         cpscmeqv?))))
 (define cpscmmember
-  (lambda (g:k74 cpscm_x_41 cpscm_lis_42 . cpscm_maybe-=_43)
+  (lambda (gk74 cpscm_x_41 cpscm_lis_42 . cpscm_maybe-=_43)
     (cpscm__trampoline
       (cpscmnull?
-        (lambda (g:ret-null?:78)
+        (lambda (gretnull?_78)
           (cpscm__trampoline
-            ((lambda (g:ret-_20_boolean->combinator:77)
+            ((lambda (gret_20_boolean->combinator_77)
                (cpscm__trampoline
-                 (g:ret-_20_boolean->combinator:77
-                   (lambda (g:ret-apply:76)
+                 (gret_20_boolean->combinator_77
+                   (lambda (gretapply_76)
                      (cpscm__trampoline
-                       ((lambda (g:k80)
+                       ((lambda (gk80 cpscm_e_44)
                           (cpscm__trampoline
                             (cpscmfind-tail
-                              (lambda (g:ret-find-tail:81)
-                                (cpscm__trampoline (g:k80 g:ret-find-tail:81)))
-                              (lambda (g:k83 cpscm_y_45)
+                              (lambda (gretfind-tail_81)
+                                (cpscm__trampoline (gk80 gretfind-tail_81)))
+                              (lambda (gk83 cpscm_y_45)
                                 (cpscm__trampoline
-                                  (g:ret-apply:76
-                                    (lambda (g:ret-_e_44:84)
-                                      (cpscm__trampoline (g:k83 g:ret-_e_44:84)))
+                                  (cpscm_e_44
+                                    (lambda (gret_e_44_84)
+                                      (cpscm__trampoline (gk83 gret_e_44_84)))
                                     cpscm_x_41
                                     cpscm_y_45)))
                               cpscm_lis_42)))
-                        (lambda (g75) (cpscm__trampoline (g:k74 g75))))))
-                   (lambda (g:k86) (cpscm__trampoline (g:k86 cpscmequal?)))
-                   (lambda (g:k88)
+                        (lambda (g75) (cpscm__trampoline (gk74 g75)))
+                        gretapply_76)))
+                   (lambda (gk86) (cpscm__trampoline (gk86 cpscmequal?)))
+                   (lambda (gk88)
                      (cpscm__trampoline
                        (cpscmcar
-                         (lambda (g:ret-car:89)
-                           (cpscm__trampoline (g:k88 g:ret-car:89)))
+                         (lambda (gretcar_89)
+                           (cpscm__trampoline (gk88 gretcar_89)))
                          cpscm_maybe-=_43))))))
-             (cpscm_20_boolean->combinator g:ret-null?:78))))
+             (cpscm_20_boolean->combinator gretnull?_78))))
         cpscm_maybe-=_43))))
 (define cpscmmemq
-  (lambda (g:k91 cpscm_x_41 cpscm_l_42)
+  (lambda (gk91 cpscm_x_41 cpscm_l_42)
     (cpscm__trampoline
       (cpscmmember
-        (lambda (g:ret-member:92) (cpscm__trampoline (g:k91 g:ret-member:92)))
+        (lambda (gretmember_92) (cpscm__trampoline (gk91 gretmember_92)))
         cpscm_x_41
         cpscm_l_42
         cpscmeq?))))
 (define cpscmmemv
-  (lambda (g:k94 cpscm_x_41 cpscm_l_42)
+  (lambda (gk94 cpscm_x_41 cpscm_l_42)
     (cpscm__trampoline
       (cpscmmember
-        (lambda (g:ret-member:95) (cpscm__trampoline (g:k94 g:ret-member:95)))
+        (lambda (gretmember_95) (cpscm__trampoline (gk94 gretmember_95)))
         cpscm_x_41
         cpscm_l_42
         cpscmeqv?))))
 (define cpscmappend! cpscmappend)
 (define cpscmappend-reverse
-  (lambda (g:k97 cpscm_rev-head_41 cpscm_tail_42)
+  (lambda (gk97 cpscm_rev-head_41 cpscm_tail_42)
     (cpscm__trampoline
       (cpscmreverse
-        (lambda (g:ret-reverse:99)
+        (lambda (gretreverse_99)
           (cpscm__trampoline
             (cpscmappend
-              (lambda (g:ret-append:98)
-                (cpscm__trampoline (g:k97 g:ret-append:98)))
-              g:ret-reverse:99
+              (lambda (gretappend_98) (cpscm__trampoline (gk97 gretappend_98)))
+              gretreverse_99
               cpscm_tail_42)))
         cpscm_rev-head_41))))
 (define cpscmappend-reverse! cpscmappend-reverse)
 (define cpscmreverse!
-  (lambda (g:k101 cpscm_l_41)
+  (lambda (gk101 cpscm_l_41)
     (cpscm__trampoline
       (cpscmreverse
-        (lambda (g:ret-reverse:102)
-          (cpscm__trampoline (g:k101 g:ret-reverse:102)))
+        (lambda (gretreverse_102) (cpscm__trampoline (gk101 gretreverse_102)))
         cpscm_l_41))))
 (define cpscm_20_make-promise
-  (lambda (g:k104 cpscm_proc_41)
+  (lambda (gk104 cpscm_proc_41)
     (cpscm__trampoline
-      ((lambda (g:k107 cpscm_result-ready?_42 cpscm_result_43)
+      ((lambda (gk107 cpscm_result-ready?_42 cpscm_result_43)
          (cpscm__trampoline
-           (g:k107
-             (lambda (g:k109)
-               (cpscm__trampoline
-                 ((lambda (g:ret-_20_boolean->combinator:111)
+           (gk107 (lambda (gk109)
                     (cpscm__trampoline
-                      (g:ret-_20_boolean->combinator:111
-                        (lambda (g:ret-apply:110)
-                          (cpscm__trampoline (g:k109 g:ret-apply:110)))
-                        (lambda (g:k113)
-                          (cpscm__trampoline (g:k113 cpscm_result_43)))
-                        (lambda (g:k115)
-                          (cpscm__trampoline
-                            (cpscm_proc_41
-                              (lambda (g:ret-_proc_41:117)
-                                (cpscm__trampoline
-                                  ((lambda (g:k119)
+                      ((lambda (gret_20_boolean->combinator_111)
+                         (cpscm__trampoline
+                           (gret_20_boolean->combinator_111
+                             (lambda (gretapply_110)
+                               (cpscm__trampoline (gk109 gretapply_110)))
+                             (lambda (gk113)
+                               (cpscm__trampoline (gk113 cpscm_result_43)))
+                             (lambda (gk115)
+                               (cpscm__trampoline
+                                 (cpscm_proc_41
+                                   (lambda (gret_proc_41_117)
                                      (cpscm__trampoline
-                                       ((lambda (g:ret-_20_boolean->combinator:121)
+                                       ((lambda (gk119 cpscm_x_44)
                                           (cpscm__trampoline
-                                            (g:ret-_20_boolean->combinator:121
-                                              (lambda (g:ret-apply:120)
-                                                (cpscm__trampoline (g:k119 g:ret-apply:120)))
-                                              (lambda (g:k123)
-                                                (cpscm__trampoline (g:k123 cpscm_result_43)))
-                                              (lambda (g:k125)
-                                                (cpscm__trampoline
-                                                  (begin
-                                                    (set! cpscm_result-ready?_42 #t)
-                                                    (set! cpscm_result_43 g:ret-_proc_41:117)
-                                                    (cpscm__reduce-trampoline
-                                                      (g:k125 cpscm_result_43))))))))
-                                        (cpscm_20_boolean->combinator
-                                          cpscm_result-ready?_42))))
-                                   (lambda (g116) (cpscm__trampoline (g:k115 g116))))))))))))
-                  (cpscm_20_boolean->combinator cpscm_result-ready?_42)))))))
-       (lambda (g105) (cpscm__trampoline (g:k104 g105)))
+                                            ((lambda (gret_20_boolean->combinator_121)
+                                               (cpscm__trampoline
+                                                 (gret_20_boolean->combinator_121
+                                                   (lambda (gretapply_120)
+                                                     (cpscm__trampoline (gk119 gretapply_120)))
+                                                   (lambda (gk123)
+                                                     (cpscm__trampoline (gk123 cpscm_result_43)))
+                                                   (lambda (gk125)
+                                                     (cpscm__trampoline
+                                                       (begin
+                                                         (set! cpscm_result-ready?_42 #t)
+                                                         (set! cpscm_result_43 cpscm_x_44)
+                                                         (gk125 cpscm_result_43)))))))
+                                             (cpscm_20_boolean->combinator
+                                               cpscm_result-ready?_42))))
+                                        (lambda (g116) (cpscm__trampoline (gk115 g116)))
+                                        gret_proc_41_117)))))))))
+                       (cpscm_20_boolean->combinator
+                         cpscm_result-ready?_42)))))))
+       (lambda (g105) (cpscm__trampoline (gk104 g105)))
        #f
        #f))))
 (cpscm__drive
-  ((lambda (g:k129)
+  ((lambda (gk129)
      (cpscm__trampoline
        (cpscmlist
-         (lambda (g:ret-list:131)
+         (lambda (gretlist_131)
            (cpscm__trampoline
-             ((lambda (g:ret-set!:130)
-                (cpscm__trampoline (g:k129 g:ret-set!:130)))
-              (set! cpscm__vals-marker g:ret-list:131))))
+             ((lambda (gretset!_130) (cpscm__trampoline (gk129 gretset!_130)))
+              (set! cpscm__vals-marker gretlist_131))))
          'values)))
    (lambda (cpscmx) cpscmx)))
 (define cpscm__pack-vals
-  (lambda (g:k133 cpscm_things_41)
+  (lambda (gk133 cpscm_things_41)
     (cpscm__trampoline
       (cpscmnull?
-        (lambda (g:ret-null?:137)
+        (lambda (gretnull?_137)
           (cpscm__trampoline
-            ((lambda (g:k145)
+            ((lambda (gk145 cpscm_x_42)
                (cpscm__trampoline
-                 ((lambda (g:ret-_20_boolean->combinator:147)
+                 ((lambda (gret_20_boolean->combinator_147)
                     (cpscm__trampoline
-                      (g:ret-_20_boolean->combinator:147
-                        (lambda (g:ret-apply:146)
-                          (cpscm__trampoline (g:k145 g:ret-apply:146)))
-                        (lambda (g:k149)
-                          (cpscm__trampoline (g:k149 g:ret-null?:137)))
-                        (lambda (g:k151)
+                      (gret_20_boolean->combinator_147
+                        (lambda (gretapply_146)
+                          (cpscm__trampoline (gk145 gretapply_146)))
+                        (lambda (gk149) (cpscm__trampoline (gk149 cpscm_x_42)))
+                        (lambda (gk151)
                           (cpscm__trampoline
                             (cpscmcdr
-                              (lambda (g:ret-cdr:154)
+                              (lambda (gretcdr_154)
                                 (cpscm__trampoline
                                   (cpscmnull?
-                                    (lambda (g:ret-null?:153)
+                                    (lambda (gretnull?_153)
                                       (cpscm__trampoline
                                         (cpscmnot
-                                          (lambda (g:ret-not:152)
-                                            (cpscm__trampoline (g:k151 g:ret-not:152)))
-                                          g:ret-null?:153)))
-                                    g:ret-cdr:154)))
+                                          (lambda (gretnot_152)
+                                            (cpscm__trampoline (gk151 gretnot_152)))
+                                          gretnull?_153)))
+                                    gretcdr_154)))
                               cpscm_things_41))))))
-                  (cpscm_20_boolean->combinator g:ret-null?:137))))
+                  (cpscm_20_boolean->combinator cpscm_x_42))))
              (lambda (g136)
                (cpscm__trampoline
-                 ((lambda (g:ret-_20_boolean->combinator:135)
+                 ((lambda (gret_20_boolean->combinator_135)
                     (cpscm__trampoline
-                      (g:ret-_20_boolean->combinator:135
-                        (lambda (g:ret-apply:134)
-                          (cpscm__trampoline (g:k133 g:ret-apply:134)))
-                        (lambda (g:k139)
+                      (gret_20_boolean->combinator_135
+                        (lambda (gretapply_134)
+                          (cpscm__trampoline (gk133 gretapply_134)))
+                        (lambda (gk139)
                           (cpscm__trampoline
                             (cpscmcons
-                              (lambda (g:ret-cons:140)
-                                (cpscm__trampoline (g:k139 g:ret-cons:140)))
+                              (lambda (gretcons_140)
+                                (cpscm__trampoline (gk139 gretcons_140)))
                               cpscm__vals-marker
                               cpscm_things_41)))
-                        (lambda (g:k142)
+                        (lambda (gk142)
                           (cpscm__trampoline
                             (cpscmcar
-                              (lambda (g:ret-car:143)
-                                (cpscm__trampoline (g:k142 g:ret-car:143)))
+                              (lambda (gretcar_143)
+                                (cpscm__trampoline (gk142 gretcar_143)))
                               cpscm_things_41))))))
-                  (cpscm_20_boolean->combinator g136)))))))
+                  (cpscm_20_boolean->combinator g136))))
+             gretnull?_137)))
         cpscm_things_41))))
 (define cpscm__unpack-vals
-  (lambda (g:k156 cpscm_vals_41)
+  (lambda (gk156 cpscm_vals_41)
     (cpscm__trampoline
       (cpscmpair?
-        (lambda (g:ret-pair?:161)
+        (lambda (gretpair?_161)
           (cpscm__trampoline
-            ((lambda (g:ret-_20_boolean->combinator:160)
+            ((lambda (gret_20_boolean->combinator_160)
                (cpscm__trampoline
-                 (g:ret-_20_boolean->combinator:160
-                   (lambda (g:ret-apply:159)
+                 (gret_20_boolean->combinator_160
+                   (lambda (gretapply_159)
                      (cpscm__trampoline
-                       ((lambda (g:ret-_20_boolean->combinator:158)
+                       ((lambda (gret_20_boolean->combinator_158)
                           (cpscm__trampoline
-                            (g:ret-_20_boolean->combinator:158
-                              (lambda (g:ret-apply:157)
-                                (cpscm__trampoline (g:k156 g:ret-apply:157)))
-                              (lambda (g:k163)
+                            (gret_20_boolean->combinator_158
+                              (lambda (gretapply_157)
+                                (cpscm__trampoline (gk156 gretapply_157)))
+                              (lambda (gk163)
                                 (cpscm__trampoline
                                   (cpscmcdr
-                                    (lambda (g:ret-cdr:164)
-                                      (cpscm__trampoline (g:k163 g:ret-cdr:164)))
+                                    (lambda (gretcdr_164)
+                                      (cpscm__trampoline (gk163 gretcdr_164)))
                                     cpscm_vals_41)))
-                              (lambda (g:k166)
+                              (lambda (gk166)
                                 (cpscm__trampoline
                                   (cpscmlist
-                                    (lambda (g:ret-list:167)
-                                      (cpscm__trampoline (g:k166 g:ret-list:167)))
+                                    (lambda (gretlist_167)
+                                      (cpscm__trampoline (gk166 gretlist_167)))
                                     cpscm_vals_41))))))
-                        (cpscm_20_boolean->combinator g:ret-apply:159))))
-                   (lambda (g:k169)
+                        (cpscm_20_boolean->combinator gretapply_159))))
+                   (lambda (gk169)
                      (cpscm__trampoline
                        (cpscmcar
-                         (lambda (g:ret-car:171)
+                         (lambda (gretcar_171)
                            (cpscm__trampoline
                              (cpscmeq?
-                               (lambda (g:ret-eq?:170)
-                                 (cpscm__trampoline (g:k169 g:ret-eq?:170)))
-                               g:ret-car:171
+                               (lambda (greteq?_170)
+                                 (cpscm__trampoline (gk169 greteq?_170)))
+                               gretcar_171
                                cpscm__vals-marker)))
                          cpscm_vals_41)))
-                   (lambda (g:k173) (cpscm__trampoline (g:k173 #f))))))
-             (cpscm_20_boolean->combinator g:ret-pair?:161))))
+                   (lambda (gk173) (cpscm__trampoline (gk173 #f))))))
+             (cpscm_20_boolean->combinator gretpair?_161))))
         cpscm_vals_41))))
 (define cpscm__switch-winders
-  (lambda (g:k175 cpscm_ccwinders_41)
+  (lambda (gk175 cpscm_ccwinders_41)
     (cpscm__trampoline
-      ((lambda (g:k178 cpscm_switch_42 cpscm_loop_43)
+      ((lambda (gk178 cpscm_switch_42 cpscm_loop_43)
          (cpscm__trampoline
-           ((lambda (g:k184 cpscm_switch_42_tmp cpscm_loop_43_tmp)
+           ((lambda (gk184 cpscm_switch_42_tmp cpscm_loop_43_tmp)
               (cpscm__trampoline
                 (begin
                   (set! cpscm_switch_42 cpscm_switch_42_tmp)
-                  (cpscm__reduce-trampoline
-                    ((lambda (g:ret-set!:186)
-                       (cpscm__trampoline (g:k184 g:ret-set!:186)))
-                     (set! cpscm_loop_43 cpscm_loop_43_tmp))))))
+                  ((lambda (gretset!_186)
+                     (cpscm__trampoline (gk184 gretset!_186)))
+                   (set! cpscm_loop_43 cpscm_loop_43_tmp)))))
             (lambda (g179)
               (cpscm__trampoline
                 (cpscmreverse
-                  (lambda (g:ret-reverse:181)
+                  (lambda (gretreverse_181)
                     (cpscm__trampoline
                       (cpscmreverse
-                        (lambda (g:ret-reverse:182)
+                        (lambda (gretreverse_182)
                           (cpscm__trampoline
                             (cpscm_loop_43
-                              (lambda (g:ret-_loop_43:180)
-                                (cpscm__trampoline (g:k178 g:ret-_loop_43:180)))
-                              g:ret-reverse:181
-                              g:ret-reverse:182)))
+                              (lambda (gret_loop_43_180)
+                                (cpscm__trampoline (gk178 gret_loop_43_180)))
+                              gretreverse_181
+                              gretreverse_182)))
                         cpscm_ccwinders_41)))
                   cpscm__winders)))
-            (lambda (g:k188 cpscm_a_44 cpscm_b_45)
+            (lambda (gk188 cpscm_a_44 cpscm_b_45)
               (cpscm__trampoline
-                ((lambda (g:k191 cpscm_run-all_46)
+                ((lambda (gk191 cpscm_run-all_46)
                    (cpscm__trampoline
-                     ((lambda (g:k199 cpscm_run-all_46_tmp)
+                     ((lambda (gk199 cpscm_run-all_46_tmp)
                         (cpscm__trampoline
-                          ((lambda (g:ret-set!:200)
-                             (cpscm__trampoline (g:k199 g:ret-set!:200)))
+                          ((lambda (gretset!_200)
+                             (cpscm__trampoline (gk199 gretset!_200)))
                            (set! cpscm_run-all_46 cpscm_run-all_46_tmp))))
                       (lambda (g192)
                         (cpscm__trampoline
                           (cpscmmap
-                            (lambda (g:ret-map:195)
+                            (lambda (gretmap_195)
                               (cpscm__trampoline
                                 (cpscmmap
-                                  (lambda (g:ret-map:196)
+                                  (lambda (gretmap_196)
                                     (cpscm__trampoline
                                       (cpscmappend-reverse!
-                                        (lambda (g:ret-append-reverse!:194)
+                                        (lambda (gretappend-reverse!_194)
                                           (cpscm__trampoline
                                             (cpscm_run-all_46
-                                              (lambda (g:ret-_run-all_46:193)
+                                              (lambda (gret_run-all_46_193)
                                                 (cpscm__trampoline
-                                                  ((lambda (g:ret-set!:197)
-                                                     (cpscm__trampoline (g:k191 g:ret-set!:197)))
+                                                  ((lambda (gretset!_197)
+                                                     (cpscm__trampoline (gk191 gretset!_197)))
                                                    (set! cpscm__winders cpscm_ccwinders_41))))
-                                              g:ret-append-reverse!:194)))
-                                        g:ret-map:195
-                                        g:ret-map:196)))
+                                              gretappend-reverse!_194)))
+                                        gretmap_195
+                                        gretmap_196)))
                                   cpscmcar
                                   cpscm_b_45)))
                             cpscmcdr
                             cpscm_a_44)))
-                      (lambda (g:k202 cpscm_to-apply_47)
+                      (lambda (gk202 cpscm_to-apply_47)
                         (cpscm__trampoline
                           (cpscmnull?
-                            (lambda (g:ret-null?:205)
+                            (lambda (gretnull?_205)
                               (cpscm__trampoline
-                                ((lambda (g:ret-_20_boolean->combinator:204)
+                                ((lambda (gret_20_boolean->combinator_204)
                                    (cpscm__trampoline
-                                     (g:ret-_20_boolean->combinator:204
-                                       (lambda (g:ret-apply:203)
-                                         (cpscm__trampoline (g:k202 g:ret-apply:203)))
-                                       (lambda (g:k207) (cpscm__trampoline (g:k207 #t)))
-                                       (lambda (g:k209)
+                                     (gret_20_boolean->combinator_204
+                                       (lambda (gretapply_203)
+                                         (cpscm__trampoline (gk202 gretapply_203)))
+                                       (lambda (gk207) (cpscm__trampoline (gk207 #t)))
+                                       (lambda (gk209)
                                          (cpscm__trampoline
                                            (cpscmcar
-                                             (lambda (g:ret-car:211)
+                                             (lambda (gretcar_211)
                                                (cpscm__trampoline
-                                                 (g:ret-car:211
-                                                   (lambda (g:ret-apply:210)
+                                                 (gretcar_211
+                                                   (lambda (gretapply_210)
                                                      (cpscm__trampoline
                                                        (cpscmcdr
-                                                         (lambda (g:ret-cdr:213)
+                                                         (lambda (gretcdr_213)
                                                            (cpscm__trampoline
                                                              (cpscm_run-all_46
-                                                               (lambda (g:ret-_run-all_46:212)
-                                                                 (cpscm__trampoline
-                                                                   (g:k209 g:ret-_run-all_46:212)))
-                                                               g:ret-cdr:213)))
+                                                               (lambda (gret_run-all_46_212)
+                                                                 (cpscm__trampoline (gk209 gret_run-all_46_212)))
+                                                               gretcdr_213)))
                                                          cpscm_to-apply_47))))))
                                              cpscm_to-apply_47))))))
-                                 (cpscm_20_boolean->combinator g:ret-null?:205))))
+                                 (cpscm_20_boolean->combinator gretnull?_205))))
                             cpscm_to-apply_47))))))
-                 (lambda (g189) (cpscm__trampoline (g:k188 g189)))
+                 (lambda (g189) (cpscm__trampoline (gk188 g189)))
                  'undefined)))
-            (lambda (g:k215 cpscm_a_44 cpscm_b_45)
+            (lambda (gk215 cpscm_a_44 cpscm_b_45)
               (cpscm__trampoline
                 (cpscmnull?
-                  (lambda (g:ret-null?:219)
+                  (lambda (gretnull?_219)
                     (cpscm__trampoline
-                      ((lambda (g:k229)
+                      ((lambda (gk229 cpscm_x_46)
                          (cpscm__trampoline
-                           ((lambda (g:ret-_20_boolean->combinator:231)
+                           ((lambda (gret_20_boolean->combinator_231)
                               (cpscm__trampoline
-                                (g:ret-_20_boolean->combinator:231
-                                  (lambda (g:ret-apply:230)
-                                    (cpscm__trampoline (g:k229 g:ret-apply:230)))
-                                  (lambda (g:k233)
-                                    (cpscm__trampoline (g:k233 g:ret-null?:219)))
-                                  (lambda (g:k235)
+                                (gret_20_boolean->combinator_231
+                                  (lambda (gretapply_230)
+                                    (cpscm__trampoline (gk229 gretapply_230)))
+                                  (lambda (gk233)
+                                    (cpscm__trampoline (gk233 cpscm_x_46)))
+                                  (lambda (gk235)
                                     (cpscm__trampoline
                                       (cpscmnull?
-                                        (lambda (g:ret-null?:237)
+                                        (lambda (gretnull?_237)
                                           (cpscm__trampoline
-                                            ((lambda (g:k239)
+                                            ((lambda (gk239 cpscm_x_47)
                                                (cpscm__trampoline
-                                                 ((lambda (g:ret-_20_boolean->combinator:241)
+                                                 ((lambda (gret_20_boolean->combinator_241)
                                                     (cpscm__trampoline
-                                                      (g:ret-_20_boolean->combinator:241
-                                                        (lambda (g:ret-apply:240)
-                                                          (cpscm__trampoline (g:k239 g:ret-apply:240)))
-                                                        (lambda (g:k243)
-                                                          (cpscm__trampoline (g:k243 g:ret-null?:237)))
-                                                        (lambda (g:k245)
+                                                      (gret_20_boolean->combinator_241
+                                                        (lambda (gretapply_240)
+                                                          (cpscm__trampoline (gk239 gretapply_240)))
+                                                        (lambda (gk243)
+                                                          (cpscm__trampoline (gk243 cpscm_x_47)))
+                                                        (lambda (gk245)
                                                           (cpscm__trampoline
                                                             (cpscmcar
-                                                              (lambda (g:ret-car:248)
+                                                              (lambda (gretcar_248)
                                                                 (cpscm__trampoline
                                                                   (cpscmcar
-                                                                    (lambda (g:ret-car:249)
+                                                                    (lambda (gretcar_249)
                                                                       (cpscm__trampoline
                                                                         (cpscmeq?
-                                                                          (lambda (g:ret-eq?:247)
+                                                                          (lambda (greteq?_247)
                                                                             (cpscm__trampoline
                                                                               (cpscmnot
-                                                                                (lambda (g:ret-not:246)
-                                                                                  (cpscm__trampoline (g:k245 g:ret-not:246)))
-                                                                                g:ret-eq?:247)))
-                                                                          g:ret-car:248
-                                                                          g:ret-car:249)))
+                                                                                (lambda (gretnot_246)
+                                                                                  (cpscm__trampoline (gk245 gretnot_246)))
+                                                                                greteq?_247)))
+                                                                          gretcar_248
+                                                                          gretcar_249)))
                                                                     cpscm_b_45)))
                                                               cpscm_a_44))))))
-                                                  (cpscm_20_boolean->combinator g:ret-null?:237))))
-                                             (lambda (g236) (cpscm__trampoline (g:k235 g236))))))
+                                                  (cpscm_20_boolean->combinator cpscm_x_47))))
+                                             (lambda (g236) (cpscm__trampoline (gk235 g236)))
+                                             gretnull?_237)))
                                         cpscm_b_45))))))
-                            (cpscm_20_boolean->combinator g:ret-null?:219))))
+                            (cpscm_20_boolean->combinator cpscm_x_46))))
                        (lambda (g218)
                          (cpscm__trampoline
-                           ((lambda (g:ret-_20_boolean->combinator:217)
+                           ((lambda (gret_20_boolean->combinator_217)
                               (cpscm__trampoline
-                                (g:ret-_20_boolean->combinator:217
-                                  (lambda (g:ret-apply:216)
-                                    (cpscm__trampoline (g:k215 g:ret-apply:216)))
-                                  (lambda (g:k221)
+                                (gret_20_boolean->combinator_217
+                                  (lambda (gretapply_216)
+                                    (cpscm__trampoline (gk215 gretapply_216)))
+                                  (lambda (gk221)
                                     (cpscm__trampoline
                                       (cpscm_switch_42
-                                        (lambda (g:ret-_switch_42:222)
-                                          (cpscm__trampoline (g:k221 g:ret-_switch_42:222)))
+                                        (lambda (gret_switch_42_222)
+                                          (cpscm__trampoline (gk221 gret_switch_42_222)))
                                         cpscm_a_44
                                         cpscm_b_45)))
-                                  (lambda (g:k224)
+                                  (lambda (gk224)
                                     (cpscm__trampoline
                                       (cpscmcdr
-                                        (lambda (g:ret-cdr:226)
+                                        (lambda (gretcdr_226)
                                           (cpscm__trampoline
                                             (cpscmcdr
-                                              (lambda (g:ret-cdr:227)
+                                              (lambda (gretcdr_227)
                                                 (cpscm__trampoline
                                                   (cpscm_loop_43
-                                                    (lambda (g:ret-_loop_43:225)
-                                                      (cpscm__trampoline (g:k224 g:ret-_loop_43:225)))
-                                                    g:ret-cdr:226
-                                                    g:ret-cdr:227)))
+                                                    (lambda (gret_loop_43_225)
+                                                      (cpscm__trampoline (gk224 gret_loop_43_225)))
+                                                    gretcdr_226
+                                                    gretcdr_227)))
                                               cpscm_b_45)))
                                         cpscm_a_44))))))
-                            (cpscm_20_boolean->combinator g218)))))))
+                            (cpscm_20_boolean->combinator g218))))
+                       gretnull?_219)))
                   cpscm_a_44))))))
-       (lambda (g176) (cpscm__trampoline (g:k175 g176)))
+       (lambda (g176) (cpscm__trampoline (gk175 g176)))
        'undefined
        'undefined))))
 (define cpscmdynamic-wind
-  (lambda (g:k251 cpscm_before_41 cpscm_thunk_42 cpscm_after_43)
+  (lambda (gk251 cpscm_before_41 cpscm_thunk_42 cpscm_after_43)
     (cpscm__trampoline
-      ((lambda (g:k254 cpscm_result_44)
+      ((lambda (gk254 cpscm_result_44)
          (cpscm__trampoline
            (begin
              (set! cpscm_result_44 #f)
-             (cpscm__reduce-trampoline
-               (cpscm_before_41
-                 (lambda (g:ret-_before_41:256)
-                   (cpscm__trampoline
-                     (cpscmcons
-                       (lambda (g:ret-cons:259)
-                         (cpscm__trampoline
-                           (cpscmcons
-                             (lambda (g:ret-cons:258)
-                               (cpscm__trampoline
-                                 (begin
-                                   (set! cpscm__winders g:ret-cons:258)
-                                   (cpscm__reduce-trampoline
-                                     (cpscm_thunk_42
-                                       (lambda (g:ret-_thunk_42:261)
-                                         (cpscm__trampoline
-                                           (begin
-                                             (set! cpscm_result_44 g:ret-_thunk_42:261)
-                                             (cpscm__reduce-trampoline
-                                               (cpscmcdr
-                                                 (lambda (g:ret-cdr:263)
-                                                   (cpscm__trampoline
-                                                     (begin
-                                                       (set! cpscm__winders g:ret-cdr:263)
-                                                       (cpscm__reduce-trampoline
-                                                         (cpscm_after_43
-                                                           (lambda (g:ret-_after_43:264)
-                                                             (cpscm__trampoline (g:k254 cpscm_result_44))))))))
-                                                 cpscm__winders))))))))))
-                             g:ret-cons:259
-                             cpscm__winders)))
-                       cpscm_before_41
-                       cpscm_after_43))))))))
-       (lambda (g252) (cpscm__trampoline (g:k251 g252)))
+             (cpscm_before_41
+               (lambda (gret_before_41_256)
+                 (cpscm__trampoline
+                   (cpscmcons
+                     (lambda (gretcons_259)
+                       (cpscm__trampoline
+                         (cpscmcons
+                           (lambda (gretcons_258)
+                             (cpscm__trampoline
+                               (begin
+                                 (set! cpscm__winders gretcons_258)
+                                 (cpscm_thunk_42
+                                   (lambda (gret_thunk_42_261)
+                                     (cpscm__trampoline
+                                       (begin
+                                         (set! cpscm_result_44 gret_thunk_42_261)
+                                         (cpscmcdr
+                                           (lambda (gretcdr_263)
+                                             (cpscm__trampoline
+                                               (begin
+                                                 (set! cpscm__winders gretcdr_263)
+                                                 (cpscm_after_43
+                                                   (lambda (gret_after_43_264)
+                                                     (cpscm__trampoline (gk254 cpscm_result_44)))))))
+                                           cpscm__winders))))))))
+                           gretcons_259
+                           cpscm__winders)))
+                     cpscm_before_41
+                     cpscm_after_43)))))))
+       (lambda (g252) (cpscm__trampoline (gk251 g252)))
        'undefined))))
 (define cpscmwith-failure-continuation
-  (lambda (g:k266 cpscm_hnd_41 cpscm_thunk_42)
+  (lambda (gk266 cpscm_hnd_41 cpscm_thunk_42)
     (cpscm__trampoline
-      ((lambda (g:k269 cpscm_old-hnd_43 cpscm_new-hnd_44)
+      ((lambda (gk269 cpscm_old-hnd_43 cpscm_new-hnd_44)
          (cpscm__trampoline
            (cpscmcurrent-error-handler
-             (lambda (g:ret-current-error-handler:271)
+             (lambda (gretcurrent-error-handler_271)
                (cpscm__trampoline
-                 ((lambda (g:k275 cpscm_new-hnd_44_tmp)
+                 ((lambda (gk275 cpscm_old-hnd_43_tmp cpscm_new-hnd_44_tmp)
                     (cpscm__trampoline
                       (begin
-                        (set! cpscm_old-hnd_43 g:ret-current-error-handler:271)
-                        (cpscm__reduce-trampoline
-                          ((lambda (g:ret-set!:277)
-                             (cpscm__trampoline (g:k275 g:ret-set!:277)))
-                           (set! cpscm_new-hnd_44 cpscm_new-hnd_44_tmp))))))
+                        (set! cpscm_old-hnd_43 cpscm_old-hnd_43_tmp)
+                        ((lambda (gretset!_277)
+                           (cpscm__trampoline (gk275 gretset!_277)))
+                         (set! cpscm_new-hnd_44 cpscm_new-hnd_44_tmp)))))
                   (lambda (g270)
                     (cpscm__trampoline
                       (cpscmcurrent-error-handler
-                        (lambda (g:ret-current-error-handler:272)
+                        (lambda (gretcurrent-error-handler_272)
                           (cpscm__trampoline
                             (cpscm_thunk_42
-                              (lambda (g:ret-_thunk_42:273)
-                                (cpscm__trampoline (g:k269 g:ret-_thunk_42:273))))))
+                              (lambda (gret_thunk_42_273)
+                                (cpscm__trampoline (gk269 gret_thunk_42_273))))))
                         cpscm_new-hnd_44)))
-                  (lambda (g:k279 cpscm_e_45 cpscm_ek_46)
+                  gretcurrent-error-handler_271
+                  (lambda (gk279 cpscm_e_45 cpscm_ek_46)
                     (cpscm__trampoline
                       (cpscmcurrent-error-handler
-                        (lambda (g:ret-current-error-handler:280)
+                        (lambda (gretcurrent-error-handler_280)
                           (cpscm__trampoline
                             (cpscm_hnd_41
-                              (lambda (g:ret-_hnd_41:281)
-                                (cpscm__trampoline (g:k279 g:ret-_hnd_41:281)))
+                              (lambda (gret_hnd_41_281)
+                                (cpscm__trampoline (gk279 gret_hnd_41_281)))
                               cpscm_e_45
                               cpscm_ek_46)))
                         cpscm_old-hnd_43)))))))))
-       (lambda (g267) (cpscm__trampoline (g:k266 g267)))
+       (lambda (g267) (cpscm__trampoline (gk266 g267)))
        'undefined
        'undefined))))
 (define cpscmwith/fc cpscmwith-failure-continuation)
 (define cpscm__default-err-hnd
-  (lambda (g:k283 cpscm_e_41 cpscm_ek_42)
+  (lambda (gk283 cpscm_e_41 cpscm_ek_42)
     (cpscm__trampoline
       (cpscmdisplay
-        (lambda (g:ret-display:284)
+        (lambda (gretdisplay_284)
           (cpscm__trampoline
             (cpscmdisplay
-              (lambda (g:ret-display:285)
+              (lambda (gretdisplay_285)
                 (cpscm__trampoline
                   (cpscmnewline
-                    (lambda (g:ret-newline:286)
-                      (cpscm__trampoline (g:k283 g:ret-newline:286))))))
+                    (lambda (gretnewline_286)
+                      (cpscm__trampoline (gk283 gretnewline_286))))))
               cpscm_e_41)))
         "Error: "))))
 (cpscm__drive
-  ((lambda (g:k288)
+  ((lambda (gk288)
      (cpscm__trampoline
-       ((lambda (g:ret-set!:289) (cpscm__trampoline (g:k288 g:ret-set!:289)))
+       ((lambda (gretset!_289) (cpscm__trampoline (gk288 gretset!_289)))
         (set! cpscm__err-hnd cpscm__default-err-hnd))))
    (lambda (cpscmx) cpscmx)))
 (define cpscmcurrent-error-handler
-  (lambda (g:k291 . cpscm_hnd_41)
+  (lambda (gk291 . cpscm_hnd_41)
     (cpscm__trampoline
       (cpscmnull?
-        (lambda (g:ret-null?:294)
+        (lambda (gretnull?_294)
           (cpscm__trampoline
-            ((lambda (g:ret-_20_boolean->combinator:293)
+            ((lambda (gret_20_boolean->combinator_293)
                (cpscm__trampoline
-                 (g:ret-_20_boolean->combinator:293
-                   (lambda (g:ret-apply:292)
-                     (cpscm__trampoline (g:k291 g:ret-apply:292)))
-                   (lambda (g:k296)
-                     (cpscm__trampoline (g:k296 cpscm__err-hnd)))
-                   (lambda (g:k298)
+                 (gret_20_boolean->combinator_293
+                   (lambda (gretapply_292)
+                     (cpscm__trampoline (gk291 gretapply_292)))
+                   (lambda (gk296) (cpscm__trampoline (gk296 cpscm__err-hnd)))
+                   (lambda (gk298)
                      (cpscm__trampoline
                        (cpscmcar
-                         (lambda (g:ret-car:300)
+                         (lambda (gretcar_300)
                            (cpscm__trampoline
-                             ((lambda (g:ret-set!:299)
-                                (cpscm__trampoline (g:k298 g:ret-set!:299)))
-                              (set! cpscm__err-hnd g:ret-car:300))))
+                             ((lambda (gretset!_299)
+                                (cpscm__trampoline (gk298 gretset!_299)))
+                              (set! cpscm__err-hnd gretcar_300))))
                          cpscm_hnd_41))))))
-             (cpscm_20_boolean->combinator g:ret-null?:294))))
+             (cpscm_20_boolean->combinator gretnull?_294))))
         cpscm_hnd_41))))
 (cpscm__drive
-  ((lambda (g:k302)
+  ((lambda (gk302)
      (cpscm__trampoline
        (cpscmcall-with-current-continuation
-         (lambda (g:ret-call-with-current-continuation:303)
-           (cpscm__trampoline
-             (g:k302 g:ret-call-with-current-continuation:303)))
-         (lambda (g:k305 cpscm_exit_41)
+         (lambda (gretcall-with-current-continuation_303)
+           (cpscm__trampoline (gk302 gretcall-with-current-continuation_303)))
+         (lambda (gk305 cpscm_exit_41)
            (cpscm__trampoline
              (cpscmcall-with-values
-               (lambda (g:ret-call-with-values:306)
-                 (cpscm__trampoline (g:k305 g:ret-call-with-values:306)))
-               (lambda (g:k308)
+               (lambda (gretcall-with-values_306)
+                 (cpscm__trampoline (gk305 gretcall-with-values_306)))
+               (lambda (gk308)
                  (cpscm__trampoline
                    (cpscmcall-with-current-continuation
-                     (lambda (g:ret-call-with-current-continuation:309)
+                     (lambda (gretcall-with-current-continuation_309)
                        (cpscm__trampoline
-                         (g:k308 g:ret-call-with-current-continuation:309)))
-                     (lambda (g:k311 cpscm_cc_42)
+                         (gk308 gretcall-with-current-continuation_309)))
+                     (lambda (gk311 cpscm_cc_42)
                        (cpscm__trampoline
                          (begin
                            (set! cpscm__err-cont cpscm_cc_42)
-                           (cpscm__reduce-trampoline
-                             (cpscm_exit_41
-                               (lambda (g:ret-_exit_41:313)
-                                 (cpscm__trampoline (g:k311 g:ret-_exit_41:313)))
-                               #t))))))))
-               (lambda (g:k315 cpscm_e_42 cpscm_ek_43)
+                           (cpscm_exit_41
+                             (lambda (gret_exit_41_313)
+                               (cpscm__trampoline (gk311 gret_exit_41_313)))
+                             #t)))))))
+               (lambda (gk315 cpscm_e_42 cpscm_ek_43)
                  (cpscm__trampoline
                    (cpscmcurrent-error-handler
-                     (lambda (g:ret-current-error-handler:317)
+                     (lambda (gretcurrent-error-handler_317)
                        (cpscm__trampoline
-                         (g:ret-current-error-handler:317
-                           (lambda (g:ret-apply:316)
-                             (cpscm__trampoline (g:k315 g:ret-apply:316)))
+                         (gretcurrent-error-handler_317
+                           (lambda (gretapply_316)
+                             (cpscm__trampoline (gk315 gretapply_316)))
                            cpscm_e_42
                            cpscm_ek_43))))))))))))
    (lambda (cpscmx) cpscmx)))
 (define cpscmerror
-  (lambda (g:k319 cpscm_e_41)
+  (lambda (gk319 cpscm_e_41)
     (cpscm__trampoline
       (cpscmcall-with-current-continuation
-        (lambda (g:ret-call-with-current-continuation:320)
-          (cpscm__trampoline
-            (g:k319 g:ret-call-with-current-continuation:320)))
-        (lambda (g:k322 cpscm_ek_42)
+        (lambda (gretcall-with-current-continuation_320)
+          (cpscm__trampoline (gk319 gretcall-with-current-continuation_320)))
+        (lambda (gk322 cpscm_ek_42)
           (cpscm__trampoline
             (cpscm__err-cont
-              (lambda (g:ret-%cpscm:err-cont:323)
-                (cpscm__trampoline (g:k322 g:ret-%cpscm:err-cont:323)))
+              (lambda (gret%cpscm:err-cont_323)
+                (cpscm__trampoline (gk322 gret%cpscm:err-cont_323)))
               cpscm_e_41
               cpscm_ek_42)))))))
 (define cpscmcall/cc cpscmcall-with-current-continuation)
