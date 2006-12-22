@@ -159,7 +159,7 @@
 ;; CPS-transforms lambda forms
 (define (lambda->cps form)
   (define args (second form))
-  (define k (xgensym ":k"))
+  (define k (xgensym "k"))
   `(lambda (,k . ,args) ,@(body->cps k (cddr form))))
 
 ;; CPS-transforms definitions

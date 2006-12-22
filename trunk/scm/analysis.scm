@@ -26,9 +26,10 @@
    if->combinator expand-extra simplify-ifs
    sexp->anf
    simplify-sexp simplify-body
-   rewrite-int-defs rewrite-body-int-defs sep-int-defs
-   define? constant? computation? lambda-form? needs-trampoline?
-   wrap-begin unwrap-begin const->bool def-fun->lambda-form
+   rewrite-int-defs rewrite-body-int-defs sep-int-defs bind-formals
+   define? lambda-form? literal? simple-literal? constant? computation?
+   needs-trampoline?
+   wrap-begin unwrap-begin unwrap-quote const->bool def-fun->lambda-form
    try-beta try-eta
    )
                                        
@@ -37,7 +38,7 @@
 (define gensym-cnt 0)
 (define/opt (xgensym ((info "")))
   (set! gensym-cnt (+ 1 gensym-cnt))
-  (if (symbol? info) (set! info (s+ ":" (symbol->string info) ":")))
+  (if (symbol? info) (set! info (s+ "_" (symbol->string info))))
   (string->symbol
    (s+ " %gs:" info (number->string gensym-cnt))))
 
@@ -63,6 +64,11 @@
   (wmatch sexp
           (('begin . body) body)
           (_ (list sexp))))
+
+(define (unwrap-quote sexp)
+  (wmatch sexp
+          (('quote q) q)
+          (_ sexp)))
 
 ;; Converts an s-exp to ANF, represented as a list of substitutions.
 ;; Implemented using depth-first traversal.
@@ -90,7 +96,7 @@
            (else
             (let ((self (xgensym
                          (if (symbol? head)
-                             (s+ ":ret-" (symbol->string head) ":") "")))
+                             (s+ "ret" (symbol->string head) "_") "")))
                   (new-kids (process-kids args)))
               (push! `(,self ,head ,@new-kids) substs)
               self))))
@@ -159,14 +165,25 @@
 (define (lambda-form? x)
   (and (pair? x) (eq? (car x) 'lambda)))
 
+(define (literal? x)
+  (if (pair? x) (eq? (car x) 'quote)
+      (any (cut <> x) (list boolean? number? string? char?))))
+
+(define (simple-literal? x)
+  (and (literal? x)
+       (or (not (pair? x))
+           (and-let* ((q (cadr x)) ( (not (pair? q))) ( (not (vector? q))))
+                     #t))))
+
+;; Checks whether the argument is a constant (includes lambda forms)
+(define (constant? x)
+  (or (literal? x) (lambda-form? x)))
+
 ;; Checks whether the argument is a computation.
-;; Constants plus lambda forms are "values", others are "computations".
+;; Constants (including  lambda forms) and vars are "values",
+;; others are "computations".
 (define (computation? x)
   (and (pair? x) (not (memq (car x) '(lambda quote define)))))
-
-(define (constant? x)
-  (if (pair? x) (memq (car x) '(lambda quote))
-      (any (cut <> x) (list boolean? number? string? char?))))
 
 (define (define? x)
   (and (pair? x) (eq? (car x) 'define)))
@@ -184,10 +201,13 @@
 ;; Destructures actual parameters according to formals.
 ;; @return the bindings a-list or #f for failure.
 (define (bind-formals formals vals)
+  (define (args->list args)
+    (if (every constant? args) `(quote ,(map unwrap-quote args))
+        `(list . ,args)))
   (define (loop formals vals bnd)
     (cond
      ((null? formals) (if (null? vals) bnd #f))
-     ((not (pair? formals)) (cons (cons formals vals) bnd))
+     ((not (pair? formals)) (cons (cons formals (args->list vals)) bnd))
      ((null? vals) #f)
      (else (loop (cdr formals) (cdr vals)
                  (cons (cons (car formals) (car vals)) bnd)))))
@@ -256,21 +276,24 @@
 ;; Simplifies applicative forms like ((lambda (x) ...) values ...).
 ;; Assumes that the arguments and the head lambda form are simplified.
 (define (try-beta sexp)
+  (define (simple-quoted? x)
+    (wmatch x
+            (('quote q)
+             (any (cut <> q) (list number? char? boolean? symbol?)))
+            (_ #f)))
+  (define (substitutable? b)
+    (any (cute <> (cdr b))
+         ;; symbol? needs dataflow analysis
+         (list number? char? boolean? simple-quoted?)))
   (wmatch
    sexp
    ((('lambda formals . body) . vals)
     (let ((bnd (bind-formals formals vals)))
       (if bnd
-          (receive (tosubst dontsubst)
-              (partition!
-               (lambda (b)
-                 (any (cute <> (cdr b))
-                      (list symbol? number? null? char? boolean?)))
-               bnd)
+          (receive (tosubst dontsubst) (partition! substitutable? bnd)
             (receive (simplified unsubst unused)
                 (beta-reduce tosubst dontsubst body)
-              (set! unsubst
-                    (append (alist-diff eq? dontsubst unused) unsubst))
+              (set! unsubst (append (alist-diff eq? dontsubst unused) unsubst))
               (wrap-begin
                `(
                  ,@(map cdr unused)
@@ -284,15 +307,17 @@
    (_ sexp)))
 
 (define (try-eta formals f args)
+  (define orig `(lambda ,formals (,f . ,args)))
   (if (or (memq f '(lambda quote set! begin))
           (symbol? f)  ;; eta disabled until dataflow analysis implemented
           (computation? f))
-      `(lambda ,formals (,f . ,args))
+      orig
       (let ((bnd (bind-formals formals args)))
         (if (and bnd (every (lambda (b)
                               (eq? (car b) (cdr b))) bnd)
                  (or (not (lambda-form? f))  ;; abort for broken application
-                     (bind-formals (cadr f) args)))
+                     (bind-formals (cadr f) args)
+                     (begin (cout "Warning: bad application " orig "\n") #f)))
             f
             `(lambda ,formals ,(try-beta `(,f . ,args)))))))
 
