@@ -14,7 +14,7 @@ return (cpscm__reduce_d_trampoline ((function (__args) {
 var g____ccwinders1=__args.car; __args=__args.cdr;
 return (cpscmccwinders = g____ccwinders1);
 }
-) (cpscm__list (cpscm__winders, cpscm__nil))), cpscm__reduce_d_trampoline ((cpscmf) (cpscm__list (cpscmk, function (__args) {
+) (cpscm__list (cpscm__winders, cpscm__nil))), (cpscmf) (cpscm__list (cpscmk, function (__args) {
 var cpscm__=__args.car; __args=__args.cdr;
 var cpscmxs=__args;
 return new cpscm__Trampoline (function () {
@@ -25,7 +25,7 @@ return (cpscm__pack_d_vals) (cpscm__list (cpscmk, cpscmxs, cpscm__nil)); });
 }
 , cpscmccwinders, cpscm__nil)); });
 }
-, cpscm__nil)))); });
+, cpscm__nil))); });
 }
 ) (cpscm__list (cpscm__sym ("undefined"), cpscm__nil)); });
 }
@@ -1097,12 +1097,12 @@ var g__k250=__args.car; __args=__args.cdr;
 var cpscm__spill__42__tmp=__args.car; __args=__args.cdr;
 var cpscm__loop__43__tmp=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
-return ((cpscm__spill__42 = cpscm__spill__42__tmp), cpscm__reduce_d_trampoline ((function (__args) {
+return ((cpscm__spill__42 = cpscm__spill__42__tmp), (function (__args) {
 var g__retset_b___252=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
 return (g__k250) (cpscm__list (g__retset_b___252, cpscm__nil)); });
 }
-) (cpscm__list ((cpscm__loop__43 = cpscm__loop__43__tmp), cpscm__nil)))); });
+) (cpscm__list ((cpscm__loop__43 = cpscm__loop__43__tmp), cpscm__nil))); });
 }
 ) (cpscm__list (function (__args) {
 var g__247=__args.car; __args=__args.cdr;
@@ -1560,7 +1560,7 @@ var g__ret__loop__43__361=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
 return (g__k359) (cpscm__list (g__ret__loop__43__361, cpscm__nil)); });
 }
-, cpscm__l__42, cpscm__nil, cpscm__nil)); });
+, cpscm__l__42, cpscm__nil)); });
 }
 , function (__args) {
 var g__k366=__args.car; __args=__args.cdr;
@@ -1829,12 +1829,12 @@ var g__k435=__args.car; __args=__args.cdr;
 var cpscm__n__42__tmp=__args.car; __args=__args.cdr;
 var cpscm__loop__43__tmp=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
-return ((cpscm__n__42 = cpscm__n__42__tmp), cpscm__reduce_d_trampoline ((function (__args) {
+return ((cpscm__n__42 = cpscm__n__42__tmp), (function (__args) {
 var g__retset_b___437=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
 return (g__k435) (cpscm__list (g__retset_b___437, cpscm__nil)); });
 }
-) (cpscm__list ((cpscm__loop__43 = cpscm__loop__43__tmp), cpscm__nil)))); });
+) (cpscm__list ((cpscm__loop__43 = cpscm__loop__43__tmp), cpscm__nil))); });
 }
 ) (cpscm__list (function (__args) {
 var g__430=__args.car; __args=__args.cdr;
@@ -1933,12 +1933,12 @@ var g__k462=__args.car; __args=__args.cdr;
 var cpscm__n__42__tmp=__args.car; __args=__args.cdr;
 var cpscm__loop__44__tmp=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
-return ((cpscm__n__42 = cpscm__n__42__tmp), (cpscm__v__43 = false), cpscm__reduce_d_trampoline ((function (__args) {
+return ((cpscm__n__42 = cpscm__n__42__tmp), (cpscm__v__43 = false), (function (__args) {
 var g__retset_b___465=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
 return (g__k462) (cpscm__list (g__retset_b___465, cpscm__nil)); });
 }
-) (cpscm__list ((cpscm__loop__44 = cpscm__loop__44__tmp), cpscm__nil)))); });
+) (cpscm__list ((cpscm__loop__44 = cpscm__loop__44__tmp), cpscm__nil))); });
 }
 ) (cpscm__list (function (__args) {
 var g__456=__args.car; __args=__args.cdr;
@@ -1946,12 +1946,12 @@ return new cpscm__Trampoline (function () {
 return (cpscmmake_d_vector) (cpscm__list (function (__args) {
 var g__retmake_d_vector__459=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
-return ((cpscm__v__43 = g__retmake_d_vector__459), cpscm__reduce_d_trampoline ((cpscm__loop__44) (cpscm__list (function (__args) {
+return ((cpscm__v__43 = g__retmake_d_vector__459), (cpscm__loop__44) (cpscm__list (function (__args) {
 var g__ret__loop__44__460=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
 return (g__k455) (cpscm__list (g__ret__loop__44__460, cpscm__nil)); });
 }
-, 0, cpscm__l__41, cpscm__nil)))); });
+, 0, cpscm__l__41, cpscm__nil))); });
 }
 , cpscm__n__42, cpscm__nil)); });
 }
@@ -2387,7 +2387,7 @@ return (g__k578) (cpscm__list (cpscm__result__43, cpscm__nil)); });
 , function (__args) {
 var g__k580=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
-return ((cpscm__result_d_ready_p___42 = true), (cpscm__result__43 = cpscm__x__44), cpscm__reduce_d_trampoline ((g__k580) (cpscm__list (cpscm__result__43, cpscm__nil)))); });
+return ((cpscm__result_d_ready_p___42 = true), (cpscm__result__43 = cpscm__x__44), (g__k580) (cpscm__list (cpscm__result__43, cpscm__nil))); });
 }
 , cpscm__nil)); });
 }
@@ -2611,12 +2611,12 @@ var g__k639=__args.car; __args=__args.cdr;
 var cpscm__switch__42__tmp=__args.car; __args=__args.cdr;
 var cpscm__loop__43__tmp=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
-return ((cpscm__switch__42 = cpscm__switch__42__tmp), cpscm__reduce_d_trampoline ((function (__args) {
+return ((cpscm__switch__42 = cpscm__switch__42__tmp), (function (__args) {
 var g__retset_b___641=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
 return (g__k639) (cpscm__list (g__retset_b___641, cpscm__nil)); });
 }
-) (cpscm__list ((cpscm__loop__43 = cpscm__loop__43__tmp), cpscm__nil)))); });
+) (cpscm__list ((cpscm__loop__43 = cpscm__loop__43__tmp), cpscm__nil))); });
 }
 ) (cpscm__list (function (__args) {
 var g__634=__args.car; __args=__args.cdr;
@@ -2907,7 +2907,7 @@ return (function (__args) {
 var g__k709=__args.car; __args=__args.cdr;
 var cpscm__result__44=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
-return ((cpscm__result__44 = false), cpscm__reduce_d_trampoline ((cpscm__before__41) (cpscm__list (function (__args) {
+return ((cpscm__result__44 = false), (cpscm__before__41) (cpscm__list (function (__args) {
 var g__ret__before__41__711=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
 return (cpscmcons) (cpscm__list (function (__args) {
@@ -2916,28 +2916,28 @@ return new cpscm__Trampoline (function () {
 return (cpscmcons) (cpscm__list (function (__args) {
 var g__retcons__713=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
-return ((cpscm__winders = g__retcons__713), cpscm__reduce_d_trampoline ((cpscm__thunk__42) (cpscm__list (function (__args) {
+return ((cpscm__winders = g__retcons__713), (cpscm__thunk__42) (cpscm__list (function (__args) {
 var g__ret__thunk__42__716=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
-return ((cpscm__result__44 = g__ret__thunk__42__716), cpscm__reduce_d_trampoline ((cpscmcdr) (cpscm__list (function (__args) {
+return ((cpscm__result__44 = g__ret__thunk__42__716), (cpscmcdr) (cpscm__list (function (__args) {
 var g__retcdr__718=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
-return ((cpscm__winders = g__retcdr__718), cpscm__reduce_d_trampoline ((cpscm__after__43) (cpscm__list (function (__args) {
+return ((cpscm__winders = g__retcdr__718), (cpscm__after__43) (cpscm__list (function (__args) {
 var g__ret__after__43__719=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
 return (g__k709) (cpscm__list (cpscm__result__44, cpscm__nil)); });
 }
-, cpscm__nil)))); });
+, cpscm__nil))); });
 }
-, cpscm__winders, cpscm__nil)))); });
+, cpscm__winders, cpscm__nil))); });
 }
-, cpscm__nil)))); });
+, cpscm__nil))); });
 }
 , g__retcons__714, cpscm__winders, cpscm__nil)); });
 }
 , cpscm__before__41, cpscm__after__43, cpscm__nil)); });
 }
-, cpscm__nil)))); });
+, cpscm__nil))); });
 }
 ) (cpscm__list (function (__args) {
 var g__707=__args.car; __args=__args.cdr;
@@ -2965,12 +2965,12 @@ var g__k730=__args.car; __args=__args.cdr;
 var cpscm__old_d_hnd__43__tmp=__args.car; __args=__args.cdr;
 var cpscm__new_d_hnd__44__tmp=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
-return ((cpscm__old_d_hnd__43 = cpscm__old_d_hnd__43__tmp), cpscm__reduce_d_trampoline ((function (__args) {
+return ((cpscm__old_d_hnd__43 = cpscm__old_d_hnd__43__tmp), (function (__args) {
 var g__retset_b___732=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
 return (g__k730) (cpscm__list (g__retset_b___732, cpscm__nil)); });
 }
-) (cpscm__list ((cpscm__new_d_hnd__44 = cpscm__new_d_hnd__44__tmp), cpscm__nil)))); });
+) (cpscm__list ((cpscm__new_d_hnd__44 = cpscm__new_d_hnd__44__tmp), cpscm__nil))); });
 }
 ) (cpscm__list (function (__args) {
 var g__725=__args.car; __args=__args.cdr;
@@ -3127,12 +3127,12 @@ return (g__k763) (cpscm__list (g__retcall_d_with_d_current_d_continuation__764, 
 var g__k766=__args.car; __args=__args.cdr;
 var cpscm__cc__42=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
-return ((cpscm__err_d_cont = cpscm__cc__42), cpscm__reduce_d_trampoline ((cpscm__exit__41) (cpscm__list (function (__args) {
+return ((cpscm__err_d_cont = cpscm__cc__42), (cpscm__exit__41) (cpscm__list (function (__args) {
 var g__ret__exit__41__768=__args.car; __args=__args.cdr;
 return new cpscm__Trampoline (function () {
 return (g__k766) (cpscm__list (g__ret__exit__41__768, cpscm__nil)); });
 }
-, true, cpscm__nil)))); });
+, true, cpscm__nil))); });
 }
 , cpscm__nil)); });
 }

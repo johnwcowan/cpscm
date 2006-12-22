@@ -29,7 +29,8 @@
   ;; Replaces some characters with string escapes
   (define (char-esc c)
     (case c
-      ((#\_ #\^ #\: #\. #\space)
+      ((#\_) "__") ((#\space) "_x_") ((#\:) "_c_")
+      ((#\^ #\.)
        (s+ "_" (number->string (char->integer c) 16) "_"))
       (else (string c))))
   (define (str-esc str)
@@ -65,13 +66,18 @@
    ((boolean? x) (if x 't 'nil))
    ((symbol? x) (symbol->lisp x))
    ((number? x) x)
+   ((char? x) x)
    (else (error `(atom->lisp ,x)))))
 
 (define (quoted->lisp x)
+  (define orig `(quote ,x))
   (cond ((null? x) 'nil)
-        ((any (cut <> x) (list boolean? number? string?))
-         (atom->lisp x))
-        (else `(quote ,x))))
+        ((symbol? x) orig)
+        ((vector? x)
+         `(quote ,(list->vector (second (quoted->lisp (vector->list x))))))
+        ((pair? x)
+         `(quote ,(improper-map (compose unwrap-quote quoted->lisp) x)))
+        (else (atom->lisp x))))
 
 (define (lambda->lisp args body name)
   (let ((nbody (map sexp->lisp (rewrite-body-int-defs body))))
@@ -96,12 +102,14 @@
     (if top? `(cpscm__drive ,lexp (function error)) lexp))
   (define (do-red sexp)
     ((if (needs-trampoline? sexp)
-         (cut list 'funcall 'cpscm__reduce-trampoline <>) values)
+         (cut list 'cpscm__reduce-trampoline <>) values)
      (sexp->lisp sexp)))
   (wmatch
    sexp
    (('quote x) (quoted->lisp x))
-   (('begin . prog) (drive `(progn . ,(map do-red prog))))
+   (('begin . prog)
+    (receive (some last) (split-at-right prog 1)
+      (drive `(progn ,@(map do-red some) ,(sexp->lisp (car last))))))
    (('set! x val) `(setq ,(symbol->lisp x) ,(do-eval val)))
    (('lambda args . body) (lambda->lisp args body name))
    (('define (f . args) . body)

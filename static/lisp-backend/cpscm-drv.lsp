@@ -1,22 +1,23 @@
-(defmacro cpscm__global (var val &optional (doc nil docp))     
-  (let ((backing-var 
-         (intern (concatenate
-                  'string  (symbol-name '#:*deflex-var-) 
-                  (symbol-name var) (symbol-name '#:*))
-                 (symbol-package var))))
-    `(progn 
-       (defparameter ,backing-var ,val ,doc) 
-       ,@(when docp `((setf (documentation ',var 'variable) ,doc))) 
-       (define-symbol-macro ,var ,backing-var))))
+;; (defmacro cpscm__global (var val &optional (doc nil docp))     
+;;   (let ((backing-var 
+;;          (intern (concatenate
+;;                   'string  (symbol-name '#:*deflex-var-) 
+;;                   (symbol-name var) (symbol-name '#:*))
+;;                  (symbol-package var))))
+;;     `(progn 
+;;        (defparameter ,backing-var ,val ,doc) 
+;;        ; ,@(when docp `((setf (documentation ',var 'variable) ,doc)))
+;;        (define-symbol-macro ,var ,backing-var))))
+
+;; Probably broken in theory. In practice, works in CLISP, GCL, and
+;; (albeit with warnings) SBCL. (defvar) makes symbols pervasively
+;; special, so it's useless.
+(defmacro cpscm__global (x val)
+  `(locally (declare (special ,x)) (setq ,x ,val) 
+            (setf (get ',x 'cpscm__fname) ',x)))
 
 (defmacro cpscm__declare-globals (&rest vars)
   `(progn ,@(mapcar (lambda (v) `(cpscm__global ,v nil)) vars)))
-
-;; Probably broken in theory. In practice, works in CLISP, GCL, and
-;; (albeit with warnings) SBCL. (defvar) creates symbols as pervasively
-;; global, so it's broken.
-;(defmacro cpscm__global (x val)
-;  `(locally (declare (special ,x)) (setq ,x ,val)))
 
 (defun cpscm__cpswrap (f)
   (lambda (k &rest args)
@@ -27,6 +28,7 @@
                          (concatenate 'string "cpscm" (string name)))
                        (cpscm__cpswrap #',f))))
  (d null? null) (d pair? consp)
+ (d procedure? functionp)
  (d symbol? symbolp) (d vector? vectorp) (d character? characterp)
  (d number? numberp) (d integer? integerp) (d rational? rationalp)
  (d char? characterp)
@@ -66,14 +68,8 @@
  (d char-downcase) (d char-upcase)
  )
 
-(cpscm__global cpscm_20_boolean->combinator
-        (let ((combthen (lambda (kk then else) (funcall then kk)))
-              (combelse (lambda (kk then else) (funcall else kk))))
-          (lambda (test)
-            (if test combthen combelse))))
-
 (defstruct cpscm__delay thunk)
-(cpscm__global cpscm_20_delay
+(cpscm__global cpscm_x_delay
   (lambda (k thunk) (funcall k (make-cpscm__delay :thunk thunk))))
 (cpscm__global cpscmpromise?
   (lambda (k p) (funcall k (cpscm__delay-p p))))
@@ -85,17 +81,34 @@
 (defun cpscm__trampoline (thunk)
   (make-trampoline :thunk thunk))
 
-(defparameter cpscm__reduce-trampoline
-  (lambda (cc)
-    (loop while (trampoline-p cc) do 
+(defmacro cpscm__trace (f)
+  (let ((oldf (gensym)) (args (gensym)) (result (gensym)))
+    `(let ((,oldf ,f))
+       (setq ,f (lambda (&rest ,args)
+                  (print (format nil "Trace in : ~a" (get ',f 'cpscm__fname)))
+                  (let ((,result (apply ,oldf ,args)))
+                    ;; result usually a trampoline
+                    ,result))))))
+
+(cpscm__global
+ cpscm_x_boolean->combinator
+ (let ((combthen (lambda (kk then else)
+                   (cpscm__trampoline (lambda () (funcall then kk)))))
+       (combelse (lambda (kk then else)
+                   (cpscm__trampoline (lambda () (funcall else kk))))))
+   (lambda (test)
+     (if test combthen combelse))))
+
+(defun cpscm__reduce-trampoline (cc)
+    (loop for i from 1 while (trampoline-p cc) do 
           ;; (print `(Executing ,cc))
           (setq cc (funcall (trampoline-thunk cc))))
-    cc))
+    cc)
 
 (defun cpscm__drive (cc excHnd)
   (handler-case
-   (funcall cpscm__reduce-trampoline cc)
-   (condition (e) (funcall excHnd e))))
+   (cpscm__reduce-trampoline cc)
+  (condition (e) (funcall excHnd e))))
 
 ;; placeholders to quench warnings
 (cpscm__declare-globals current-output-port cpscmmap cpscmfor-each cpscmreverse cpscmreverse! cpscmappend cpscmappend! cpscm__pack-vals)

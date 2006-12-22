@@ -90,9 +90,9 @@
            ((and (pair? head) (not (eq? (car head) 'lambda)))
             (dfs `(apply ,head ,@args '())))
            ((eq? head 'begin)
-            (receive (ret rignored) (car+cdr (reverse args))
-              (process-kids (reverse! rignored))
-              (dfs ret)))
+            (receive (ignored ret) (split-at-right args 1)
+              (process-kids ignored)
+              (dfs (car ret))))
            (else
             (let ((self (xgensym
                          (if (symbol? head)
