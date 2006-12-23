@@ -18,12 +18,10 @@
 
 (require-library 'cpscm) (import cpscm)
 
-(module scm2lisp (symbol->lisp sexp->lisp
-                  create-lisp-prelude scm2lisp:compile
-                  trampoline?)
+(module scm2lisp (symbol->lisp quoted->lisp sexp->lisp
+                  create-lisp-prelude scm2lisp:compile)
   
 (def-in-module in-prelude? (make-parameter #f))
-(def-in-module trampoline? (make-parameter #t))
 
 (define (symbol->lisp x)
   ;; Replaces some characters with string escapes
@@ -71,12 +69,17 @@
 
 (define (quoted->lisp x)
   (define orig `(quote ,x))
-  (cond ((null? x) 'nil)
+  (define (nil->list x)
+    (wmatch x
+            ((a b) (if (and (eq? a 'quote) (eq? b 'nil)) '() x))
+            (_ x)))
+  (cond ((null? x) '())
         ((symbol? x) orig)
         ((vector? x)
          `(quote ,(list->vector (second (quoted->lisp (vector->list x))))))
         ((pair? x)
-         `(quote ,(improper-map (compose unwrap-quote quoted->lisp) x)))
+         `(quote ,(improper-map
+                   (compose unwrap-quote nil->list quoted->lisp) x)))
         (else (atom->lisp x))))
 
 (define (lambda->lisp args body name)

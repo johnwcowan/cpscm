@@ -25,10 +25,12 @@
 
 (module cpscm
   (prog->is
+   trampoline?
    cpscm-compiler
    sexp->cps def->cps lambda->cps
    cpscm-int-defs cpscm-defs cpscm-defs-cpsed)
                   
+(def-in-module trampoline? (make-parameter #t))
 
 (define (cpscm-int-vars)
   `(

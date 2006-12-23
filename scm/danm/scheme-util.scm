@@ -30,7 +30,7 @@
 
 (module
  danm/scheme-util
- (atom? improper-map split-at-right alist-diff with-input-from-str with-output-to-str port->sexp-list port->string read-list read-list/string cout)
+ (atom? improper-map improper-fold split-at-right alist-diff with-input-from-str with-output-to-str port->sexp-list port->string read-list read-list/string cout)
 
  (cond-expand
   (sisc (import string-io))
@@ -42,9 +42,13 @@
         (list symbol? number? char? string? boolean? null?)))
 
  (define (improper-map f l)
-   (cond ((null? l) '())
-         ((not (pair? l)) (f l))
+   (cond ((not (pair? l)) (f l))
          (else (cons (f (car l)) (improper-map f (cdr l))))))
+
+ (define (improper-fold kons knil l)
+   (let loop ((l l) (result knil))
+     (cond ((not (pair? l)) (kons l result))
+           (else (loop (cdr l) (kons (car l) result))))))
 
  (define (split-at-right l n)
    (receive (l1 l2) (split-at (reverse l) n)

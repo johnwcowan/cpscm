@@ -32,8 +32,10 @@
 <form action="#">
 <input id="sort" class="submit" type="submit" value="Sort">
 &nbsp;
-<input id="asc" name="order" type="radio" checked="checked"> Ascending
-<input id="desc" name="order" type="radio"> Descending
+<input id="asc" name="order" type="radio" value="asc" checked="checked">
+Ascending
+<input id="desc" name="order" type="radio" value="desc">
+Descending
 <br>
 <input id="change_nums" type="submit" class="submit" value="Change numbers">
 &nbsp;<input id="new_numbers" type="text" value="5,3,10,7">
@@ -41,7 +43,7 @@
 
 <h2>How this works</h2>
 
-<p>The bubblesort algorithm is implemented in <kbd><a href="../scheme-examples/bs.scm">bs.scm</a></kbd> (which compiles to <kbd><a href="scm-bs.js">scm-bs.js</a></kbd>). The native DHTML code is in <kbd><a href="bs-demo.js">bs-demo.js</a></kbd>. This web page references in its &lt;head&gt; section both the native and the compiled Scheme code, as well as <kbd><a href="../js-backend/cpscm-drv.js">cpscm-drv.js</a></kbd> and <kbd><a href="../js-backend/prelude.js">prelude.js</a></kbd>.</p>
+<p>The bubblesort algorithm is implemented in <kbd><a href="../scheme-examples/bs.scm">bs.scm</a></kbd> (which compiles to <kbd><a href="scm-bs.js">scm-bs.js</a></kbd>). The native DHTML code is in <kbd><a href="bs-demo.js">bs-demo.js</a></kbd>. This web page references in its &lt;head&gt; section both the native and the compiled Scheme code, as well as the backend files <kbd><a href="../js-backend/cpscm-drv.js">cpscm-drv.js</a></kbd> and <kbd><a href="../js-backend/prelude.js">prelude.js</a></kbd>.</p>
 
 <p>To call a Scheme function from Javascript, find the mangled name (by calling <code>(symbol-&gt;js 'fun)</code> from the Scheme compiler, where <code>fun</code> is your Scheme function). Then (assuming the mangled name is <code>cpscmfun</code>) insert something like the following template in Javascript:</p>
 <pre><code>var result = cpscm__drive (cpscm__call_scm (cpscmfun (cpscm__id, arg1, arg2 /* ... */));</code></pre>

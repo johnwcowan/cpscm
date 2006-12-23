@@ -18,8 +18,8 @@ var cpscmcset = cpscm__cpswrap (
 function do_sort () {
   cpscm__drive (
     cpscm__call_scm (
-      cpscmbubble_2d_sort_21_, cpscm__id,
-      numbers.length, $("asc").checked ? cpscm_3c_ : cpscm_3e_,
+      cpscmbubble_d_sort_b_, cpscm__id,
+      numbers.length, $("asc").checked ? cpscm_l__e_ : cpscm_r__e_,
       cpscmcref, cpscmcset));
   return false;
 }
@@ -56,7 +56,7 @@ var alert_err = cpscm__cpswrap (
 function initialize () {
   // calls (current-error-handler alert_err)
   cpscm__drive (
-    cpscm__call_scm (cpscmcurrent_2d_error_2d_handler, cpscm__id, alert_err));
+    cpscm__call_scm (cpscmcurrent_d_error_d_handler, cpscm__id, alert_err));
   numbers = $("vec").getElementsByTagName("td");
   $("sort").onclick = do_sort;
   $("change_nums").onclick = change_nums;
