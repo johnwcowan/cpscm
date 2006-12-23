@@ -19,7 +19,6 @@
 (require-library 'cpscm) (import cpscm)
 
 (define in-prelude? (make-parameter #f))
-(define trampoline? (make-parameter #t))
 
 (define (symbol->cpscm x)
   (define (char-esc c)
