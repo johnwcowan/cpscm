@@ -1,7 +1,7 @@
 (cpscm__global cpscm__vals-marker cpscm__false)
 
 
-(cpscm__global cpscm__winders nil)
+(cpscm__global cpscm__winders ())
 
 
 (cpscm__global cpscm__err-hnd cpscm__false)
@@ -91,13 +91,7 @@
         (funcall
           cpscmcar
           (lambda (gretcar__4)
-            (cpscm__trampoline
-              (lambda ()
-                (funcall
-                  cpscmcar
-                  (lambda (gretcar__3)
-                    (cpscm__trampoline (lambda () (funcall gk2 gretcar__3))))
-                  gretcar__4))))
+            (cpscm__trampoline (lambda () (funcall cpscmcar gk2 gretcar__4))))
           cpscm__x__41)))))
 
 
@@ -109,13 +103,7 @@
         (funcall
           cpscmcdr
           (lambda (gretcdr__8)
-            (cpscm__trampoline
-              (lambda ()
-                (funcall
-                  cpscmcar
-                  (lambda (gretcar__7)
-                    (cpscm__trampoline (lambda () (funcall gk6 gretcar__7))))
-                  gretcdr__8))))
+            (cpscm__trampoline (lambda () (funcall cpscmcar gk6 gretcdr__8))))
           cpscm__x__41)))))
 
 
@@ -128,12 +116,7 @@
           cpscmcar
           (lambda (gretcar__12)
             (cpscm__trampoline
-              (lambda ()
-                (funcall
-                  cpscmcdr
-                  (lambda (gretcdr__11)
-                    (cpscm__trampoline (lambda () (funcall gk10 gretcdr__11))))
-                  gretcar__12))))
+              (lambda () (funcall cpscmcdr gk10 gretcar__12))))
           cpscm__x__41)))))
 
 
@@ -146,12 +129,7 @@
           cpscmcdr
           (lambda (gretcdr__16)
             (cpscm__trampoline
-              (lambda ()
-                (funcall
-                  cpscmcdr
-                  (lambda (gretcdr__15)
-                    (cpscm__trampoline (lambda () (funcall gk14 gretcdr__15))))
-                  gretcdr__16))))
+              (lambda () (funcall cpscmcdr gk14 gretcdr__16))))
           cpscm__x__41)))))
 
 
@@ -169,13 +147,7 @@
                   cpscmcar
                   (lambda (gretcar__20)
                     (cpscm__trampoline
-                      (lambda ()
-                        (funcall
-                          cpscmcar
-                          (lambda (gretcar__19)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk18 gretcar__19))))
-                          gretcar__20))))
+                      (lambda () (funcall cpscmcar gk18 gretcar__20))))
                   gretcar__21))))
           cpscm__x__41)))))
 
@@ -194,13 +166,7 @@
                   cpscmcar
                   (lambda (gretcar__25)
                     (cpscm__trampoline
-                      (lambda ()
-                        (funcall
-                          cpscmcar
-                          (lambda (gretcar__24)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk23 gretcar__24))))
-                          gretcar__25))))
+                      (lambda () (funcall cpscmcar gk23 gretcar__25))))
                   gretcdr__26))))
           cpscm__x__41)))))
 
@@ -219,13 +185,7 @@
                   cpscmcdr
                   (lambda (gretcdr__30)
                     (cpscm__trampoline
-                      (lambda ()
-                        (funcall
-                          cpscmcar
-                          (lambda (gretcar__29)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk28 gretcar__29))))
-                          gretcdr__30))))
+                      (lambda () (funcall cpscmcar gk28 gretcdr__30))))
                   gretcar__31))))
           cpscm__x__41)))))
 
@@ -244,13 +204,7 @@
                   cpscmcdr
                   (lambda (gretcdr__35)
                     (cpscm__trampoline
-                      (lambda ()
-                        (funcall
-                          cpscmcar
-                          (lambda (gretcar__34)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk33 gretcar__34))))
-                          gretcdr__35))))
+                      (lambda () (funcall cpscmcar gk33 gretcdr__35))))
                   gretcdr__36))))
           cpscm__x__41)))))
 
@@ -269,13 +223,7 @@
                   cpscmcar
                   (lambda (gretcar__40)
                     (cpscm__trampoline
-                      (lambda ()
-                        (funcall
-                          cpscmcdr
-                          (lambda (gretcdr__39)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk38 gretcdr__39))))
-                          gretcar__40))))
+                      (lambda () (funcall cpscmcdr gk38 gretcar__40))))
                   gretcar__41))))
           cpscm__x__41)))))
 
@@ -294,13 +242,7 @@
                   cpscmcar
                   (lambda (gretcar__45)
                     (cpscm__trampoline
-                      (lambda ()
-                        (funcall
-                          cpscmcdr
-                          (lambda (gretcdr__44)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk43 gretcdr__44))))
-                          gretcar__45))))
+                      (lambda () (funcall cpscmcdr gk43 gretcar__45))))
                   gretcdr__46))))
           cpscm__x__41)))))
 
@@ -319,13 +261,7 @@
                   cpscmcdr
                   (lambda (gretcdr__50)
                     (cpscm__trampoline
-                      (lambda ()
-                        (funcall
-                          cpscmcdr
-                          (lambda (gretcdr__49)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk48 gretcdr__49))))
-                          gretcdr__50))))
+                      (lambda () (funcall cpscmcdr gk48 gretcdr__50))))
                   gretcar__51))))
           cpscm__x__41)))))
 
@@ -344,13 +280,7 @@
                   cpscmcdr
                   (lambda (gretcdr__55)
                     (cpscm__trampoline
-                      (lambda ()
-                        (funcall
-                          cpscmcdr
-                          (lambda (gretcdr__54)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk53 gretcdr__54))))
-                          gretcdr__55))))
+                      (lambda () (funcall cpscmcdr gk53 gretcdr__55))))
                   gretcdr__56))))
           cpscm__x__41)))))
 
@@ -374,13 +304,7 @@
                           cpscmcar
                           (lambda (gretcar__60)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcar
-                                  (lambda (gretcar__59)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk58 gretcar__59))))
-                                  gretcar__60))))
+                              (lambda () (funcall cpscmcar gk58 gretcar__60))))
                           gretcar__61))))
                   gretcar__62))))
           cpscm__x__41)))))
@@ -405,13 +329,7 @@
                           cpscmcar
                           (lambda (gretcar__66)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcar
-                                  (lambda (gretcar__65)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk64 gretcar__65))))
-                                  gretcar__66))))
+                              (lambda () (funcall cpscmcar gk64 gretcar__66))))
                           gretcar__67))))
                   gretcdr__68))))
           cpscm__x__41)))))
@@ -436,13 +354,7 @@
                           cpscmcar
                           (lambda (gretcar__72)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcar
-                                  (lambda (gretcar__71)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk70 gretcar__71))))
-                                  gretcar__72))))
+                              (lambda () (funcall cpscmcar gk70 gretcar__72))))
                           gretcdr__73))))
                   gretcar__74))))
           cpscm__x__41)))))
@@ -467,13 +379,7 @@
                           cpscmcar
                           (lambda (gretcar__78)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcar
-                                  (lambda (gretcar__77)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk76 gretcar__77))))
-                                  gretcar__78))))
+                              (lambda () (funcall cpscmcar gk76 gretcar__78))))
                           gretcdr__79))))
                   gretcdr__80))))
           cpscm__x__41)))))
@@ -498,13 +404,7 @@
                           cpscmcdr
                           (lambda (gretcdr__84)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcar
-                                  (lambda (gretcar__83)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk82 gretcar__83))))
-                                  gretcdr__84))))
+                              (lambda () (funcall cpscmcar gk82 gretcdr__84))))
                           gretcar__85))))
                   gretcar__86))))
           cpscm__x__41)))))
@@ -529,13 +429,7 @@
                           cpscmcdr
                           (lambda (gretcdr__90)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcar
-                                  (lambda (gretcar__89)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk88 gretcar__89))))
-                                  gretcdr__90))))
+                              (lambda () (funcall cpscmcar gk88 gretcdr__90))))
                           gretcar__91))))
                   gretcdr__92))))
           cpscm__x__41)))))
@@ -560,13 +454,7 @@
                           cpscmcdr
                           (lambda (gretcdr__96)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcar
-                                  (lambda (gretcar__95)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk94 gretcar__95))))
-                                  gretcdr__96))))
+                              (lambda () (funcall cpscmcar gk94 gretcdr__96))))
                           gretcdr__97))))
                   gretcar__98))))
           cpscm__x__41)))))
@@ -591,13 +479,7 @@
                           cpscmcdr
                           (lambda (gretcdr__102)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcar
-                                  (lambda (gretcar__101)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk100 gretcar__101))))
-                                  gretcdr__102))))
+                              (lambda () (funcall cpscmcar gk100 gretcdr__102))))
                           gretcdr__103))))
                   gretcdr__104))))
           cpscm__x__41)))))
@@ -622,13 +504,7 @@
                           cpscmcar
                           (lambda (gretcar__108)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcdr
-                                  (lambda (gretcdr__107)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk106 gretcdr__107))))
-                                  gretcar__108))))
+                              (lambda () (funcall cpscmcdr gk106 gretcar__108))))
                           gretcar__109))))
                   gretcar__110))))
           cpscm__x__41)))))
@@ -653,13 +529,7 @@
                           cpscmcar
                           (lambda (gretcar__114)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcdr
-                                  (lambda (gretcdr__113)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk112 gretcdr__113))))
-                                  gretcar__114))))
+                              (lambda () (funcall cpscmcdr gk112 gretcar__114))))
                           gretcar__115))))
                   gretcdr__116))))
           cpscm__x__41)))))
@@ -684,13 +554,7 @@
                           cpscmcar
                           (lambda (gretcar__120)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcdr
-                                  (lambda (gretcdr__119)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk118 gretcdr__119))))
-                                  gretcar__120))))
+                              (lambda () (funcall cpscmcdr gk118 gretcar__120))))
                           gretcdr__121))))
                   gretcar__122))))
           cpscm__x__41)))))
@@ -715,13 +579,7 @@
                           cpscmcar
                           (lambda (gretcar__126)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcdr
-                                  (lambda (gretcdr__125)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk124 gretcdr__125))))
-                                  gretcar__126))))
+                              (lambda () (funcall cpscmcdr gk124 gretcar__126))))
                           gretcdr__127))))
                   gretcdr__128))))
           cpscm__x__41)))))
@@ -746,13 +604,7 @@
                           cpscmcdr
                           (lambda (gretcdr__132)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcdr
-                                  (lambda (gretcdr__131)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk130 gretcdr__131))))
-                                  gretcdr__132))))
+                              (lambda () (funcall cpscmcdr gk130 gretcdr__132))))
                           gretcar__133))))
                   gretcar__134))))
           cpscm__x__41)))))
@@ -777,13 +629,7 @@
                           cpscmcdr
                           (lambda (gretcdr__138)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcdr
-                                  (lambda (gretcdr__137)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk136 gretcdr__137))))
-                                  gretcdr__138))))
+                              (lambda () (funcall cpscmcdr gk136 gretcdr__138))))
                           gretcar__139))))
                   gretcdr__140))))
           cpscm__x__41)))))
@@ -808,13 +654,7 @@
                           cpscmcdr
                           (lambda (gretcdr__144)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcdr
-                                  (lambda (gretcdr__143)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk142 gretcdr__143))))
-                                  gretcdr__144))))
+                              (lambda () (funcall cpscmcdr gk142 gretcdr__144))))
                           gretcdr__145))))
                   gretcar__146))))
           cpscm__x__41)))))
@@ -839,13 +679,7 @@
                           cpscmcdr
                           (lambda (gretcdr__150)
                             (cpscm__trampoline
-                              (lambda ()
-                                (funcall
-                                  cpscmcdr
-                                  (lambda (gretcdr__149)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk148 gretcdr__149))))
-                                  gretcdr__150))))
+                              (lambda () (funcall cpscmcdr gk148 gretcdr__150))))
                           gretcdr__151))))
                   gretcdr__152))))
           cpscm__x__41)))))
@@ -862,9 +696,7 @@
               (lambda ()
                 (funcall
                   gret_x_boolean->combinator__156
-                  (lambda (gretapply__155)
-                    (cpscm__trampoline
-                      (lambda () (funcall gk154 gretapply__155))))
+                  gk154
                   (lambda (gk158)
                     (cpscm__trampoline
                       (lambda () (funcall gk158 cpscm__false))))
@@ -893,20 +725,12 @@
                     (cpscm__trampoline
                       (lambda ()
                         (funcall
-                          (lambda (gretset!__172)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk171 gretset!__172))))
+                          gk171
                           (setq cpscm__loop__42 cpscm__loop__42__tmp)))))
                   (lambda (g168)
                     (cpscm__trampoline
                       (lambda ()
-                        (funcall
-                          cpscm__loop__42
-                          (lambda (gret__loop__42__169)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk167 gret__loop__42__169))))
-                          cpscm__l__41
-                          0))))
+                        (funcall cpscm__loop__42 gk167 cpscm__l__41 0))))
                   (lambda (gk174 cpscm__l__43 cpscm__res__44)
                     (cpscm__trampoline
                       (lambda ()
@@ -921,9 +745,7 @@
                                       (lambda ()
                                         (funcall
                                           gret_x_boolean->combinator__176
-                                          (lambda (gretapply__175)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk174 gretapply__175))))
+                                          gk174
                                           (lambda (gk179)
                                             (cpscm__trampoline
                                               (lambda () (funcall gk179 cpscm__res__44))))
@@ -942,9 +764,7 @@
                                                               (lambda ()
                                                                 (funcall
                                                                   cpscm__loop__42
-                                                                  (lambda (gret__loop__42__182)
-                                                                    (cpscm__trampoline
-                                                                      (lambda () (funcall gk181 gret__loop__42__182))))
+                                                                  gk181
                                                                   gretcdr__183
                                                                   gret+__184))))
                                                           cpscm__res__44
@@ -954,7 +774,7 @@
                                     cpscm_x_boolean->combinator
                                     gretnull?__177)))))
                           cpscm__l__43))))))))
-          (lambda (g165) (cpscm__trampoline (lambda () (funcall gk164 g165))))
+          gk164
           'undefined)))))
 
 
@@ -974,9 +794,7 @@
                       (lambda ()
                         (funcall
                           gret_x_boolean->combinator__188
-                          (lambda (gretapply__187)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk186 gretapply__187))))
+                          gk186
                           (lambda (gk191)
                             (cpscm__trampoline (lambda () (funcall gk191 t))))
                           (lambda (gk193)
@@ -993,9 +811,7 @@
                                               (lambda ()
                                                 (funcall
                                                   gret_x_boolean->combinator__195
-                                                  (lambda (gretapply__194)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk193 gretapply__194))))
+                                                  gk193
                                                   (lambda (gk198)
                                                     (cpscm__trampoline
                                                       (lambda ()
@@ -1004,12 +820,7 @@
                                                           (lambda (gretcdr__200)
                                                             (cpscm__trampoline
                                                               (lambda ()
-                                                                (funcall
-                                                                  cpscmlist?
-                                                                  (lambda (gretlist?__199)
-                                                                    (cpscm__trampoline
-                                                                      (lambda () (funcall gk198 gretlist?__199))))
-                                                                  gretcdr__200))))
+                                                                (funcall cpscmlist? gk198 gretcdr__200))))
                                                           cpscm__l__41))))
                                                   (lambda (gk202)
                                                     (cpscm__trampoline
@@ -1038,9 +849,7 @@
                       (lambda ()
                         (funcall
                           gret_x_boolean->combinator__206
-                          (lambda (gretapply__205)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk204 gretapply__205))))
+                          gk204
                           (lambda (gk209)
                             (cpscm__trampoline
                               (lambda () (funcall gk209 cpscm__x__41))))
@@ -1059,9 +868,7 @@
                                               (lambda ()
                                                 (funcall
                                                   cpscmlist-tail
-                                                  (lambda (gretlist-tail__212)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk211 gretlist-tail__212))))
+                                                  gk211
                                                   gretcdr__213
                                                   gret-__214))))
                                           cpscm__k__42
@@ -1080,13 +887,7 @@
           cpscmlist-tail
           (lambda (gretlist-tail__218)
             (cpscm__trampoline
-              (lambda ()
-                (funcall
-                  cpscmcar
-                  (lambda (gretcar__217)
-                    (cpscm__trampoline
-                      (lambda () (funcall gk216 gretcar__217))))
-                  gretlist-tail__218))))
+              (lambda () (funcall cpscmcar gk216 gretlist-tail__218))))
           cpscmx
           cpscm__k__42)))))
 
@@ -1105,20 +906,12 @@
                     (cpscm__trampoline
                       (lambda ()
                         (funcall
-                          (lambda (gretset!__228)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk227 gretset!__228))))
+                          gk227
                           (setq cpscm__loop__42 cpscm__loop__42__tmp)))))
                   (lambda (g224)
                     (cpscm__trampoline
                       (lambda ()
-                        (funcall
-                          cpscm__loop__42
-                          (lambda (gret__loop__42__225)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk223 gret__loop__42__225))))
-                          cpscm__l__41
-                          nil))))
+                        (funcall cpscm__loop__42 gk223 cpscm__l__41 ()))))
                   (lambda (gk230 cpscm__l__43 cpscm__res__44)
                     (cpscm__trampoline
                       (lambda ()
@@ -1133,9 +926,7 @@
                                       (lambda ()
                                         (funcall
                                           gret_x_boolean->combinator__232
-                                          (lambda (gretapply__231)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk230 gretapply__231))))
+                                          gk230
                                           (lambda (gk235)
                                             (cpscm__trampoline
                                               (lambda () (funcall gk235 cpscm__res__44))))
@@ -1159,9 +950,7 @@
                                                                       (lambda ()
                                                                         (funcall
                                                                           cpscm__loop__42
-                                                                          (lambda (gret__loop__42__238)
-                                                                            (cpscm__trampoline
-                                                                              (lambda () (funcall gk237 gret__loop__42__238))))
+                                                                          gk237
                                                                           gretcdr__239
                                                                           gretcons__240))))
                                                                   gretcar__241
@@ -1172,7 +961,7 @@
                                     cpscm_x_boolean->combinator
                                     gretnull?__233)))))
                           cpscm__l__43))))))))
-          (lambda (g221) (cpscm__trampoline (lambda () (funcall gk220 g221))))
+          gk220
           'undefined)))))
 
 
@@ -1191,20 +980,12 @@
                       (lambda ()
                         (progn (setq cpscm__spill__42 cpscm__spill__42__tmp)
                                (funcall
-                                 (lambda (gretset!__252)
-                                   (cpscm__trampoline
-                                     (lambda () (funcall gk250 gretset!__252))))
+                                 gk250
                                  (setq cpscm__loop__43 cpscm__loop__43__tmp))))))
                   (lambda (g247)
                     (cpscm__trampoline
                       (lambda ()
-                        (funcall
-                          cpscm__loop__43
-                          (lambda (gret__loop__43__248)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk246 gret__loop__43__248))))
-                          cpscm__ls__41
-                          nil))))
+                        (funcall cpscm__loop__43 gk246 cpscm__ls__41 ()))))
                   (lambda (gk254 cpscm__l__44 cpscm__res__45)
                     (cpscm__trampoline
                       (lambda ()
@@ -1219,9 +1000,7 @@
                                       (lambda ()
                                         (funcall
                                           gret_x_boolean->combinator__256
-                                          (lambda (gretapply__255)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk254 gretapply__255))))
+                                          gk254
                                           (lambda (gk259)
                                             (cpscm__trampoline
                                               (lambda () (funcall gk259 cpscm__res__45))))
@@ -1245,9 +1024,7 @@
                                                                       (lambda ()
                                                                         (funcall
                                                                           cpscm__spill__42
-                                                                          (lambda (gret__spill__42__262)
-                                                                            (cpscm__trampoline
-                                                                              (lambda () (funcall gk261 gret__spill__42__262))))
+                                                                          gk261
                                                                           gretcdr__263
                                                                           gretcons__264))))
                                                                   gretcar__265
@@ -1272,18 +1049,11 @@
                                       (lambda ()
                                         (funcall
                                           gret_x_boolean->combinator__269
-                                          (lambda (gretapply__268)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk267 gretapply__268))))
+                                          gk267
                                           (lambda (gk272)
                                             (cpscm__trampoline
                                               (lambda ()
-                                                (funcall
-                                                  cpscmreverse!
-                                                  (lambda (gretreverse!__273)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk272 gretreverse!__273))))
-                                                  cpscm__res__45))))
+                                                (funcall cpscmreverse! gk272 cpscm__res__45))))
                                           (lambda (gk275)
                                             (cpscm__trampoline
                                               (lambda ()
@@ -1304,9 +1074,7 @@
                                                                       (lambda ()
                                                                         (funcall
                                                                           cpscm__loop__43
-                                                                          (lambda (gret__loop__43__276)
-                                                                            (cpscm__trampoline
-                                                                              (lambda () (funcall gk275 gret__loop__43__276))))
+                                                                          gk275
                                                                           gretcdr__277
                                                                           gret__spill__42__278))))
                                                                   gretcar__279
@@ -1317,7 +1085,7 @@
                                     cpscm_x_boolean->combinator
                                     gretnull?__270)))))
                           cpscm__ls__44))))))))
-          (lambda (g244) (cpscm__trampoline (lambda () (funcall gk243 g244))))
+          gk243
           'undefined
           'undefined)))))
 
@@ -1335,13 +1103,7 @@
           (lambda (gretreverse__283)
             (cpscm__trampoline
               (lambda ()
-                (funcall
-                  cpscmappend
-                  (lambda (gretappend__282)
-                    (cpscm__trampoline
-                      (lambda () (funcall gk281 gretappend__282))))
-                  gretreverse__283
-                  cpscm__tail__42))))
+                (funcall cpscmappend gk281 gretreverse__283 cpscm__tail__42))))
           cpscm__rev-head__41)))))
 
 
@@ -1351,13 +1113,7 @@
 (cpscm__global
   cpscmreverse!
   (lambda (gk285 cpscm__l__41)
-    (cpscm__trampoline
-      (lambda ()
-        (funcall
-          cpscmreverse
-          (lambda (gretreverse__286)
-            (cpscm__trampoline (lambda () (funcall gk285 gretreverse__286))))
-          cpscm__l__41)))))
+    (cpscm__trampoline (lambda () (funcall cpscmreverse gk285 cpscm__l__41)))))
 
 
 (cpscm__global
@@ -1374,19 +1130,11 @@
                     (cpscm__trampoline
                       (lambda ()
                         (funcall
-                          (lambda (gretset!__296)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk295 gretset!__296))))
+                          gk295
                           (setq cpscm__lp__43 cpscm__lp__43__tmp)))))
                   (lambda (g292)
                     (cpscm__trampoline
-                      (lambda ()
-                        (funcall
-                          cpscm__lp__43
-                          (lambda (gret__lp__43__293)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk291 gret__lp__43__293))))
-                          cpscm__l__42))))
+                      (lambda () (funcall cpscm__lp__43 gk291 cpscm__l__42))))
                   (lambda (gk298 cpscm__l__44)
                     (cpscm__trampoline
                       (lambda ()
@@ -1406,9 +1154,7 @@
                                               (lambda ()
                                                 (funcall
                                                   gret_x_boolean->combinator__300
-                                                  (lambda (gretapply__299)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk298 gretapply__299))))
+                                                  gk298
                                                   (lambda (gk304)
                                                     (cpscm__trampoline
                                                       (lambda ()
@@ -1428,9 +1174,7 @@
                                                                               (lambda ()
                                                                                 (funcall
                                                                                   gret_x_boolean->combinator__306
-                                                                                  (lambda (gretapply__305)
-                                                                                    (cpscm__trampoline
-                                                                                      (lambda () (funcall gk304 gretapply__305))))
+                                                                                  gk304
                                                                                   (lambda (gk310)
                                                                                     (cpscm__trampoline
                                                                                       (lambda () (funcall gk310 cpscm__l__44))))
@@ -1442,12 +1186,7 @@
                                                                                           (lambda (gretcdr__314)
                                                                                             (cpscm__trampoline
                                                                                               (lambda ()
-                                                                                                (funcall
-                                                                                                  cpscm__lp__43
-                                                                                                  (lambda (gret__lp__43__313)
-                                                                                                    (cpscm__trampoline
-                                                                                                      (lambda () (funcall gk312 gret__lp__43__313))))
-                                                                                                  gretcdr__314))))
+                                                                                                (funcall cpscm__lp__43 gk312 gretcdr__314))))
                                                                                           cpscm__l__44))))))))
                                                                           (funcall
                                                                             cpscm_x_boolean->combinator
@@ -1462,7 +1201,7 @@
                                             gretnot__301)))))
                                   gretnull?__302))))
                           cpscm__l__44))))))))
-          (lambda (g289) (cpscm__trampoline (lambda () (funcall gk288 g289))))
+          gk288
           'undefined)))))
 
 
@@ -1486,26 +1225,18 @@
                               (lambda ()
                                 (funcall
                                   gret_x_boolean->combinator__324
-                                  (lambda (gretapply__323)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk322 gretapply__323))))
+                                  gk322
                                   (lambda (gk326)
                                     (cpscm__trampoline
                                       (lambda ()
-                                        (funcall
-                                          cpscmcar
-                                          (lambda (gretcar__327)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk326 gretcar__327))))
-                                          cpscm__tmp__43))))
+                                        (funcall cpscmcar gk326 cpscm__tmp__43))))
                                   (lambda (gk329)
                                     (cpscm__trampoline
                                       (lambda () (funcall gk329 cpscm__false))))))))
                           (funcall
                             cpscm_x_boolean->combinator
                             cpscm__tmp__43)))))
-                  (lambda (g319)
-                    (cpscm__trampoline (lambda () (funcall gk318 g319))))
+                  gk318
                   gretfind-tail__320))))
           cpscm__pred__41
           cpscm__list__42)))))
@@ -1525,20 +1256,12 @@
                     (cpscm__trampoline
                       (lambda ()
                         (funcall
-                          (lambda (gretset!__339)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk338 gretset!__339))))
+                          gk338
                           (setq cpscm__loop__43 cpscm__loop__43__tmp)))))
                   (lambda (g335)
                     (cpscm__trampoline
                       (lambda ()
-                        (funcall
-                          cpscm__loop__43
-                          (lambda (gret__loop__43__336)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk334 gret__loop__43__336))))
-                          cpscm__l__42
-                          nil))))
+                        (funcall cpscm__loop__43 gk334 cpscm__l__42 ()))))
                   (lambda (gk341 cpscm__l__44 cpscm__res__45)
                     (cpscm__trampoline
                       (lambda ()
@@ -1553,18 +1276,11 @@
                                       (lambda ()
                                         (funcall
                                           gret_x_boolean->combinator__343
-                                          (lambda (gretapply__342)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk341 gretapply__342))))
+                                          gk341
                                           (lambda (gk346)
                                             (cpscm__trampoline
                                               (lambda ()
-                                                (funcall
-                                                  cpscmreverse!
-                                                  (lambda (gretreverse!__347)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk346 gretreverse!__347))))
-                                                  cpscm__res__45))))
+                                                (funcall cpscmreverse! gk346 cpscm__res__45))))
                                           (lambda (gk349)
                                             (cpscm__trampoline
                                               (lambda ()
@@ -1590,9 +1306,7 @@
                                                                               (lambda ()
                                                                                 (funcall
                                                                                   cpscm__loop__43
-                                                                                  (lambda (gret__loop__43__350)
-                                                                                    (cpscm__trampoline
-                                                                                      (lambda () (funcall gk349 gret__loop__43__350))))
+                                                                                  gk349
                                                                                   gretcdr__351
                                                                                   gretcons__352))))
                                                                           gret__f__41__353
@@ -1604,7 +1318,7 @@
                                     cpscm_x_boolean->combinator
                                     gretnull?__344)))))
                           cpscm__l__44))))))))
-          (lambda (g332) (cpscm__trampoline (lambda () (funcall gk331 g332))))
+          gk331
           'undefined)))))
 
 
@@ -1622,19 +1336,12 @@
                     (cpscm__trampoline
                       (lambda ()
                         (funcall
-                          (lambda (gretset!__364)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk363 gretset!__364))))
+                          gk363
                           (setq cpscm__loop__43 cpscm__loop__43__tmp)))))
                   (lambda (g360)
                     (cpscm__trampoline
                       (lambda ()
-                        (funcall
-                          cpscm__loop__43
-                          (lambda (gret__loop__43__361)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk359 gret__loop__43__361))))
-                          cpscm__l__42))))
+                        (funcall cpscm__loop__43 gk359 cpscm__l__42))))
                   (lambda (gk366 cpscm__l__44)
                     (cpscm__trampoline
                       (lambda ()
@@ -1649,9 +1356,7 @@
                                       (lambda ()
                                         (funcall
                                           gret_x_boolean->combinator__368
-                                          (lambda (gretapply__367)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk366 gretapply__367))))
+                                          gk366
                                           (lambda (gk371)
                                             (cpscm__trampoline (lambda () (funcall gk371 t))))
                                           (lambda (gk373)
@@ -1672,12 +1377,7 @@
                                                                   (lambda (gretcdr__377)
                                                                     (cpscm__trampoline
                                                                       (lambda ()
-                                                                        (funcall
-                                                                          cpscm__loop__43
-                                                                          (lambda (gret__loop__43__376)
-                                                                            (cpscm__trampoline
-                                                                              (lambda () (funcall gk373 gret__loop__43__376))))
-                                                                          gretcdr__377))))
+                                                                        (funcall cpscm__loop__43 gk373 gretcdr__377))))
                                                                   cpscm__l__44))))
                                                           gretcar__375))))
                                                   cpscm__l__44))))))))
@@ -1685,7 +1385,7 @@
                                     cpscm_x_boolean->combinator
                                     gretnull?__369)))))
                           cpscm__l__44))))))))
-          (lambda (g357) (cpscm__trampoline (lambda () (funcall gk356 g357))))
+          gk356
           'undefined)))))
 
 
@@ -1714,9 +1414,7 @@
                                       (lambda ()
                                         (funcall
                                           cpscmfind
-                                          (lambda (gretfind__386)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk385 gretfind__386))))
+                                          gk385
                                           (lambda (gk388 cpscm__entry__45)
                                             (cpscm__trampoline
                                               (lambda ()
@@ -1727,16 +1425,12 @@
                                                       (lambda ()
                                                         (funcall
                                                           cpscm__e__44
-                                                          (lambda (gret__e__44__389)
-                                                            (cpscm__trampoline
-                                                              (lambda () (funcall gk388 gret__e__44__389))))
+                                                          gk388
                                                           cpscm__x__41
                                                           gretcar__390))))
                                                   cpscm__entry__45))))
                                           cpscm__lis__42))))
-                                  (lambda (g380)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk379 g380))))
+                                  gk379
                                   gretapply__381))))
                           (lambda (gk392)
                             (cpscm__trampoline
@@ -1744,12 +1438,7 @@
                           (lambda (gk394)
                             (cpscm__trampoline
                               (lambda ()
-                                (funcall
-                                  cpscmcar
-                                  (lambda (gretcar__395)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk394 gretcar__395))))
-                                  cpscm__maybe-=__43))))))))
+                                (funcall cpscmcar gk394 cpscm__maybe-=__43))))))))
                   (funcall cpscm_x_boolean->combinator gretnull?__383)))))
           cpscm__maybe-=__43)))))
 
@@ -1759,13 +1448,7 @@
   (lambda (gk397 cpscm__x__41 cpscm__l__42)
     (cpscm__trampoline
       (lambda ()
-        (funcall
-          cpscmassoc
-          (lambda (gretassoc__398)
-            (cpscm__trampoline (lambda () (funcall gk397 gretassoc__398))))
-          cpscm__x__41
-          cpscm__l__42
-          cpscmeq?)))))
+        (funcall cpscmassoc gk397 cpscm__x__41 cpscm__l__42 cpscmeq?)))))
 
 
 (cpscm__global
@@ -1773,13 +1456,7 @@
   (lambda (gk400 cpscm__x__41 cpscm__l__42)
     (cpscm__trampoline
       (lambda ()
-        (funcall
-          cpscmassoc
-          (lambda (gretassoc__401)
-            (cpscm__trampoline (lambda () (funcall gk400 gretassoc__401))))
-          cpscm__x__41
-          cpscm__l__42
-          cpscmeqv?)))))
+        (funcall cpscmassoc gk400 cpscm__x__41 cpscm__l__42 cpscmeqv?)))))
 
 
 (cpscm__global
@@ -1807,23 +1484,17 @@
                                       (lambda ()
                                         (funcall
                                           cpscmfind-tail
-                                          (lambda (gretfind-tail__410)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk409 gretfind-tail__410))))
+                                          gk409
                                           (lambda (gk412 cpscm__y__45)
                                             (cpscm__trampoline
                                               (lambda ()
                                                 (funcall
                                                   cpscm__e__44
-                                                  (lambda (gret__e__44__413)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk412 gret__e__44__413))))
+                                                  gk412
                                                   cpscm__x__41
                                                   cpscm__y__45))))
                                           cpscm__lis__42))))
-                                  (lambda (g404)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk403 g404))))
+                                  gk403
                                   gretapply__405))))
                           (lambda (gk415)
                             (cpscm__trampoline
@@ -1831,12 +1502,7 @@
                           (lambda (gk417)
                             (cpscm__trampoline
                               (lambda ()
-                                (funcall
-                                  cpscmcar
-                                  (lambda (gretcar__418)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk417 gretcar__418))))
-                                  cpscm__maybe-=__43))))))))
+                                (funcall cpscmcar gk417 cpscm__maybe-=__43))))))))
                   (funcall cpscm_x_boolean->combinator gretnull?__407)))))
           cpscm__maybe-=__43)))))
 
@@ -1846,13 +1512,7 @@
   (lambda (gk420 cpscm__x__41 cpscm__l__42)
     (cpscm__trampoline
       (lambda ()
-        (funcall
-          cpscmmember
-          (lambda (gretmember__421)
-            (cpscm__trampoline (lambda () (funcall gk420 gretmember__421))))
-          cpscm__x__41
-          cpscm__l__42
-          cpscmeq?)))))
+        (funcall cpscmmember gk420 cpscm__x__41 cpscm__l__42 cpscmeq?)))))
 
 
 (cpscm__global
@@ -1860,13 +1520,7 @@
   (lambda (gk423 cpscm__x__41 cpscm__l__42)
     (cpscm__trampoline
       (lambda ()
-        (funcall
-          cpscmmember
-          (lambda (gretmember__424)
-            (cpscm__trampoline (lambda () (funcall gk423 gretmember__424))))
-          cpscm__x__41
-          cpscm__l__42
-          cpscmeqv?)))))
+        (funcall cpscmmember gk423 cpscm__x__41 cpscm__l__42 cpscmeqv?)))))
 
 
 (cpscm__global
@@ -1889,9 +1543,7 @@
                               (lambda ()
                                 (progn (setq cpscm__n__42 cpscm__n__42__tmp)
                                        (funcall
-                                         (lambda (gretset!__437)
-                                           (cpscm__trampoline
-                                             (lambda () (funcall gk435 gretset!__437))))
+                                         gk435
                                          (setq cpscm__loop__43 cpscm__loop__43__tmp))))))
                           (lambda (g430)
                             (cpscm__trampoline
@@ -1901,13 +1553,7 @@
                                   (lambda (gret-__433)
                                     (cpscm__trampoline
                                       (lambda ()
-                                        (funcall
-                                          cpscm__loop__43
-                                          (lambda (gret__loop__43__432)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk429 gret__loop__43__432))))
-                                          gret-__433
-                                          nil))))
+                                        (funcall cpscm__loop__43 gk429 gret-__433 ()))))
                                   cpscm__n__42
                                   1))))
                           gretvector-length__431
@@ -1925,9 +1571,7 @@
                                               (lambda ()
                                                 (funcall
                                                   gret_x_boolean->combinator__441
-                                                  (lambda (gretapply__440)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk439 gretapply__440))))
+                                                  gk439
                                                   (lambda (gk444)
                                                     (cpscm__trampoline
                                                       (lambda () (funcall gk444 cpscm__res__45))))
@@ -1951,9 +1595,7 @@
                                                                               (lambda ()
                                                                                 (funcall
                                                                                   cpscm__loop__43
-                                                                                  (lambda (gret__loop__43__447)
-                                                                                    (cpscm__trampoline
-                                                                                      (lambda () (funcall gk446 gret__loop__43__447))))
+                                                                                  gk446
                                                                                   gret-__448
                                                                                   gretcons__449))))
                                                                           gretvector-ref__450
@@ -1966,7 +1608,7 @@
                                   cpscm__i__44
                                   0))))))))
                   cpscm__v__41))))
-          (lambda (g427) (cpscm__trampoline (lambda () (funcall gk426 g427))))
+          gk426
           'undefined
           'undefined)))))
 
@@ -1992,9 +1634,7 @@
                                 (progn (setq cpscm__n__42 cpscm__n__42__tmp)
                                        (setq cpscm__v__43 cpscm__false)
                                        (funcall
-                                         (lambda (gretset!__465)
-                                           (cpscm__trampoline
-                                             (lambda () (funcall gk462 gretset!__465))))
+                                         gk462
                                          (setq cpscm__loop__44 cpscm__loop__44__tmp))))))
                           (lambda (g456)
                             (cpscm__trampoline
@@ -2005,13 +1645,7 @@
                                     (cpscm__trampoline
                                       (lambda ()
                                         (progn (setq cpscm__v__43 gretmake-vector__459)
-                                               (funcall
-                                                 cpscm__loop__44
-                                                 (lambda (gret__loop__44__460)
-                                                   (cpscm__trampoline
-                                                     (lambda () (funcall gk455 gret__loop__44__460))))
-                                                 0
-                                                 cpscm__l__41)))))
+                                               (funcall cpscm__loop__44 gk455 0 cpscm__l__41)))))
                                   cpscm__n__42))))
                           gretlength__457
                           (lambda (gk467 cpscm__i__45 cpscm__l__46)
@@ -2028,9 +1662,7 @@
                                               (lambda ()
                                                 (funcall
                                                   gret_x_boolean->combinator__469
-                                                  (lambda (gretapply__468)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk467 gretapply__468))))
+                                                  gk467
                                                   (lambda (gk472)
                                                     (cpscm__trampoline
                                                       (lambda () (funcall gk472 cpscm__v__43))))
@@ -2059,9 +1691,7 @@
                                                                                       (lambda ()
                                                                                         (funcall
                                                                                           cpscm__loop__44
-                                                                                          (lambda (gret__loop__44__477)
-                                                                                            (cpscm__trampoline
-                                                                                              (lambda () (funcall gk474 gret__loop__44__477))))
+                                                                                          gk474
                                                                                           gret+__478
                                                                                           gretcdr__479))))
                                                                                   cpscm__l__46))))
@@ -2075,7 +1705,7 @@
                                   cpscm__i__45
                                   cpscm__n__42))))))))
                   cpscm__l__41))))
-          (lambda (g453) (cpscm__trampoline (lambda () (funcall gk452 g453))))
+          gk452
           'undefined
           'undefined
           'undefined)))))
@@ -2085,13 +1715,7 @@
   cpscmvector
   (lambda (gk481 &rest cpscm__l__41)
     (cpscm__trampoline
-      (lambda ()
-        (funcall
-          cpscmlist->vector
-          (lambda (gretlist->vector__482)
-            (cpscm__trampoline
-              (lambda () (funcall gk481 gretlist->vector__482))))
-          cpscm__l__41)))))
+      (lambda () (funcall cpscmlist->vector gk481 cpscm__l__41)))))
 
 
 (cpscm__global
@@ -2109,92 +1733,75 @@
                     (cpscm__trampoline
                       (lambda ()
                         (funcall
-                          (lambda (gk511 cpscm__n__43__tmp)
+                          (lambda (gk493 cpscm__n__43__tmp)
                             (cpscm__trampoline
                               (lambda ()
                                 (funcall
-                                  (lambda (gretset!__512)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk511 gretset!__512))))
+                                  gk493
                                   (setq cpscm__n__43 cpscm__n__43__tmp)))))
                           (lambda (g488)
                             (cpscm__trampoline
                               (lambda ()
                                 (funcall
-                                  (lambda (gk493 cpscm__loop__44)
+                                  (lambda (gk496 cpscm__loop__44)
                                     (cpscm__trampoline
                                       (lambda ()
                                         (funcall
-                                          (lambda (gk496 cpscm__loop__44__tmp)
+                                          (lambda (gk499 cpscm__loop__44__tmp)
                                             (cpscm__trampoline
                                               (lambda ()
                                                 (funcall
-                                                  (lambda (gretset!__497)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk496 gretset!__497))))
+                                                  gk499
                                                   (setq cpscm__loop__44 cpscm__loop__44__tmp)))))
-                                          (lambda (g494)
+                                          (lambda (g497)
                                             (cpscm__trampoline
-                                              (lambda () (funcall gk493 cpscm__loop__44))))
-                                          (lambda (gk499 cpscm__i__45)
+                                              (lambda () (funcall gk496 cpscm__loop__44))))
+                                          (lambda (gk502 cpscm__i__45)
                                             (cpscm__trampoline
                                               (lambda ()
                                                 (funcall
                                                   cpscm=
-                                                  (lambda (gret=__502)
+                                                  (lambda (gret=__505)
                                                     (cpscm__trampoline
                                                       (lambda ()
                                                         (funcall
-                                                          (lambda (gret_x_boolean->combinator__501)
+                                                          (lambda (gret_x_boolean->combinator__504)
                                                             (cpscm__trampoline
                                                               (lambda ()
                                                                 (funcall
-                                                                  gret_x_boolean->combinator__501
-                                                                  (lambda (gretapply__500)
-                                                                    (cpscm__trampoline
-                                                                      (lambda () (funcall gk499 gretapply__500))))
-                                                                  (lambda (gk504)
-                                                                    (cpscm__trampoline (lambda () (funcall gk504 t))))
-                                                                  (lambda (gk506)
+                                                                  gret_x_boolean->combinator__504
+                                                                  gk502
+                                                                  (lambda (gk507)
+                                                                    (cpscm__trampoline (lambda () (funcall gk507 t))))
+                                                                  (lambda (gk509)
                                                                     (cpscm__trampoline
                                                                       (lambda ()
                                                                         (funcall
                                                                           cpscmvector-set!
-                                                                          (lambda (gretvector-set!__507)
+                                                                          (lambda (gretvector-set!__510)
                                                                             (cpscm__trampoline
                                                                               (lambda ()
                                                                                 (funcall
                                                                                   cpscm+
-                                                                                  (lambda (gret+__509)
+                                                                                  (lambda (gret+__512)
                                                                                     (cpscm__trampoline
                                                                                       (lambda ()
-                                                                                        (funcall
-                                                                                          cpscm__loop__44
-                                                                                          (lambda (gret__loop__44__508)
-                                                                                            (cpscm__trampoline
-                                                                                              (lambda () (funcall gk506 gret__loop__44__508))))
-                                                                                          gret+__509))))
+                                                                                        (funcall cpscm__loop__44 gk509 gret+__512))))
                                                                                   cpscm__i__45
                                                                                   1))))
                                                                           cpscm__v__41
                                                                           cpscm__i__45
                                                                           cpscm__x__42))))))))
-                                                          (funcall cpscm_x_boolean->combinator gret=__502)))))
+                                                          (funcall cpscm_x_boolean->combinator gret=__505)))))
                                                   cpscm__i__45
                                                   cpscm__n__43))))))))
                                   (lambda (g491)
                                     (cpscm__trampoline
-                                      (lambda ()
-                                        (funcall
-                                          g491
-                                          (lambda (gretapply__490)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk487 gretapply__490))))
-                                          0))))
+                                      (lambda () (funcall g491 gk487 0))))
                                   'undefined))))
                           gretvector-length__489))))
                   cpscm__v__41))))
-          (lambda (g485) (cpscm__trampoline (lambda () (funcall gk484 g485))))
+          gk484
           'undefined)))))
 
 
@@ -2202,13 +1809,7 @@
   cpscmstring
   (lambda (gk514 &rest cpscm__l__41)
     (cpscm__trampoline
-      (lambda ()
-        (funcall
-          cpscmlist->string
-          (lambda (gretlist->string__515)
-            (cpscm__trampoline
-              (lambda () (funcall gk514 gretlist->string__515))))
-          cpscm__l__41)))))
+      (lambda () (funcall cpscmlist->string gk514 cpscm__l__41)))))
 
 
 (cpscm__global
@@ -2226,92 +1827,75 @@
                     (cpscm__trampoline
                       (lambda ()
                         (funcall
-                          (lambda (gk544 cpscm__n__43__tmp)
+                          (lambda (gk526 cpscm__n__43__tmp)
                             (cpscm__trampoline
                               (lambda ()
                                 (funcall
-                                  (lambda (gretset!__545)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk544 gretset!__545))))
+                                  gk526
                                   (setq cpscm__n__43 cpscm__n__43__tmp)))))
                           (lambda (g521)
                             (cpscm__trampoline
                               (lambda ()
                                 (funcall
-                                  (lambda (gk526 cpscm__loop__44)
+                                  (lambda (gk529 cpscm__loop__44)
                                     (cpscm__trampoline
                                       (lambda ()
                                         (funcall
-                                          (lambda (gk529 cpscm__loop__44__tmp)
+                                          (lambda (gk532 cpscm__loop__44__tmp)
                                             (cpscm__trampoline
                                               (lambda ()
                                                 (funcall
-                                                  (lambda (gretset!__530)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk529 gretset!__530))))
+                                                  gk532
                                                   (setq cpscm__loop__44 cpscm__loop__44__tmp)))))
-                                          (lambda (g527)
+                                          (lambda (g530)
                                             (cpscm__trampoline
-                                              (lambda () (funcall gk526 cpscm__loop__44))))
-                                          (lambda (gk532 cpscm__i__45)
+                                              (lambda () (funcall gk529 cpscm__loop__44))))
+                                          (lambda (gk535 cpscm__i__45)
                                             (cpscm__trampoline
                                               (lambda ()
                                                 (funcall
                                                   cpscm=
-                                                  (lambda (gret=__535)
+                                                  (lambda (gret=__538)
                                                     (cpscm__trampoline
                                                       (lambda ()
                                                         (funcall
-                                                          (lambda (gret_x_boolean->combinator__534)
+                                                          (lambda (gret_x_boolean->combinator__537)
                                                             (cpscm__trampoline
                                                               (lambda ()
                                                                 (funcall
-                                                                  gret_x_boolean->combinator__534
-                                                                  (lambda (gretapply__533)
-                                                                    (cpscm__trampoline
-                                                                      (lambda () (funcall gk532 gretapply__533))))
-                                                                  (lambda (gk537)
-                                                                    (cpscm__trampoline (lambda () (funcall gk537 t))))
-                                                                  (lambda (gk539)
+                                                                  gret_x_boolean->combinator__537
+                                                                  gk535
+                                                                  (lambda (gk540)
+                                                                    (cpscm__trampoline (lambda () (funcall gk540 t))))
+                                                                  (lambda (gk542)
                                                                     (cpscm__trampoline
                                                                       (lambda ()
                                                                         (funcall
                                                                           cpscmstring-set!
-                                                                          (lambda (gretstring-set!__540)
+                                                                          (lambda (gretstring-set!__543)
                                                                             (cpscm__trampoline
                                                                               (lambda ()
                                                                                 (funcall
                                                                                   cpscm+
-                                                                                  (lambda (gret+__542)
+                                                                                  (lambda (gret+__545)
                                                                                     (cpscm__trampoline
                                                                                       (lambda ()
-                                                                                        (funcall
-                                                                                          cpscm__loop__44
-                                                                                          (lambda (gret__loop__44__541)
-                                                                                            (cpscm__trampoline
-                                                                                              (lambda () (funcall gk539 gret__loop__44__541))))
-                                                                                          gret+__542))))
+                                                                                        (funcall cpscm__loop__44 gk542 gret+__545))))
                                                                                   cpscm__i__45
                                                                                   1))))
                                                                           cpscm__v__41
                                                                           cpscm__i__45
                                                                           cpscm__x__42))))))))
-                                                          (funcall cpscm_x_boolean->combinator gret=__535)))))
+                                                          (funcall cpscm_x_boolean->combinator gret=__538)))))
                                                   cpscm__i__45
                                                   cpscm__n__43))))))))
                                   (lambda (g524)
                                     (cpscm__trampoline
-                                      (lambda ()
-                                        (funcall
-                                          g524
-                                          (lambda (gretapply__523)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk520 gretapply__523))))
-                                          0))))
+                                      (lambda () (funcall g524 gk520 0))))
                                   'undefined))))
                           gretstring-length__522))))
                   cpscm__v__41))))
-          (lambda (g518) (cpscm__trampoline (lambda () (funcall gk517 g518))))
+          gk517
           'undefined)))))
 
 
@@ -2355,13 +1939,10 @@
                                                     (cpscm__trampoline
                                                       (lambda () (funcall gk556 cpscm__res__44))))
                                                   cpscm__oldp__43))))
-                                          (lambda (g553)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk551 g553))))
+                                          gk551
                                           gret__thunk__42__554))))))))
                           cpscm__p__41))))
-                  (lambda (g548)
-                    (cpscm__trampoline (lambda () (funcall gk547 g548))))
+                  gk547
                   gretcurrent-output-port__549)))))))))
 
 
@@ -2385,9 +1966,7 @@
                               (lambda ()
                                 (funcall
                                   gret_x_boolean->combinator__566
-                                  (lambda (gretapply__565)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk564 gretapply__565))))
+                                  gk564
                                   (lambda (gk568)
                                     (cpscm__trampoline
                                       (lambda () (funcall gk568 cpscm__result__43))))
@@ -2409,9 +1988,7 @@
                                                               (lambda ()
                                                                 (funcall
                                                                   gret_x_boolean->combinator__576
-                                                                  (lambda (gretapply__575)
-                                                                    (cpscm__trampoline
-                                                                      (lambda () (funcall gk574 gretapply__575))))
+                                                                  gk574
                                                                   (lambda (gk578)
                                                                     (cpscm__trampoline
                                                                       (lambda () (funcall gk578 cpscm__result__43))))
@@ -2424,14 +2001,12 @@
                                                           (funcall
                                                             cpscm_x_boolean->combinator
                                                             cpscm__result-ready?__42)))))
-                                                  (lambda (g571)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk570 g571))))
+                                                  gk570
                                                   gret__proc__41__572))))))))))))
                           (funcall
                             cpscm_x_boolean->combinator
                             cpscm__result-ready?__42)))))))))
-          (lambda (g560) (cpscm__trampoline (lambda () (funcall gk559 g560))))
+          gk559
           cpscm__false
           cpscm__false)))))
 
@@ -2446,11 +2021,7 @@
             (lambda (gretlist__586)
               (cpscm__trampoline
                 (lambda ()
-                  (funcall
-                    (lambda (gretset!__585)
-                      (cpscm__trampoline
-                        (lambda () (funcall gk584 gretset!__585))))
-                    (setq cpscm__vals-marker gretlist__586)))))
+                  (funcall gk584 (setq cpscm__vals-marker gretlist__586)))))
             'values))))
     (lambda (cpscmx) cpscmx))
   (function error))
@@ -2467,41 +2038,34 @@
             (cpscm__trampoline
               (lambda ()
                 (funcall
-                  (lambda (gk600 cpscm__x__42)
+                  (lambda (gk594 cpscm__x__42)
                     (cpscm__trampoline
                       (lambda ()
                         (funcall
-                          (lambda (gret_x_boolean->combinator__602)
+                          (lambda (gret_x_boolean->combinator__596)
                             (cpscm__trampoline
                               (lambda ()
                                 (funcall
-                                  gret_x_boolean->combinator__602
-                                  (lambda (gretapply__601)
+                                  gret_x_boolean->combinator__596
+                                  gk594
+                                  (lambda (gk598)
                                     (cpscm__trampoline
-                                      (lambda () (funcall gk600 gretapply__601))))
-                                  (lambda (gk604)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk604 cpscm__x__42))))
-                                  (lambda (gk606)
+                                      (lambda () (funcall gk598 cpscm__x__42))))
+                                  (lambda (gk600)
                                     (cpscm__trampoline
                                       (lambda ()
                                         (funcall
                                           cpscmcdr
-                                          (lambda (gretcdr__609)
+                                          (lambda (gretcdr__603)
                                             (cpscm__trampoline
                                               (lambda ()
                                                 (funcall
                                                   cpscmnull?
-                                                  (lambda (gretnull?__608)
+                                                  (lambda (gretnull?__602)
                                                     (cpscm__trampoline
                                                       (lambda ()
-                                                        (funcall
-                                                          cpscmnot
-                                                          (lambda (gretnot__607)
-                                                            (cpscm__trampoline
-                                                              (lambda () (funcall gk606 gretnot__607))))
-                                                          gretnull?__608))))
-                                                  gretcdr__609))))
+                                                        (funcall cpscmnot gk600 gretnull?__602))))
+                                                  gretcdr__603))))
                                           cpscm__things__41))))))))
                           (funcall
                             cpscm_x_boolean->combinator
@@ -2515,28 +2079,19 @@
                               (lambda ()
                                 (funcall
                                   gret_x_boolean->combinator__590
-                                  (lambda (gretapply__589)
-                                    (cpscm__trampoline
-                                      (lambda () (funcall gk588 gretapply__589))))
-                                  (lambda (gk594)
+                                  gk588
+                                  (lambda (gk605)
                                     (cpscm__trampoline
                                       (lambda ()
                                         (funcall
                                           cpscmcons
-                                          (lambda (gretcons__595)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk594 gretcons__595))))
+                                          gk605
                                           cpscm__vals-marker
                                           cpscm__things__41))))
-                                  (lambda (gk597)
+                                  (lambda (gk608)
                                     (cpscm__trampoline
                                       (lambda ()
-                                        (funcall
-                                          cpscmcar
-                                          (lambda (gretcar__598)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk597 gretcar__598))))
-                                          cpscm__things__41))))))))
+                                        (funcall cpscmcar gk608 cpscm__things__41))))))))
                           (funcall cpscm_x_boolean->combinator g591)))))
                   gretnull?__592))))
           cpscm__things__41)))))
@@ -2567,27 +2122,15 @@
                                       (lambda ()
                                         (funcall
                                           gret_x_boolean->combinator__613
-                                          (lambda (gretapply__612)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk611 gretapply__612))))
+                                          gk611
                                           (lambda (gk618)
                                             (cpscm__trampoline
                                               (lambda ()
-                                                (funcall
-                                                  cpscmcdr
-                                                  (lambda (gretcdr__619)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk618 gretcdr__619))))
-                                                  cpscm__vals__41))))
+                                                (funcall cpscmcdr gk618 cpscm__vals__41))))
                                           (lambda (gk621)
                                             (cpscm__trampoline
                                               (lambda ()
-                                                (funcall
-                                                  cpscmlist
-                                                  (lambda (gretlist__622)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk621 gretlist__622))))
-                                                  cpscm__vals__41))))))))
+                                                (funcall cpscmlist gk621 cpscm__vals__41))))))))
                                   (funcall
                                     cpscm_x_boolean->combinator
                                     gretapply__614)))))
@@ -2601,9 +2144,7 @@
                                       (lambda ()
                                         (funcall
                                           cpscmeq?
-                                          (lambda (greteq?__625)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk624 greteq?__625))))
+                                          gk624
                                           gretcar__626
                                           cpscm__vals-marker))))
                                   cpscm__vals__41))))
@@ -2629,9 +2170,7 @@
                       (lambda ()
                         (progn (setq cpscm__switch__42 cpscm__switch__42__tmp)
                                (funcall
-                                 (lambda (gretset!__641)
-                                   (cpscm__trampoline
-                                     (lambda () (funcall gk639 gretset!__641))))
+                                 gk639
                                  (setq cpscm__loop__43 cpscm__loop__43__tmp))))))
                   (lambda (g634)
                     (cpscm__trampoline
@@ -2648,9 +2187,7 @@
                                       (lambda ()
                                         (funcall
                                           cpscm__loop__43
-                                          (lambda (gret__loop__43__635)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk633 gret__loop__43__635))))
+                                          gk633
                                           gretreverse__636
                                           gretreverse__637))))
                                   cpscm__ccwinders__41))))
@@ -2667,9 +2204,7 @@
                                     (cpscm__trampoline
                                       (lambda ()
                                         (funcall
-                                          (lambda (gretset!__655)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk654 gretset!__655))))
+                                          gk654
                                           (setq cpscm__run-all__46 cpscm__run-all__46__tmp)))))
                                   (lambda (g647)
                                     (cpscm__trampoline
@@ -2695,9 +2230,7 @@
                                                                     (cpscm__trampoline
                                                                       (lambda ()
                                                                         (funcall
-                                                                          (lambda (gretset!__652)
-                                                                            (cpscm__trampoline
-                                                                              (lambda () (funcall gk646 gretset!__652))))
+                                                                          gk646
                                                                           (setq cpscm__winders cpscm__ccwinders__41)))))
                                                                   gretappend-reverse!__649))))
                                                           gretmap__650
@@ -2720,9 +2253,7 @@
                                                       (lambda ()
                                                         (funcall
                                                           gret_x_boolean->combinator__659
-                                                          (lambda (gretapply__658)
-                                                            (cpscm__trampoline
-                                                              (lambda () (funcall gk657 gretapply__658))))
+                                                          gk657
                                                           (lambda (gk662)
                                                             (cpscm__trampoline (lambda () (funcall gk662 t))))
                                                           (lambda (gk664)
@@ -2743,22 +2274,14 @@
                                                                                   (lambda (gretcdr__668)
                                                                                     (cpscm__trampoline
                                                                                       (lambda ()
-                                                                                        (funcall
-                                                                                          cpscm__run-all__46
-                                                                                          (lambda (gret__run-all__46__667)
-                                                                                            (cpscm__trampoline
-                                                                                              (lambda ()
-                                                                                                (funcall gk664 gret__run-all__46__667))))
-                                                                                          gretcdr__668))))
+                                                                                        (funcall cpscm__run-all__46 gk664 gretcdr__668))))
                                                                                   cpscm__to-apply__47))))))))
                                                                   cpscm__to-apply__47))))))))
                                                   (funcall
                                                     cpscm_x_boolean->combinator
                                                     gretnull?__660)))))
                                           cpscm__to-apply__47))))))))
-                          (lambda (g644)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk643 g644))))
+                          gk643
                           'undefined))))
                   (lambda (gk670 cpscm__a__44 cpscm__b__45)
                     (cpscm__trampoline
@@ -2769,80 +2292,68 @@
                             (cpscm__trampoline
                               (lambda ()
                                 (funcall
-                                  (lambda (gk684 cpscm__x__46)
+                                  (lambda (gk676 cpscm__x__46)
                                     (cpscm__trampoline
                                       (lambda ()
                                         (funcall
-                                          (lambda (gret_x_boolean->combinator__686)
+                                          (lambda (gret_x_boolean->combinator__678)
                                             (cpscm__trampoline
                                               (lambda ()
                                                 (funcall
-                                                  gret_x_boolean->combinator__686
-                                                  (lambda (gretapply__685)
+                                                  gret_x_boolean->combinator__678
+                                                  gk676
+                                                  (lambda (gk680)
                                                     (cpscm__trampoline
-                                                      (lambda () (funcall gk684 gretapply__685))))
-                                                  (lambda (gk688)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk688 cpscm__x__46))))
-                                                  (lambda (gk690)
+                                                      (lambda () (funcall gk680 cpscm__x__46))))
+                                                  (lambda (gk682)
                                                     (cpscm__trampoline
                                                       (lambda ()
                                                         (funcall
                                                           cpscmnull?
-                                                          (lambda (gretnull?__692)
+                                                          (lambda (gretnull?__684)
                                                             (cpscm__trampoline
                                                               (lambda ()
                                                                 (funcall
-                                                                  (lambda (gk694 cpscm__x__47)
+                                                                  (lambda (gk686 cpscm__x__47)
                                                                     (cpscm__trampoline
                                                                       (lambda ()
                                                                         (funcall
-                                                                          (lambda (gret_x_boolean->combinator__696)
+                                                                          (lambda (gret_x_boolean->combinator__688)
                                                                             (cpscm__trampoline
                                                                               (lambda ()
                                                                                 (funcall
-                                                                                  gret_x_boolean->combinator__696
-                                                                                  (lambda (gretapply__695)
+                                                                                  gret_x_boolean->combinator__688
+                                                                                  gk686
+                                                                                  (lambda (gk690)
                                                                                     (cpscm__trampoline
-                                                                                      (lambda () (funcall gk694 gretapply__695))))
-                                                                                  (lambda (gk698)
-                                                                                    (cpscm__trampoline
-                                                                                      (lambda () (funcall gk698 cpscm__x__47))))
-                                                                                  (lambda (gk700)
+                                                                                      (lambda () (funcall gk690 cpscm__x__47))))
+                                                                                  (lambda (gk692)
                                                                                     (cpscm__trampoline
                                                                                       (lambda ()
                                                                                         (funcall
                                                                                           cpscmcar
-                                                                                          (lambda (gretcar__703)
+                                                                                          (lambda (gretcar__695)
                                                                                             (cpscm__trampoline
                                                                                               (lambda ()
                                                                                                 (funcall
                                                                                                   cpscmcar
-                                                                                                  (lambda (gretcar__704)
+                                                                                                  (lambda (gretcar__696)
                                                                                                     (cpscm__trampoline
                                                                                                       (lambda ()
                                                                                                         (funcall
                                                                                                           cpscmeq?
-                                                                                                          (lambda (greteq?__702)
+                                                                                                          (lambda (greteq?__694)
                                                                                                             (cpscm__trampoline
-                                                                                                              (lambda ()
-                                                                                                                (funcall
-                                                                                                                  cpscmnot
-                                                                                                                  (lambda (gretnot__701)
-                                                                                                                    (cpscm__trampoline
-                                                                                                                      (lambda () (funcall gk700 gretnot__701))))
-                                                                                                                  greteq?__702))))
-                                                                                                          gretcar__703
-                                                                                                          gretcar__704))))
+                                                                                                              (lambda () (funcall cpscmnot gk692 greteq?__694))))
+                                                                                                          gretcar__695
+                                                                                                          gretcar__696))))
                                                                                                   cpscm__b__45))))
                                                                                           cpscm__a__44))))))))
                                                                           (funcall
                                                                             cpscm_x_boolean->combinator
                                                                             cpscm__x__47)))))
-                                                                  (lambda (g691)
-                                                                    (cpscm__trampoline
-                                                                      (lambda () (funcall gk690 g691))))
-                                                                  gretnull?__692))))
+                                                                  gk682
+                                                                  gretnull?__684))))
                                                           cpscm__b__45))))))))
                                           (funcall
                                             cpscm_x_boolean->combinator
@@ -2856,45 +2367,39 @@
                                               (lambda ()
                                                 (funcall
                                                   gret_x_boolean->combinator__672
-                                                  (lambda (gretapply__671)
-                                                    (cpscm__trampoline
-                                                      (lambda () (funcall gk670 gretapply__671))))
-                                                  (lambda (gk676)
+                                                  gk670
+                                                  (lambda (gk698)
                                                     (cpscm__trampoline
                                                       (lambda ()
                                                         (funcall
                                                           cpscm__switch__42
-                                                          (lambda (gret__switch__42__677)
-                                                            (cpscm__trampoline
-                                                              (lambda () (funcall gk676 gret__switch__42__677))))
+                                                          gk698
                                                           cpscm__a__44
                                                           cpscm__b__45))))
-                                                  (lambda (gk679)
+                                                  (lambda (gk701)
                                                     (cpscm__trampoline
                                                       (lambda ()
                                                         (funcall
                                                           cpscmcdr
-                                                          (lambda (gretcdr__681)
+                                                          (lambda (gretcdr__703)
                                                             (cpscm__trampoline
                                                               (lambda ()
                                                                 (funcall
                                                                   cpscmcdr
-                                                                  (lambda (gretcdr__682)
+                                                                  (lambda (gretcdr__704)
                                                                     (cpscm__trampoline
                                                                       (lambda ()
                                                                         (funcall
                                                                           cpscm__loop__43
-                                                                          (lambda (gret__loop__43__680)
-                                                                            (cpscm__trampoline
-                                                                              (lambda () (funcall gk679 gret__loop__43__680))))
-                                                                          gretcdr__681
-                                                                          gretcdr__682))))
+                                                                          gk701
+                                                                          gretcdr__703
+                                                                          gretcdr__704))))
                                                                   cpscm__b__45))))
                                                           cpscm__a__44))))))))
                                           (funcall cpscm_x_boolean->combinator g673)))))
                                   gretnull?__674))))
                           cpscm__a__44))))))))
-          (lambda (g631) (cpscm__trampoline (lambda () (funcall gk630 g631))))
+          gk630
           'undefined
           'undefined)))))
 
@@ -2947,7 +2452,7 @@
                                          cpscm__winders))))
                                  cpscm__before__41
                                  cpscm__after__43)))))))))
-          (lambda (g707) (cpscm__trampoline (lambda () (funcall gk706 g707))))
+          gk706
           'undefined)))))
 
 
@@ -2973,9 +2478,7 @@
                               (lambda ()
                                 (progn (setq cpscm__old-hnd__43 cpscm__old-hnd__43__tmp)
                                        (funcall
-                                         (lambda (gretset!__732)
-                                           (cpscm__trampoline
-                                             (lambda () (funcall gk730 gretset!__732))))
+                                         gk730
                                          (setq cpscm__new-hnd__44 cpscm__new-hnd__44__tmp))))))
                           (lambda (g725)
                             (cpscm__trampoline
@@ -2984,12 +2487,7 @@
                                   cpscmcurrent-error-handler
                                   (lambda (gretcurrent-error-handler__727)
                                     (cpscm__trampoline
-                                      (lambda ()
-                                        (funcall
-                                          cpscm__thunk__42
-                                          (lambda (gret__thunk__42__728)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk724 gret__thunk__42__728))))))))
+                                      (lambda () (funcall cpscm__thunk__42 gk724))))
                                   cpscm__new-hnd__44))))
                           gretcurrent-error-handler__726
                           (lambda (gk734 cpscm__e__45 cpscm__ek__46)
@@ -3002,13 +2500,11 @@
                                       (lambda ()
                                         (funcall
                                           cpscm__hnd__41
-                                          (lambda (gret__hnd__41__736)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk734 gret__hnd__41__736))))
+                                          gk734
                                           cpscm__e__45
                                           cpscm__ek__46))))
                                   cpscm__old-hnd__43))))))))))))
-          (lambda (g722) (cpscm__trampoline (lambda () (funcall gk721 g722))))
+          gk721
           'undefined
           'undefined)))))
 
@@ -3030,12 +2526,7 @@
                   cpscmdisplay
                   (lambda (gretdisplay__740)
                     (cpscm__trampoline
-                      (lambda ()
-                        (funcall
-                          cpscmnewline
-                          (lambda (gretnewline__741)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk738 gretnewline__741))))))))
+                      (lambda () (funcall cpscmnewline gk738))))
                   cpscm__e__41))))
           "Error: ")))))
 
@@ -3045,10 +2536,7 @@
     (lambda (gk743)
       (cpscm__trampoline
         (lambda ()
-          (funcall
-            (lambda (gretset!__744)
-              (cpscm__trampoline (lambda () (funcall gk743 gretset!__744))))
-            (setq cpscm__err-hnd cpscm__default-err-hnd)))))
+          (funcall gk743 (setq cpscm__err-hnd cpscm__default-err-hnd)))))
     (lambda (cpscmx) cpscmx))
   (function error))
 
@@ -3069,9 +2557,7 @@
                       (lambda ()
                         (funcall
                           gret_x_boolean->combinator__748
-                          (lambda (gretapply__747)
-                            (cpscm__trampoline
-                              (lambda () (funcall gk746 gretapply__747))))
+                          gk746
                           (lambda (gk751)
                             (cpscm__trampoline
                               (lambda () (funcall gk751 cpscm__err-hnd))))
@@ -3084,9 +2570,7 @@
                                     (cpscm__trampoline
                                       (lambda ()
                                         (funcall
-                                          (lambda (gretset!__754)
-                                            (cpscm__trampoline
-                                              (lambda () (funcall gk753 gretset!__754))))
+                                          gk753
                                           (setq cpscm__err-hnd gretcar__755)))))
                                   cpscm__hnd__41))))))))
                   (funcall cpscm_x_boolean->combinator gretnull?__749)))))
@@ -3100,39 +2584,24 @@
         (lambda ()
           (funcall
             cpscmcall-with-current-continuation
-            (lambda (gretcall-with-current-continuation__758)
-              (cpscm__trampoline
-                (lambda ()
-                  (funcall gk757 gretcall-with-current-continuation__758))))
+            gk757
             (lambda (gk760 cpscm__exit__41)
               (cpscm__trampoline
                 (lambda ()
                   (funcall
                     cpscmcall-with-values
-                    (lambda (gretcall-with-values__761)
-                      (cpscm__trampoline
-                        (lambda () (funcall gk760 gretcall-with-values__761))))
+                    gk760
                     (lambda (gk763)
                       (cpscm__trampoline
                         (lambda ()
                           (funcall
                             cpscmcall-with-current-continuation
-                            (lambda (gretcall-with-current-continuation__764)
-                              (cpscm__trampoline
-                                (lambda ()
-                                  (funcall
-                                    gk763
-                                    gretcall-with-current-continuation__764))))
+                            gk763
                             (lambda (gk766 cpscm__cc__42)
                               (cpscm__trampoline
                                 (lambda ()
                                   (progn (setq cpscm__err-cont cpscm__cc__42)
-                                         (funcall
-                                           cpscm__exit__41
-                                           (lambda (gret__exit__41__768)
-                                             (cpscm__trampoline
-                                               (lambda () (funcall gk766 gret__exit__41__768))))
-                                           t)))))))))
+                                         (funcall cpscm__exit__41 gk766 t)))))))))
                     (lambda (gk770 cpscm__e__42 cpscm__ek__43)
                       (cpscm__trampoline
                         (lambda ()
@@ -3143,9 +2612,7 @@
                                 (lambda ()
                                   (funcall
                                     gretcurrent-error-handler__772
-                                    (lambda (gretapply__771)
-                                      (cpscm__trampoline
-                                        (lambda () (funcall gk770 gretapply__771))))
+                                    gk770
                                     cpscm__e__42
                                     cpscm__ek__43))))))))))))))))
     (lambda (cpscmx) cpscmx))
@@ -3159,18 +2626,13 @@
       (lambda ()
         (funcall
           cpscmcall-with-current-continuation
-          (lambda (gretcall-with-current-continuation__775)
-            (cpscm__trampoline
-              (lambda ()
-                (funcall gk774 gretcall-with-current-continuation__775))))
+          gk774
           (lambda (gk777 cpscm__ek__42)
             (cpscm__trampoline
               (lambda ()
                 (funcall
                   cpscm__err-cont
-                  (lambda (gret%cpscm_c_err-cont__778)
-                    (cpscm__trampoline
-                      (lambda () (funcall gk777 gret%cpscm_c_err-cont__778))))
+                  gk777
                   cpscm__e__41
                   cpscm__ek__42)))))))))
 
