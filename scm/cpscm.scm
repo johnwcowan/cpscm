@@ -142,12 +142,18 @@
   (define (maybe-lambda->cps x)
     (if (lambda-form? x)
         (lambda->cps x) x))
-  (let loop ((substs substs))
-    (if (null? (cdr substs)) `(,k ,(maybe-lambda->cps (caddar substs)))
-        (let* ((csubst (car substs)) (result (car csubst))
-               (ccbody (loop (cdr substs))))
+  (if (null? (cdr substs))
+      `(,k . ,(map maybe-lambda->cps (cddar substs)))
+      (let loop ((substs substs))
+        (let* ((csubst (car substs)) (result (car csubst)))
           (define f (maybe-lambda->cps (second csubst)))
-          (define cc `(lambda (,result) ,ccbody))
+          (define cc
+            (if (null? (cddr substs))
+                (let ((finsubst (second substs)))
+                  (if (eq? (third finsubst) result) k
+                      `(lambda (,result)
+                         (,k . ,(map maybe-lambda->cps (cddr finsubst))))))
+                `(lambda (,result) ,(loop (cdr substs)))))
           (define args (map maybe-lambda->cps (cddr csubst)))
           (cond
            ((eq? f 'begin)
@@ -157,7 +163,7 @@
            ((memq f non-cps)
             `(,cc (,f ,@args)))
            (else `(,f ,cc ,@args)))))))
-
+  
 ;; CPS-transforms lambda forms
 (define (lambda->cps form)
   (define args (second form))

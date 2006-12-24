@@ -45,8 +45,8 @@ Descending
 
 <p>The bubblesort algorithm is implemented in <kbd><a href="../scheme-examples/bs.scm">bs.scm</a></kbd> (which compiles to <kbd><a href="scm-bs.js">scm-bs.js</a></kbd>). The native DHTML code is in <kbd><a href="bs-demo.js">bs-demo.js</a></kbd>. This web page references in its &lt;head&gt; section both the native and the compiled Scheme code, as well as the backend files <kbd><a href="../js-backend/cpscm-drv.js">cpscm-drv.js</a></kbd> and <kbd><a href="../js-backend/prelude.js">prelude.js</a></kbd>.</p>
 
-<p>To call a Scheme function from Javascript, find the mangled name (by calling <code>(symbol-&gt;js 'fun)</code> from the Scheme compiler, where <code>fun</code> is your Scheme function). Then (assuming the mangled name is <code>cpscmfun</code>) insert something like the following template in Javascript:</p>
-<pre><code>var result = cpscm__drive (cpscm__call_scm (cpscmfun (cpscm__id, arg1, arg2 /* ... */));</code></pre>
+<p>To call a Scheme function from Javascript, find the mangled name (by calling <code>(symbol-&gt;js 'fun)</code> from the Scheme compiler, where <code>fun</code> is your Scheme function). Then (assuming the mangled name is <code>cpscmfun</code>) insert something like the following in Javascript:</p>
+<pre><code>var result = cpscm__drive (cpscm__call_scm (cpscmfun, cpscm__id, arg1, arg2 /* ... */));</code></pre>
 
 <p>To create a Javascript function callable from Scheme, again find out the mangled name (say <code>cpscmjsfun</code>), and define the function as in:</p>
 <pre><code>var cpscmjsfun = cpscm__cpswrap (function jsfun (x, y) { return x + y; });</code></pre>
