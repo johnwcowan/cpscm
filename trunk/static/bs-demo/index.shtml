@@ -12,7 +12,7 @@
     table.vec { border-collapse: collapse; }
     table.vec tr td { border: solid 1px black; padding: 0.5em; }
     form { padding-top: 2em; }
-    input.submit { font-family: sans-serif; font-size: 110%; padding: .2em; }
+    input.submit { font-family: sans-serif; font-size: 110%; }
     </style>
   </head>
 
@@ -43,7 +43,7 @@ Descending
 
 <h2>How this works</h2>
 
-<p>The bubblesort algorithm is implemented in <kbd><a href="../scheme-examples/bs.scm">bs.scm</a></kbd> (which compiles to <kbd><a href="scm-bs.js">scm-bs.js</a></kbd>). The native DHTML code is in <kbd><a href="bs-demo.js">bs-demo.js</a></kbd>. This web page references in its &lt;head&gt; section both the native and the compiled Scheme code, as well as the backend files <kbd><a href="../js-backend/cpscm-drv.js">cpscm-drv.js</a></kbd> and <kbd><a href="../js-backend/prelude.js">prelude.js</a></kbd>.</p>
+<p>The bubblesort algorithm is implemented in <kbd><a href="../scheme-examples/bs.scm">bs.scm</a></kbd> (which compiles to <kbd><a href="scm-bs.js">scm-bs.js</a></kbd>). The native DHTML code is in <kbd><a href="bs-demo.js">bs-demo.js</a></kbd>. This web page references in its <code>&lt;head&gt;</code> section both the native and the compiled Scheme code, as well as the backend files <kbd><a href="../js-backend/cpscm-drv.js">cpscm-drv.js</a></kbd> and <kbd><a href="../js-backend/prelude.js">prelude.js</a></kbd>.</p>
 
 <p>To call a Scheme function from Javascript, find the mangled name (by calling <code>(symbol-&gt;js 'fun)</code> from the Scheme compiler, where <code>fun</code> is your Scheme function). Then (assuming the mangled name is <code>cpscmfun</code>) insert something like the following in Javascript:</p>
 <pre><code>var result = cpscm__drive (cpscm__call_scm (cpscmfun, cpscm__id, arg1, arg2 /* ... */));</code></pre>

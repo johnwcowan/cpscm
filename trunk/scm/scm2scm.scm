@@ -145,7 +145,7 @@
       (define ,(symbol->cpscm '%cpscm:normal-apply) apply)
       ))
   (parameterize
-      ((in-prelude? #t))
+      ((in-prelude? #t) (strict-letrec? #f))
     (call-with-output-file "cpscm-drv.scm"
       (lambda (p)
         (define (wrnl x) (pretty-print x p))
