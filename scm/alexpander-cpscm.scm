@@ -608,6 +608,11 @@
 ;;   => (k store loc-n)
 
 
+
+(require-extension (srfi 39))
+
+(define strict-letrec? (make-parameter #t))
+
 (define (sid? sexp)          (or (symbol? sexp) (renamed-sid? sexp)))
 (define (renamed-sid? sexp)  (and (vector? sexp) (< 1 (vector-length sexp))))
 (define (svector? sexp)      (and (vector? sexp) (= 1 (vector-length sexp))))
@@ -1012,22 +1017,26 @@
             (define (var->tmp var)
               (string->symbol
                   (string-append (symbol->string var) "_tmp")))
+            (define (make-set!s vars inits)
+              (map (lambda (var tmp) `(set! ,var ,tmp)) vars inits))
             (cond
              ((null? bindings) expr)
              ;; doesn't work for recursive functions
              ;; ((null? (cdr bindings))
              ;;  `((lambda (,(caar bindings)) ,expr) . ,(cdar bindings)))
-             (else (let* ((vars (map car bindings))
-                          (tmps (map var->tmp vars))
-                          (inits (map cadr bindings))
-                          (assigns (map (lambda (var tmp) `(set! ,var ,tmp))
-                                        vars tmps))
-                          (dummy-vals (map (lambda _ ''undefined) vars)))
-                     `((lambda ,vars
-                         (begin ((lambda ,tmps (begin . ,assigns))
-                                 . ,inits)
-                                ,expr))
-                       . ,dummy-vals)))))
+             (else
+              (let* ((vars (map car bindings)) (inits (map cadr bindings))
+                     (dummy-vals (map (lambda _ ''undefined) vars)))
+                (if
+                 (not (strict-letrec?))
+                 `((lambda ,vars
+                     (begin ,@(make-set!s vars inits) ,expr)) . ,dummy-vals)
+                 (let* ((tmps (map var->tmp vars))
+                        (assigns (make-set!s vars tmps)))
+                   `((lambda ,vars
+                       (begin ((lambda ,tmps (begin . ,assigns)) . ,inits)
+                              ,expr))
+                     . ,dummy-vals)))))))
 	  (if (and (null? rest) (null? vds) (not (pair? exprs)))
 	      (expand-any first id-n env store loc-n lsd? ek sk dk bk)
 	      (ek (make-letrec

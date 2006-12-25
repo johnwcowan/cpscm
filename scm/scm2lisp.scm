@@ -124,7 +124,7 @@
 
 (define (create-lisp-prelude)
   (parameterize
-      ((in-prelude? #t))
+      ((in-prelude? #t) (strict-letrec? #f))
     (call-with-output-file "prelude.lsp"
       (lambda (p)
         (for-each
