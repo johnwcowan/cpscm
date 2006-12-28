@@ -10,7 +10,9 @@ fi
 cat <<EOF
 
 
-To run CPSCM in Chicken:
+To run CPSCM in Chicken, you need the following eggs: syntax-case, 
+srfi-42, srfi-60, vector-lib, array-lib. Type
+
 csi -q danm/chicken-prelude.scm <backend>.scm
 
 To run from SISC:
