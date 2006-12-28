@@ -24,6 +24,7 @@
 (require-extension (srfi 26))  ;; cut
 (require-extension (srfi 31))  ;; rec
 (require-extension (srfi 39))  ;; parameters
+(require-extension (srfi 42))  ;; eager comprehensions
 
 (require-library 'danm/scheme-macros) (import danm/scheme-macros)
 (require-library 'danm/combinators) (import danm/combinators)

@@ -17,11 +17,8 @@
 ;; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 (require-library 'danm/scheme-util) (import danm/scheme-util)
-(require-extension (srfi 42))
 
-(cond-expand
- (chicken (require 'danm/chicken-srfi-60))
- (else (require-extension (srfi 60))))
+(require-extension (srfi 60))
 
 (module r5rs-bootstrap (r5rs-bootstrap-defs)
 
