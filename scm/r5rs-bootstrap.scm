@@ -46,14 +46,23 @@
     ,@(cxr-defs 4)
     (define (not x) (if x #f #t))
 
+    ;; TODO: No complex numbers for now
+    (define (real-part x) x)
+    (define (imag-part x) 0)
+    (define (magnitude x) x)
+    (define (angle x) 0)
+
     (define (expt x y) (exp (* y (log x))))
 
     (define (char-numeric? c)
       (and (char<=? #\0 c) (char<=? c #\9)))
+    ;; TODO: only ASCII supported
     (define (char-upper-case? c)
       (and (char<=? #\A c) (char<=? c #\Z)))
     (define (char-lower-case? c)
       (and (char<=? #\a c) (char<=? c #\z)))
+    (define (char-alphabetic? c)
+      (and (char-upper-case? c) (char-lower-case? c)))
     (define (char-ci<? c1 c2)
       (char<? (char-upcase c1) (char-upcase c2)))
     (define (char-ci<=? c1 c2)

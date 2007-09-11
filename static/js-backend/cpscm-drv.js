@@ -461,6 +461,9 @@ var cpscmexact_p_ = cpscm__cpswrap (
 var cpscminexact_p_ = cpscm__cpswrap (
   function inexact_p (n) { return true; }
 );
+var cpscmexact_d__r_inexact = cpscm__cpswrap (
+  function exact2inexact (n) { return n; }
+);
 var cpscminteger_p_ = cpscm__cpswrap (
   function integer_p (n) { return false; }
 );
