@@ -137,7 +137,7 @@
 
 ;; Outputs a CPS form based on an ANF list of substitutions
 (define (output-cps k substs)
-  (define non-cps `(set! ,boolean->combinator))
+  (define never-cps `(set! %cpscm:native))
   ;; CPS-transforms lambda forms, leaves other forms alone
   (define (maybe-lambda->cps x)
     (if (lambda-form? x)
@@ -160,7 +160,7 @@
             `(,cc ,(last csubst)))
            ((and (eq? f 'apply) (equal? (last args) '(quote ())))
             `(,(car args) ,cc ,@(drop-right (cdr args) 1)))
-           ((memq f non-cps)
+           ((memq f never-cps)
             `(,cc (,f ,@args)))
            (else `(,f ,cc ,@args)))))))
 
@@ -189,7 +189,8 @@
             ((f . args) `(,(lambda->cps `(lambda () ,sexp)) (lambda (x) x)))
             (_ sexp)))))
 
-;; Converts a program to "intermediate Scheme" form
+;; Converts a program to "intermediate Scheme" form.
+;; Includes CPS conversion step.
 (define (prog->is prog)
   (map
    (compose simplify-sexp sexp->cps simplify-sexp rewrite-int-defs expand-extra

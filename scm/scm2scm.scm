@@ -132,10 +132,8 @@
         (let loop ((cc sexp))
           (if (cpscm__trampoline? cc)
               (loop ((cpscm__trampoline-thunk cc))) cc)))
-      (define (,(symbol->cpscm boolean->combinator) test)
-        (if test
-            (lambda (kk then else) (then kk))
-            (lambda (kk then else) (else kk))))
+      (define (,(symbol->cpscm boolean-combinator) k test then else)
+        (if test (then k) (else k)))
       (define (,(symbol->cpscm cpscm-delay) k thunk)
         (k (cpscm__delay-create thunk)))
       (define (,(symbol->cpscm 'promise?) k x)

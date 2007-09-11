@@ -1,7 +1,7 @@
 all: cpscm.so
 
 FLAGS := -v -R syntax-case -prologue danm/chicken-prelude.scm \
--Os -lambda-lift -inline -optimize-leaf-routines \
+-O -lambda-lift -inline -optimize-leaf-routines \
 -I. -L. -d2
 
 %.so: %.scm
