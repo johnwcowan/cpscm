@@ -1,6 +1,6 @@
 ;; Copyright (C) 2006 Dan Muresan
 ;;
-;; This file is part of cpscm.
+;; This file is part of cpscm (http://www.omnigia.com/scheme/cpscm/home).
 ;;
 ;; cpscm is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 
 (cond-expand
  (plt (require "danm/plt-xmodule.scm"))
- (chicken (require 'danm/psyntax-xmodule))
+ (chicken (require-for-syntax 'danm/psyntax-xmodule)
+          (import danm/psyntax-xmodule))
  (else (require-library 'danm/psyntax-xmodule))
 )

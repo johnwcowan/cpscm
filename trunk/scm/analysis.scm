@@ -22,7 +22,7 @@
 (module analysis
   (int-def-fun->letrec?
    xgensym
-   boolean->combinator cpscm-delay make-promise
+   boolean-combinator cpscm-delay make-promise
    if->combinator expand-extra simplify-ifs
    sexp->anf
    simplify-sexp simplify-body
@@ -45,13 +45,14 @@
 ;; TODO: these pollute the namespace, but they need to be defined
 ;; in the host system as well, so it's hard to mangle them.
 ;; Using the space prefix to minimize conflicts is evil (but works).
-(define boolean->combinator '| boolean->combinator|)
+(define boolean-combinator '| boolean-combinator|)
 (define cpscm-delay '| delay|)
 (define make-promise '| make-promise|)
 
 (define (if->combinator sexp)
   (dbind (_ condval . alts) sexp
-         `((,boolean->combinator ,condval)
+         `(,boolean-combinator
+           ,condval
            (lambda () ,(car alts))
            (lambda () ,(if (null? (cdr alts)) 'undefined
                            (second alts))))))

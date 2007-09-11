@@ -119,6 +119,8 @@
   (sexp->js sexp #f #t))
 
 (define/opt (sexp->js sexp (name top?))
+  (define (maybe-native->js x)
+    (if (string? x) x (sexp->js x)))
   (define (do-eval sexp)
     (s+ ((if (computation? sexp) drive values)
          (sexp->js sexp))))
@@ -145,6 +147,8 @@
            (sexp->js `(define ,f (lambda ,args . ,body))))
           (('define x val)
            (s+ "var " (symbol->js x) " = " (do-eval val) ";\n"))
+          (('%cpscm:native . args)
+           (s+ "(" (string-join (map maybe-native->js args)) ")"))
           ((f . args)
            (s+ (drive (s+ "(" (sexp->js f) ") "
                           "(" (list->js args) ")"))

@@ -185,7 +185,7 @@
   (syntax-rules (quote or and)
     ((_ val c . clauses)
      (let ((v val))
-       (wmatch (v (lambda () (error `(wmatch mismatch ,val)))
+       (wmatch (v (lambda () (error `(wmatch mismatch ,v)))
                   (c . clauses)))))
     ((_ (val fail ()))
      (fail))

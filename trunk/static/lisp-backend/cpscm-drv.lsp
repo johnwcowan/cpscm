@@ -94,13 +94,9 @@
                     ,result))))))
 
 (cpscm__global
- cpscm_x_boolean->combinator
- (let ((combthen (lambda (kk then else)
-                   (cpscm__trampoline (lambda () (funcall then kk)))))
-       (combelse (lambda (kk then else)
-                   (cpscm__trampoline (lambda () (funcall else kk))))))
-   (lambda (test)
-     (if (eq test cpscm__false) combelse combthen))))
+ cpscm_x_boolean-combinator
+ (lambda (k test then else)
+     (if (eq test cpscm__false) (funcall else k) (funcall then k))))
 
 (defun cpscm__reduce-trampoline (cc)
     (loop for i from 1 while (trampoline-p cc) do 

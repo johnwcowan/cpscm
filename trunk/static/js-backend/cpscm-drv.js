@@ -325,12 +325,10 @@ function cpscm__drive (cc, excHnd) {
 
 // Procedures called from Scheme
 
-var cpscm__combthen = function (args)
-{ return args.cdr.car (cpscm__singleton (args.car)); };
-var cpscm__combelse = function (args)
-{ return args.cdr.cdr.car (cpscm__singleton (args.car)); };
-function cpscm_x_boolean_d__r_combinator (args) {
-  return args.car ? cpscm__combthen : cpscm__combelse;
+function cpscm_x_boolean_d_combinator (args) {
+  var kl = cpscm__singleton (args.car); args = args.cdr;
+  var cond = args.car; args = args.cdr;
+  return cond ? (args.car) (kl) : (args.cdr.car) (kl);
 }
 
 function cpscm__normal_d_apply (args) {
@@ -529,7 +527,20 @@ var cpscmnot = cpscm__cpswrap (
 );
 
 var cpscmstring_e__p_ = cpscm__cpswrap (
-  function string_eq(s1, s2) { return s1 == s2; }
+  function string_eq(s1, s2) { return s1 === s2; }
+);
+// TODO: raise errors for non-strings
+var cpscmstring_l__p_ = cpscm__cpswrap (
+  function string_lt(s1, s2) { return s1 < s2; }
+);
+var cpscmstring_r__p_ = cpscm__cpswrap (
+  function string_gt(s1, s2) { return s1 > s2; }
+);
+var cpscmstring_l__e__p_ = cpscm__cpswrap (
+  function string_leq(s1, s2) { return s1 <= s2; }
+);
+var cpscmstring_r__e__p_ = cpscm__cpswrap (
+  function string_geq(s1, s2) { return s1 >= s2; }
 );
 
 function cpscmstring_d_append (args) {
@@ -538,6 +549,10 @@ function cpscmstring_d_append (args) {
     s += p.car;
   return args.car (cpscm__singleton (s));
 }
+
+var cpscmsubstring = cpscm__cpswrap (
+  function substring (s, start, end) { return s.substring (start, end); }
+);
 
 var cpscmsymbol_d__r_string = cpscm__cpswrap (
   function symbol2string (sym) { return sym.s; }
@@ -607,7 +622,7 @@ var cpscminteger_d__r_char = cpscm__cpswrap (
 );
 
 var cpscmchar_l__p_ = cpscm__cpswrap (
-  function char_lt (c1, c2) { return c1.code = c2.code; }
+  function char_lt (c1, c2) { return c1.code < c2.code; }
 );
 var cpscmchar_l__e__p_ = cpscm__cpswrap (
   function char_leq (c1, c2) { return c1.code <= c2.code; }

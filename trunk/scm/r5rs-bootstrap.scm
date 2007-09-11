@@ -45,6 +45,26 @@
   `(
     ,@(cxr-defs 4)
     (define (not x) (if x #f #t))
+
+    (define (expt x y) (exp (* y (log x))))
+
+    (define (char-numeric? c)
+      (and (char<=? #\0 c) (char<=? c #\9)))
+    (define (char-upper-case? c)
+      (and (char<=? #\A c) (char<=? c #\Z)))
+    (define (char-lower-case? c)
+      (and (char<=? #\a c) (char<=? c #\z)))
+    (define (char-ci<? c1 c2)
+      (char<? (char-upcase c1) (char-upcase c2)))
+    (define (char-ci<=? c1 c2)
+      (char<=? (char-upcase c1) (char-upcase c2)))
+     (define (char-ci>? c1 c2)
+      (char>? (char-upcase c1) (char-upcase c2)))
+    (define (char-ci>=? c1 c2)
+      (char>=? (char-upcase c1) (char-upcase c2)))
+    (define (char-ci=? c1 c2)
+      (char=? (char-upcase c1) (char-upcase c2)))
+
     (define (list . l) l)
     (define (length l)
       (define (loop l res)
@@ -114,6 +134,15 @@
         (find-tail (lambda (y) (e x y)) lis)))
     (define (memq x l) (member x l eq?))
     (define (memv x l) (member x l eqv?))
+
+    (define (max x . l)
+      (if (null? l) x
+          (let ((y (car l)))
+            (apply max (if (> x y) x y) (cdr l)))))
+    (define (min x . l)
+      (if (null? l) x
+          (let ((y (car l)))
+            (apply max (if (< x y) x y) (cdr l)))))
     
     (define (vector->list v)
       (define n (vector-length v))
@@ -148,6 +177,11 @@
             (begin
               (string-set! v i x)
               (loop (+ i 1))))))
+    (define (string->list s)
+      (let loop ((i (- (string-length s) 1)) (l '()))
+        (if (= i -1) l
+            (loop (- i 1) (cons (string-ref s i) l)))))
+    (define (string-copy s) (substring s 0 (string-length s)))
     
     (define call/cc call-with-current-continuation)
 
